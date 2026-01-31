@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: imu-bno08x
+Version: 0.0.1
+Summary: BNO08x IMU publisher over I2C.
+Home-page: UNKNOWN
+Maintainer: user
+Maintainer-email: user@example.com
+License: Apache-2.0
+Platform: UNKNOWN
+
+UNKNOWN
+

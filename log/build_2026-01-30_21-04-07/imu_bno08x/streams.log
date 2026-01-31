@@ -1,0 +1,37 @@
+[3.377s] Invoking command in '/home/y/GZ_DiNiu/src/imu_bno08x': PYTHONPATH=/home/y/GZ_DiNiu/build/imu_bno08x/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/y/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/imu_bno08x build --build-base /home/y/GZ_DiNiu/build/imu_bno08x/build install --record /home/y/GZ_DiNiu/build/imu_bno08x/install.log --single-version-externally-managed install_data
+[4.664s] running egg_info
+[4.667s] creating ../../build/imu_bno08x/imu_bno08x.egg-info
+[4.668s] writing ../../build/imu_bno08x/imu_bno08x.egg-info/PKG-INFO
+[4.669s] writing dependency_links to ../../build/imu_bno08x/imu_bno08x.egg-info/dependency_links.txt
+[4.670s] writing entry points to ../../build/imu_bno08x/imu_bno08x.egg-info/entry_points.txt
+[4.670s] writing requirements to ../../build/imu_bno08x/imu_bno08x.egg-info/requires.txt
+[4.671s] writing top-level names to ../../build/imu_bno08x/imu_bno08x.egg-info/top_level.txt
+[4.672s] writing manifest file '../../build/imu_bno08x/imu_bno08x.egg-info/SOURCES.txt'
+[4.679s] reading manifest file '../../build/imu_bno08x/imu_bno08x.egg-info/SOURCES.txt'
+[4.683s] writing manifest file '../../build/imu_bno08x/imu_bno08x.egg-info/SOURCES.txt'
+[4.684s] running build
+[4.684s] running build_py
+[4.685s] creating /home/y/GZ_DiNiu/build/imu_bno08x/build
+[4.685s] creating /home/y/GZ_DiNiu/build/imu_bno08x/build/lib
+[4.686s] creating /home/y/GZ_DiNiu/build/imu_bno08x/build/lib/imu_bno08x
+[4.686s] copying imu_bno08x/imu_bno08x_node.py -> /home/y/GZ_DiNiu/build/imu_bno08x/build/lib/imu_bno08x
+[4.687s] copying imu_bno08x/__init__.py -> /home/y/GZ_DiNiu/build/imu_bno08x/build/lib/imu_bno08x
+[4.688s] running install
+[4.689s] running install_lib
+[4.693s] creating /home/y/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x
+[4.694s] copying /home/y/GZ_DiNiu/build/imu_bno08x/build/lib/imu_bno08x/imu_bno08x_node.py -> /home/y/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x
+[4.694s] copying /home/y/GZ_DiNiu/build/imu_bno08x/build/lib/imu_bno08x/__init__.py -> /home/y/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x
+[4.696s] byte-compiling /home/y/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x/imu_bno08x_node.py to imu_bno08x_node.cpython-310.pyc
+[4.702s] byte-compiling /home/y/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x/__init__.py to __init__.cpython-310.pyc
+[4.703s] running install_data
+[4.704s] creating /home/y/GZ_DiNiu/install/imu_bno08x/share/ament_index
+[4.706s] creating /home/y/GZ_DiNiu/install/imu_bno08x/share/ament_index/resource_index
+[4.708s] creating /home/y/GZ_DiNiu/install/imu_bno08x/share/ament_index/resource_index/packages
+[4.709s] copying resource/imu_bno08x -> /home/y/GZ_DiNiu/install/imu_bno08x/share/ament_index/resource_index/packages
+[4.710s] copying package.xml -> /home/y/GZ_DiNiu/install/imu_bno08x/share/imu_bno08x
+[4.711s] running install_egg_info
+[4.715s] Copying ../../build/imu_bno08x/imu_bno08x.egg-info to /home/y/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x-0.0.1-py3.10.egg-info
+[4.722s] running install_scripts
+[4.809s] Installing imu_bno08x_node script to /home/y/GZ_DiNiu/install/imu_bno08x/lib/imu_bno08x
+[4.811s] writing list of installed files to '/home/y/GZ_DiNiu/build/imu_bno08x/install.log'
+[4.950s] Invoked command in '/home/y/GZ_DiNiu/src/imu_bno08x' returned '0': PYTHONPATH=/home/y/GZ_DiNiu/build/imu_bno08x/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/y/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/imu_bno08x build --build-base /home/y/GZ_DiNiu/build/imu_bno08x/build install --record /home/y/GZ_DiNiu/build/imu_bno08x/install.log --single-version-externally-managed install_data

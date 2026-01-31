@@ -1,0 +1,6 @@
+source;share/imu_bno08x/hook/pythonpath.ps1
+source;share/imu_bno08x/hook/pythonpath.dsv
+source;share/imu_bno08x/hook/pythonpath.sh
+source;share/imu_bno08x/hook/ament_prefix_path.ps1
+source;share/imu_bno08x/hook/ament_prefix_path.dsv
+source;share/imu_bno08x/hook/ament_prefix_path.sh

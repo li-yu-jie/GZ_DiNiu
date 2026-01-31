@@ -1,0 +1,4 @@
+source;share/encoder_vel/local_setup.bash
+source;share/encoder_vel/local_setup.dsv
+source;share/encoder_vel/local_setup.sh
+source;share/encoder_vel/local_setup.zsh

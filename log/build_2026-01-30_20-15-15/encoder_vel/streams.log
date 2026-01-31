@@ -1,0 +1,22 @@
+[0.078s] Invoking command in '/home/y/GZ_DiNiu/build/encoder_vel': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/y/GZ_DiNiu/install/motor_control_py:/opt/ros/humble /usr/bin/cmake --build /home/y/GZ_DiNiu/build/encoder_vel -- -j4 -l4
+[0.370s] [100%] Built target encoder_vel_node
+[1.581s] Invoked command in '/home/y/GZ_DiNiu/build/encoder_vel' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/y/GZ_DiNiu/install/motor_control_py:/opt/ros/humble /usr/bin/cmake --build /home/y/GZ_DiNiu/build/encoder_vel -- -j4 -l4
+[1.623s] Invoking command in '/home/y/GZ_DiNiu/build/encoder_vel': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/y/GZ_DiNiu/install/motor_control_py:/opt/ros/humble /usr/bin/cmake --install /home/y/GZ_DiNiu/build/encoder_vel
+[1.655s] -- Install configuration: ""
+[1.656s] -- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/lib/encoder_vel/encoder_vel_node
+[1.658s] -- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/ament_index/resource_index/package_run_dependencies/encoder_vel
+[1.659s] -- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/ament_index/resource_index/parent_prefix_path/encoder_vel
+[1.660s] -- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/ament_prefix_path.sh
+[1.663s] -- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/ament_prefix_path.dsv
+[1.664s] -- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/path.sh
+[1.664s] -- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/path.dsv
+[1.665s] -- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.bash
+[1.666s] -- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.sh
+[1.666s] -- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.zsh
+[1.667s] -- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.dsv
+[1.667s] -- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.dsv
+[1.673s] -- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/ament_index/resource_index/packages/encoder_vel
+[1.676s] -- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/cmake/encoder_velConfig.cmake
+[1.683s] -- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/cmake/encoder_velConfig-version.cmake
+[1.684s] -- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.xml
+[1.686s] Invoked command in '/home/y/GZ_DiNiu/build/encoder_vel' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/y/GZ_DiNiu/install/motor_control_py:/opt/ros/humble /usr/bin/cmake --install /home/y/GZ_DiNiu/build/encoder_vel

@@ -1,0 +1,35 @@
+running egg_info
+creating ../../build/imu_bno08x/imu_bno08x.egg-info
+writing ../../build/imu_bno08x/imu_bno08x.egg-info/PKG-INFO
+writing dependency_links to ../../build/imu_bno08x/imu_bno08x.egg-info/dependency_links.txt
+writing entry points to ../../build/imu_bno08x/imu_bno08x.egg-info/entry_points.txt
+writing requirements to ../../build/imu_bno08x/imu_bno08x.egg-info/requires.txt
+writing top-level names to ../../build/imu_bno08x/imu_bno08x.egg-info/top_level.txt
+writing manifest file '../../build/imu_bno08x/imu_bno08x.egg-info/SOURCES.txt'
+reading manifest file '../../build/imu_bno08x/imu_bno08x.egg-info/SOURCES.txt'
+writing manifest file '../../build/imu_bno08x/imu_bno08x.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/y/GZ_DiNiu/build/imu_bno08x/build
+creating /home/y/GZ_DiNiu/build/imu_bno08x/build/lib
+creating /home/y/GZ_DiNiu/build/imu_bno08x/build/lib/imu_bno08x
+copying imu_bno08x/imu_bno08x_node.py -> /home/y/GZ_DiNiu/build/imu_bno08x/build/lib/imu_bno08x
+copying imu_bno08x/__init__.py -> /home/y/GZ_DiNiu/build/imu_bno08x/build/lib/imu_bno08x
+running install
+running install_lib
+creating /home/y/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x
+copying /home/y/GZ_DiNiu/build/imu_bno08x/build/lib/imu_bno08x/imu_bno08x_node.py -> /home/y/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x
+copying /home/y/GZ_DiNiu/build/imu_bno08x/build/lib/imu_bno08x/__init__.py -> /home/y/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x
+byte-compiling /home/y/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x/imu_bno08x_node.py to imu_bno08x_node.cpython-310.pyc
+byte-compiling /home/y/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x/__init__.py to __init__.cpython-310.pyc
+running install_data
+creating /home/y/GZ_DiNiu/install/imu_bno08x/share/ament_index
+creating /home/y/GZ_DiNiu/install/imu_bno08x/share/ament_index/resource_index
+creating /home/y/GZ_DiNiu/install/imu_bno08x/share/ament_index/resource_index/packages
+copying resource/imu_bno08x -> /home/y/GZ_DiNiu/install/imu_bno08x/share/ament_index/resource_index/packages
+copying package.xml -> /home/y/GZ_DiNiu/install/imu_bno08x/share/imu_bno08x
+running install_egg_info
+Copying ../../build/imu_bno08x/imu_bno08x.egg-info to /home/y/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x-0.0.1-py3.10.egg-info
+running install_scripts
+Installing imu_bno08x_node script to /home/y/GZ_DiNiu/install/imu_bno08x/lib/imu_bno08x
+writing list of installed files to '/home/y/GZ_DiNiu/build/imu_bno08x/install.log'

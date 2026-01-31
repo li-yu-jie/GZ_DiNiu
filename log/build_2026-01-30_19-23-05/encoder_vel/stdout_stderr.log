@@ -1,0 +1,24 @@
+[35m[1mConsolidate compiler generated dependencies of target motor_control_node[0m
+[ 50%] Built target encoder_vel_node
+[ 75%] [32mBuilding CXX object CMakeFiles/motor_control_node.dir/src/motor_control_node.cpp.o[0m
+[100%] [32m[1mLinking CXX executable motor_control_node[0m
+[100%] Built target motor_control_node
+-- Install configuration: ""
+-- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/lib/encoder_vel/encoder_vel_node
+-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/lib/encoder_vel/motor_control_node
+-- Set runtime path of "/home/y/GZ_DiNiu/install/encoder_vel/lib/encoder_vel/motor_control_node" to ""
+-- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/ament_index/resource_index/package_run_dependencies/encoder_vel
+-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/ament_index/resource_index/parent_prefix_path/encoder_vel
+-- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/ament_prefix_path.sh
+-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/path.sh
+-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/path.dsv
+-- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.bash
+-- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.sh
+-- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.zsh
+-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.dsv
+-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.dsv
+-- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/ament_index/resource_index/packages/encoder_vel
+-- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/cmake/encoder_velConfig.cmake
+-- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/cmake/encoder_velConfig-version.cmake
+-- Up-to-date: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.xml

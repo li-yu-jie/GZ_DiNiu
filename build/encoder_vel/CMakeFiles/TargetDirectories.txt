@@ -1,0 +1,10 @@
+/home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles/uninstall.dir
+/home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles/encoder_vel_uninstall.dir
+/home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles/encoder_vel_node.dir
+/home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles/test.dir
+/home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles/edit_cache.dir
+/home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles/rebuild_cache.dir
+/home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles/list_install_components.dir
+/home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles/install.dir
+/home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles/install/local.dir
+/home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles/install/strip.dir

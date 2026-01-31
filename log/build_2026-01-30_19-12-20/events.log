@@ -1,0 +1,188 @@
+[0.000000] (-) TimerEvent: {}
+[0.001665] (encoder_vel) JobQueued: {'identifier': 'encoder_vel', 'dependencies': OrderedDict()}
+[0.002187] (encoder_vel) JobStarted: {'identifier': 'encoder_vel'}
+[0.051910] (encoder_vel) JobProgress: {'identifier': 'encoder_vel', 'progress': 'cmake'}
+[0.054576] (encoder_vel) Command: {'cmd': ['/usr/bin/cmake', '/home/y/GZ_DiNiu/src/encoder_vel', '-DCMAKE_INSTALL_PREFIX=/home/y/GZ_DiNiu/install/encoder_vel'], 'cwd': '/home/y/GZ_DiNiu/build/encoder_vel', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'zh_CN:zh'), ('USER', 'y'), ('SSH_CLIENT', '172.21.21.8 36090 22'), ('XDG_SESSION_TYPE', 'tty'), ('GIT_ASKPASS', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('BROWSER', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/bin/helpers/browser.sh'), ('MOTD_SHOWN', 'pam'), ('HOME', '/home/y'), ('OLDPWD', '/home/y/GZ_DiNiu'), ('TERM_PROGRAM_VERSION', '1.108.2'), ('VSCODE_IPC_HOOK_CLI', '/run/user/1000/vscode-ipc-9a1660e5-57e4-45d0-9e54-d8e750a4db66.sock'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/node'), ('SSL_CERT_FILE', '/usr/lib/ssl/certs/ca-certificates.crt'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'y'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm-256color'), ('XDG_SESSION_ID', '7'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/home/y/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/y/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('SSL_CERT_DIR', '/usr/lib/ssl/certs'), ('LANG', 'zh_CN.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-b7729cf214.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/home/y/GZ_DiNiu/build/encoder_vel'), ('SSH_CONNECTION', '172.21.21.8 36090 172.21.21.16 22'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1')]), 'shell': False}
+[0.099086] (-) TimerEvent: {}
+[0.200073] (-) TimerEvent: {}
+[0.301008] (-) TimerEvent: {}
+[0.401744] (-) TimerEvent: {}
+[0.502553] (-) TimerEvent: {}
+[0.603579] (-) TimerEvent: {}
+[0.704713] (-) TimerEvent: {}
+[0.805846] (-) TimerEvent: {}
+[0.906586] (-) TimerEvent: {}
+[1.007555] (-) TimerEvent: {}
+[1.108430] (-) TimerEvent: {}
+[1.197797] (encoder_vel) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[1.208602] (-) TimerEvent: {}
+[1.309376] (-) TimerEvent: {}
+[1.410262] (-) TimerEvent: {}
+[1.511060] (-) TimerEvent: {}
+[1.611829] (-) TimerEvent: {}
+[1.712727] (-) TimerEvent: {}
+[1.813736] (-) TimerEvent: {}
+[1.914503] (-) TimerEvent: {}
+[1.928131] (encoder_vel) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[1.977027] (encoder_vel) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[2.014706] (-) TimerEvent: {}
+[2.115421] (-) TimerEvent: {}
+[2.216118] (-) TimerEvent: {}
+[2.317096] (-) TimerEvent: {}
+[2.362073] (encoder_vel) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[2.389301] (encoder_vel) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[2.391123] (encoder_vel) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[2.393786] (encoder_vel) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[2.408798] (encoder_vel) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[2.417244] (-) TimerEvent: {}
+[2.518000] (-) TimerEvent: {}
+[2.618882] (-) TimerEvent: {}
+[2.719624] (-) TimerEvent: {}
+[2.786025] (encoder_vel) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[2.815636] (encoder_vel) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[2.817017] (encoder_vel) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[2.819147] (encoder_vel) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[2.819800] (-) TimerEvent: {}
+[2.861730] (encoder_vel) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[2.920047] (-) TimerEvent: {}
+[3.027241] (-) TimerEvent: {}
+[3.128116] (-) TimerEvent: {}
+[3.229405] (-) TimerEvent: {}
+[3.330304] (-) TimerEvent: {}
+[3.431090] (-) TimerEvent: {}
+[3.532007] (-) TimerEvent: {}
+[3.633067] (-) TimerEvent: {}
+[3.664283] (encoder_vel) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[3.733256] (-) TimerEvent: {}
+[3.834828] (-) TimerEvent: {}
+[3.936029] (-) TimerEvent: {}
+[4.036902] (-) TimerEvent: {}
+[4.137562] (-) TimerEvent: {}
+[4.238213] (-) TimerEvent: {}
+[4.323942] (encoder_vel) StdoutLine: {'line': b'-- Found rclcpp: 16.0.17 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[4.338378] (-) TimerEvent: {}
+[4.439078] (-) TimerEvent: {}
+[4.539775] (-) TimerEvent: {}
+[4.640543] (-) TimerEvent: {}
+[4.741320] (-) TimerEvent: {}
+[4.746701] (encoder_vel) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[4.798681] (encoder_vel) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[4.841550] (-) TimerEvent: {}
+[4.879313] (encoder_vel) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[4.941720] (-) TimerEvent: {}
+[4.979693] (encoder_vel) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[5.041907] (-) TimerEvent: {}
+[5.107944] (encoder_vel) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[5.142094] (-) TimerEvent: {}
+[5.242840] (-) TimerEvent: {}
+[5.343623] (-) TimerEvent: {}
+[5.444373] (-) TimerEvent: {}
+[5.471741] (encoder_vel) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[5.500508] (encoder_vel) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.9 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[5.544573] (-) TimerEvent: {}
+[5.645307] (-) TimerEvent: {}
+[5.745943] (-) TimerEvent: {}
+[5.846623] (-) TimerEvent: {}
+[5.947317] (-) TimerEvent: {}
+[6.048055] (-) TimerEvent: {}
+[6.138834] (encoder_vel) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[6.148232] (-) TimerEvent: {}
+[6.248944] (-) TimerEvent: {}
+[6.349630] (-) TimerEvent: {}
+[6.410978] (encoder_vel) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[6.449796] (-) TimerEvent: {}
+[6.550473] (-) TimerEvent: {}
+[6.651137] (-) TimerEvent: {}
+[6.751800] (-) TimerEvent: {}
+[6.835960] (encoder_vel) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[6.851969] (-) TimerEvent: {}
+[6.929148] (encoder_vel) StdoutLine: {'line': b'-- Looking for pthread.h\n'}
+[6.952144] (-) TimerEvent: {}
+[7.052887] (-) TimerEvent: {}
+[7.153632] (-) TimerEvent: {}
+[7.254565] (-) TimerEvent: {}
+[7.309944] (encoder_vel) StdoutLine: {'line': b'-- Looking for pthread.h - found\n'}
+[7.311808] (encoder_vel) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[7.354748] (-) TimerEvent: {}
+[7.455545] (-) TimerEvent: {}
+[7.556385] (-) TimerEvent: {}
+[7.657325] (-) TimerEvent: {}
+[7.666420] (encoder_vel) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[7.671096] (encoder_vel) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[7.757498] (-) TimerEvent: {}
+[7.858210] (-) TimerEvent: {}
+[7.958901] (-) TimerEvent: {}
+[8.067409] (-) TimerEvent: {}
+[8.168646] (-) TimerEvent: {}
+[8.269934] (-) TimerEvent: {}
+[8.371141] (-) TimerEvent: {}
+[8.472231] (-) TimerEvent: {}
+[8.573482] (-) TimerEvent: {}
+[8.674499] (-) TimerEvent: {}
+[8.775525] (-) TimerEvent: {}
+[8.876579] (-) TimerEvent: {}
+[8.977360] (-) TimerEvent: {}
+[9.078156] (-) TimerEvent: {}
+[9.179246] (-) TimerEvent: {}
+[9.280290] (-) TimerEvent: {}
+[9.381406] (-) TimerEvent: {}
+[9.482542] (-) TimerEvent: {}
+[9.583669] (-) TimerEvent: {}
+[9.684654] (-) TimerEvent: {}
+[9.785879] (-) TimerEvent: {}
+[9.886917] (-) TimerEvent: {}
+[9.987997] (-) TimerEvent: {}
+[10.088910] (-) TimerEvent: {}
+[10.189896] (-) TimerEvent: {}
+[10.291029] (-) TimerEvent: {}
+[10.392151] (-) TimerEvent: {}
+[10.493332] (-) TimerEvent: {}
+[10.594497] (-) TimerEvent: {}
+[10.695468] (-) TimerEvent: {}
+[10.796534] (-) TimerEvent: {}
+[10.897538] (-) TimerEvent: {}
+[10.998677] (-) TimerEvent: {}
+[11.099879] (-) TimerEvent: {}
+[11.174178] (encoder_vel) StdoutLine: {'line': b'-- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") \n'}
+[11.177806] (encoder_vel) StdoutLine: {'line': b"-- Checking for module 'libgpiod'\n"}
+[11.200057] (-) TimerEvent: {}
+[11.242663] (encoder_vel) StdoutLine: {'line': b'--   Found libgpiod, version 1.6.3\n'}
+[11.300260] (-) TimerEvent: {}
+[11.401016] (-) TimerEvent: {}
+[11.501779] (-) TimerEvent: {}
+[11.602499] (-) TimerEvent: {}
+[11.652113] (encoder_vel) StderrLine: {'line': b"Error parsing '/home/y/GZ_DiNiu/src/encoder_vel/package.xml':\n"}
+[11.702719] (-) TimerEvent: {}
+[11.803417] (-) TimerEvent: {}
+[11.876367] (encoder_vel) StderrLine: {'line': b'Traceback (most recent call last):\n'}
+[11.877084] (encoder_vel) StderrLine: {'line': b'  File "/opt/ros/humble/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 150, in <module>\n'}
+[11.877575] (encoder_vel) StderrLine: {'line': b'    main()\n'}
+[11.878318] (encoder_vel) StderrLine: {'line': b'  File "/opt/ros/humble/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 53, in main\n'}
+[11.878689] (encoder_vel) StderrLine: {'line': b'    raise e\n'}
+[11.878992] (encoder_vel) StderrLine: {'line': b'  File "/opt/ros/humble/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 49, in main\n'}
+[11.879376] (encoder_vel) StderrLine: {'line': b'    package = parse_package_string(\n'}
+[11.879769] (encoder_vel) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/catkin_pkg/package.py", line 788, in parse_package_string\n'}
+[11.880714] (encoder_vel) StderrLine: {'line': b'    pkg.validate(warnings=warnings)\n'}
+[11.881646] (encoder_vel) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/catkin_pkg/package.py", line 330, in validate\n'}
+[11.882563] (encoder_vel) StderrLine: {'line': b"    raise InvalidPackage('\\n'.join(errors), self.filename)\n"}
+[11.883511] (encoder_vel) StderrLine: {'line': b"catkin_pkg.package.InvalidPackage: Error(s) in package '/home/y/GZ_DiNiu/src/encoder_vel/package.xml':\n"}
+[11.884584] (encoder_vel) StderrLine: {'line': b'Invalid email "user@local" for person "user"\n'}
+[11.903714] (-) TimerEvent: {}
+[11.968507] (encoder_vel) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:95 (message):\n'}
+[11.969147] (encoder_vel) StderrLine: {'line': b'  execute_process(/usr/bin/python3\n'}
+[11.969660] (encoder_vel) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py\n'}
+[11.970857] (encoder_vel) StderrLine: {'line': b'  /home/y/GZ_DiNiu/src/encoder_vel/package.xml\n'}
+[11.971327] (encoder_vel) StderrLine: {'line': b'  /home/y/GZ_DiNiu/build/encoder_vel/ament_cmake_core/package.cmake) returned\n'}
+[11.971736] (encoder_vel) StderrLine: {'line': b'  error code 1\n'}
+[11.972131] (encoder_vel) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[11.972482] (encoder_vel) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:49 (_ament_package_xml)\n'}
+[11.972844] (encoder_vel) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_package.cmake:63 (ament_package_xml)\n'}
+[11.973302] (encoder_vel) StderrLine: {'line': b'  CMakeLists.txt:38 (ament_package)\n'}
+[11.974069] (encoder_vel) StderrLine: {'line': b'\n'}
+[11.974597] (encoder_vel) StderrLine: {'line': b'\x1b[0m\n'}
+[11.975031] (encoder_vel) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[11.975554] (encoder_vel) StdoutLine: {'line': b'See also "/home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles/CMakeOutput.log".\n'}
+[12.003928] (-) TimerEvent: {}
+[12.015538] (encoder_vel) CommandEnded: {'returncode': 1}
+[12.018582] (encoder_vel) JobEnded: {'identifier': 'encoder_vel', 'rc': 1}
+[12.031491] (-) EventReactorShutdown: {}

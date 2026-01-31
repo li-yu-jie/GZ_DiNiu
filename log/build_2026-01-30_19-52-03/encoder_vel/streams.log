@@ -1,0 +1,10 @@
+[0.074s] Invoking command in '/home/y/GZ_DiNiu/build/encoder_vel': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/y/GZ_DiNiu/build/encoder_vel -- -j4 -l4
+[0.263s] [35m[1mConsolidate compiler generated dependencies of target motor_control_node[0m
+[0.354s] [ 50%] Built target encoder_vel_node
+[0.380s] [ 75%] [32mBuilding CXX object CMakeFiles/motor_control_node.dir/src/motor_control_node.cpp.o[0m
+[0.405s] [01m[Kcc1plus:[m[K [01;31m[Kfatal error: [m[K/home/y/GZ_DiNiu/src/encoder_vel/src/motor_control_node.cpp: No such file or directory
+[0.406s] compilation terminated.
+[0.409s] gmake[2]: *** [CMakeFiles/motor_control_node.dir/build.make:76: CMakeFiles/motor_control_node.dir/src/motor_control_node.cpp.o] Error 1
+[0.410s] gmake[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/motor_control_node.dir/all] Error 2
+[0.410s] gmake: *** [Makefile:146: all] Error 2
+[1.355s] Invoked command in '/home/y/GZ_DiNiu/build/encoder_vel' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/y/GZ_DiNiu/build/encoder_vel -- -j4 -l4

@@ -1,0 +1,280 @@
+[0.000000] (-) TimerEvent: {}
+[0.001720] (encoder_vel) JobQueued: {'identifier': 'encoder_vel', 'dependencies': OrderedDict()}
+[0.002310] (encoder_vel) JobStarted: {'identifier': 'encoder_vel'}
+[0.039087] (encoder_vel) JobProgress: {'identifier': 'encoder_vel', 'progress': 'cmake'}
+[0.042867] (encoder_vel) Command: {'cmd': ['/usr/bin/cmake', '/home/y/GZ_DiNiu/src/encoder_vel', '-DCMAKE_INSTALL_PREFIX=/home/y/GZ_DiNiu/install/encoder_vel'], 'cwd': '/home/y/GZ_DiNiu/build/encoder_vel', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'zh_CN:zh'), ('USER', 'y'), ('SSH_CLIENT', '172.21.21.8 36090 22'), ('XDG_SESSION_TYPE', 'tty'), ('GIT_ASKPASS', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('BROWSER', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/bin/helpers/browser.sh'), ('MOTD_SHOWN', 'pam'), ('HOME', '/home/y'), ('OLDPWD', '/home/y/GZ_DiNiu'), ('TERM_PROGRAM_VERSION', '1.108.2'), ('VSCODE_IPC_HOOK_CLI', '/run/user/1000/vscode-ipc-9a1660e5-57e4-45d0-9e54-d8e750a4db66.sock'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/node'), ('SSL_CERT_FILE', '/usr/lib/ssl/certs/ca-certificates.crt'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('COLCON_PREFIX_PATH', '/home/y/GZ_DiNiu/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'y'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm-256color'), ('XDG_SESSION_ID', '7'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/home/y/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/y/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('SSL_CERT_DIR', '/usr/lib/ssl/certs'), ('LANG', 'zh_CN.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-b7729cf214.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/home/y/GZ_DiNiu/build/encoder_vel'), ('SSH_CONNECTION', '172.21.21.8 36090 172.21.21.16 22'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.099028] (-) TimerEvent: {}
+[0.100539] (encoder_vel) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[0.199178] (-) TimerEvent: {}
+[0.299831] (-) TimerEvent: {}
+[0.400513] (-) TimerEvent: {}
+[0.501200] (-) TimerEvent: {}
+[0.601924] (-) TimerEvent: {}
+[0.679614] (encoder_vel) StdoutLine: {'line': b'-- Found rclcpp: 16.0.17 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[0.702108] (-) TimerEvent: {}
+[0.802790] (-) TimerEvent: {}
+[0.854522] (encoder_vel) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[0.865075] (encoder_vel) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[0.890620] (encoder_vel) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[0.902939] (-) TimerEvent: {}
+[0.929659] (encoder_vel) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.980744] (encoder_vel) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[1.003115] (-) TimerEvent: {}
+[1.103804] (-) TimerEvent: {}
+[1.109939] (encoder_vel) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[1.116738] (encoder_vel) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.9 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[1.204004] (-) TimerEvent: {}
+[1.304677] (-) TimerEvent: {}
+[1.405407] (-) TimerEvent: {}
+[1.506076] (-) TimerEvent: {}
+[1.606789] (-) TimerEvent: {}
+[1.707542] (-) TimerEvent: {}
+[1.808246] (-) TimerEvent: {}
+[1.908925] (-) TimerEvent: {}
+[2.009649] (-) TimerEvent: {}
+[2.069130] (encoder_vel) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[2.109832] (-) TimerEvent: {}
+[2.210559] (-) TimerEvent: {}
+[2.311247] (-) TimerEvent: {}
+[2.411912] (-) TimerEvent: {}
+[2.512786] (-) TimerEvent: {}
+[2.575939] (encoder_vel) StdoutLine: {'line': b'-- Configuring done\n'}
+[2.612977] (-) TimerEvent: {}
+[2.632694] (encoder_vel) StdoutLine: {'line': b'-- Generating done\n'}
+[2.647512] (encoder_vel) StdoutLine: {'line': b'-- Build files have been written to: /home/y/GZ_DiNiu/build/encoder_vel\n'}
+[2.673816] (encoder_vel) CommandEnded: {'returncode': 0}
+[2.675876] (encoder_vel) JobProgress: {'identifier': 'encoder_vel', 'progress': 'build'}
+[2.678594] (encoder_vel) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/y/GZ_DiNiu/build/encoder_vel', '--', '-j4', '-l4'], 'cwd': '/home/y/GZ_DiNiu/build/encoder_vel', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'zh_CN:zh'), ('USER', 'y'), ('SSH_CLIENT', '172.21.21.8 36090 22'), ('XDG_SESSION_TYPE', 'tty'), ('GIT_ASKPASS', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('BROWSER', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/bin/helpers/browser.sh'), ('MOTD_SHOWN', 'pam'), ('HOME', '/home/y'), ('OLDPWD', '/home/y/GZ_DiNiu'), ('TERM_PROGRAM_VERSION', '1.108.2'), ('VSCODE_IPC_HOOK_CLI', '/run/user/1000/vscode-ipc-9a1660e5-57e4-45d0-9e54-d8e750a4db66.sock'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/node'), ('SSL_CERT_FILE', '/usr/lib/ssl/certs/ca-certificates.crt'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('COLCON_PREFIX_PATH', '/home/y/GZ_DiNiu/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'y'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm-256color'), ('XDG_SESSION_ID', '7'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/home/y/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/y/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('SSL_CERT_DIR', '/usr/lib/ssl/certs'), ('LANG', 'zh_CN.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-b7729cf214.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/home/y/GZ_DiNiu/build/encoder_vel'), ('SSH_CONNECTION', '172.21.21.8 36090 172.21.21.16 22'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[2.713226] (-) TimerEvent: {}
+[2.814089] (-) TimerEvent: {}
+[2.892098] (encoder_vel) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding CXX object CMakeFiles/encoder_vel_node.dir/src/encoder_vel_node.cpp.o\x1b[0m\n'}
+[2.914270] (-) TimerEvent: {}
+[3.014992] (-) TimerEvent: {}
+[3.115780] (-) TimerEvent: {}
+[3.216566] (-) TimerEvent: {}
+[3.317259] (-) TimerEvent: {}
+[3.417987] (-) TimerEvent: {}
+[3.518682] (-) TimerEvent: {}
+[3.619382] (-) TimerEvent: {}
+[3.720097] (-) TimerEvent: {}
+[3.820847] (-) TimerEvent: {}
+[3.921784] (-) TimerEvent: {}
+[4.022553] (-) TimerEvent: {}
+[4.123391] (-) TimerEvent: {}
+[4.224119] (-) TimerEvent: {}
+[4.324865] (-) TimerEvent: {}
+[4.425640] (-) TimerEvent: {}
+[4.526450] (-) TimerEvent: {}
+[4.627195] (-) TimerEvent: {}
+[4.728135] (-) TimerEvent: {}
+[4.829550] (-) TimerEvent: {}
+[4.930614] (-) TimerEvent: {}
+[5.031850] (-) TimerEvent: {}
+[5.132947] (-) TimerEvent: {}
+[5.233924] (-) TimerEvent: {}
+[5.335025] (-) TimerEvent: {}
+[5.435784] (-) TimerEvent: {}
+[5.536575] (-) TimerEvent: {}
+[5.637297] (-) TimerEvent: {}
+[5.738034] (-) TimerEvent: {}
+[5.838792] (-) TimerEvent: {}
+[5.939496] (-) TimerEvent: {}
+[6.040275] (-) TimerEvent: {}
+[6.141122] (-) TimerEvent: {}
+[6.241891] (-) TimerEvent: {}
+[6.342712] (-) TimerEvent: {}
+[6.443598] (-) TimerEvent: {}
+[6.544399] (-) TimerEvent: {}
+[6.645170] (-) TimerEvent: {}
+[6.745987] (-) TimerEvent: {}
+[6.846765] (-) TimerEvent: {}
+[6.947558] (-) TimerEvent: {}
+[7.048324] (-) TimerEvent: {}
+[7.149138] (-) TimerEvent: {}
+[7.249936] (-) TimerEvent: {}
+[7.350833] (-) TimerEvent: {}
+[7.451619] (-) TimerEvent: {}
+[7.552506] (-) TimerEvent: {}
+[7.653583] (-) TimerEvent: {}
+[7.754490] (-) TimerEvent: {}
+[7.855497] (-) TimerEvent: {}
+[7.956334] (-) TimerEvent: {}
+[8.057160] (-) TimerEvent: {}
+[8.158006] (-) TimerEvent: {}
+[8.258801] (-) TimerEvent: {}
+[8.359646] (-) TimerEvent: {}
+[8.460505] (-) TimerEvent: {}
+[8.561412] (-) TimerEvent: {}
+[8.662183] (-) TimerEvent: {}
+[8.762988] (-) TimerEvent: {}
+[8.863888] (-) TimerEvent: {}
+[8.964693] (-) TimerEvent: {}
+[9.065626] (-) TimerEvent: {}
+[9.166399] (-) TimerEvent: {}
+[9.267202] (-) TimerEvent: {}
+[9.368138] (-) TimerEvent: {}
+[9.468972] (-) TimerEvent: {}
+[9.569816] (-) TimerEvent: {}
+[9.670602] (-) TimerEvent: {}
+[9.771373] (-) TimerEvent: {}
+[9.872167] (-) TimerEvent: {}
+[9.972999] (-) TimerEvent: {}
+[10.073938] (-) TimerEvent: {}
+[10.175283] (-) TimerEvent: {}
+[10.276070] (-) TimerEvent: {}
+[10.376911] (-) TimerEvent: {}
+[10.477790] (-) TimerEvent: {}
+[10.578588] (-) TimerEvent: {}
+[10.679347] (-) TimerEvent: {}
+[10.780177] (-) TimerEvent: {}
+[10.880965] (-) TimerEvent: {}
+[10.981907] (-) TimerEvent: {}
+[11.082701] (-) TimerEvent: {}
+[11.183471] (-) TimerEvent: {}
+[11.284310] (-) TimerEvent: {}
+[11.385093] (-) TimerEvent: {}
+[11.485910] (-) TimerEvent: {}
+[11.586697] (-) TimerEvent: {}
+[11.687492] (-) TimerEvent: {}
+[11.788311] (-) TimerEvent: {}
+[11.889107] (-) TimerEvent: {}
+[11.989986] (-) TimerEvent: {}
+[12.090767] (-) TimerEvent: {}
+[12.191588] (-) TimerEvent: {}
+[12.292396] (-) TimerEvent: {}
+[12.393202] (-) TimerEvent: {}
+[12.494047] (-) TimerEvent: {}
+[12.594865] (-) TimerEvent: {}
+[12.695652] (-) TimerEvent: {}
+[12.796470] (-) TimerEvent: {}
+[12.897304] (-) TimerEvent: {}
+[12.998267] (-) TimerEvent: {}
+[13.099053] (-) TimerEvent: {}
+[13.199881] (-) TimerEvent: {}
+[13.300678] (-) TimerEvent: {}
+[13.401532] (-) TimerEvent: {}
+[13.502366] (-) TimerEvent: {}
+[13.603187] (-) TimerEvent: {}
+[13.704009] (-) TimerEvent: {}
+[13.804799] (-) TimerEvent: {}
+[13.905610] (-) TimerEvent: {}
+[14.006466] (-) TimerEvent: {}
+[14.107366] (-) TimerEvent: {}
+[14.208188] (-) TimerEvent: {}
+[14.309009] (-) TimerEvent: {}
+[14.409912] (-) TimerEvent: {}
+[14.510682] (-) TimerEvent: {}
+[14.611480] (-) TimerEvent: {}
+[14.712278] (-) TimerEvent: {}
+[14.813076] (-) TimerEvent: {}
+[14.913995] (-) TimerEvent: {}
+[15.014798] (-) TimerEvent: {}
+[15.115596] (-) TimerEvent: {}
+[15.216459] (-) TimerEvent: {}
+[15.317273] (-) TimerEvent: {}
+[15.418092] (-) TimerEvent: {}
+[15.518944] (-) TimerEvent: {}
+[15.619746] (-) TimerEvent: {}
+[15.720555] (-) TimerEvent: {}
+[15.821415] (-) TimerEvent: {}
+[15.922170] (-) TimerEvent: {}
+[16.022959] (-) TimerEvent: {}
+[16.123890] (-) TimerEvent: {}
+[16.224704] (-) TimerEvent: {}
+[16.325495] (-) TimerEvent: {}
+[16.426325] (-) TimerEvent: {}
+[16.527105] (-) TimerEvent: {}
+[16.627905] (-) TimerEvent: {}
+[16.728793] (-) TimerEvent: {}
+[16.829593] (-) TimerEvent: {}
+[16.930489] (-) TimerEvent: {}
+[17.031576] (-) TimerEvent: {}
+[17.132322] (-) TimerEvent: {}
+[17.233221] (-) TimerEvent: {}
+[17.334097] (-) TimerEvent: {}
+[17.434890] (-) TimerEvent: {}
+[17.535709] (-) TimerEvent: {}
+[17.636567] (-) TimerEvent: {}
+[17.737551] (-) TimerEvent: {}
+[17.838496] (-) TimerEvent: {}
+[17.939293] (-) TimerEvent: {}
+[18.040149] (-) TimerEvent: {}
+[18.140879] (-) TimerEvent: {}
+[18.241698] (-) TimerEvent: {}
+[18.342479] (-) TimerEvent: {}
+[18.443273] (-) TimerEvent: {}
+[18.544137] (-) TimerEvent: {}
+[18.645028] (-) TimerEvent: {}
+[18.745808] (-) TimerEvent: {}
+[18.846674] (-) TimerEvent: {}
+[18.947855] (-) TimerEvent: {}
+[19.049159] (-) TimerEvent: {}
+[19.150122] (-) TimerEvent: {}
+[19.250900] (-) TimerEvent: {}
+[19.351697] (-) TimerEvent: {}
+[19.452496] (-) TimerEvent: {}
+[19.553274] (-) TimerEvent: {}
+[19.654087] (-) TimerEvent: {}
+[19.754859] (-) TimerEvent: {}
+[19.855654] (-) TimerEvent: {}
+[19.956438] (-) TimerEvent: {}
+[20.057282] (-) TimerEvent: {}
+[20.158219] (-) TimerEvent: {}
+[20.259006] (-) TimerEvent: {}
+[20.359802] (-) TimerEvent: {}
+[20.460622] (-) TimerEvent: {}
+[20.561480] (-) TimerEvent: {}
+[20.662286] (-) TimerEvent: {}
+[20.763040] (-) TimerEvent: {}
+[20.863850] (-) TimerEvent: {}
+[20.964632] (-) TimerEvent: {}
+[21.065476] (-) TimerEvent: {}
+[21.340612] (-) TimerEvent: {}
+[21.441388] (-) TimerEvent: {}
+[21.542171] (-) TimerEvent: {}
+[21.642994] (-) TimerEvent: {}
+[21.743739] (-) TimerEvent: {}
+[21.844483] (-) TimerEvent: {}
+[21.945249] (-) TimerEvent: {}
+[22.046316] (-) TimerEvent: {}
+[22.147799] (-) TimerEvent: {}
+[22.248755] (-) TimerEvent: {}
+[22.277238] (encoder_vel) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable encoder_vel_node\x1b[0m\n'}
+[22.348968] (-) TimerEvent: {}
+[22.449860] (-) TimerEvent: {}
+[22.550773] (-) TimerEvent: {}
+[22.651625] (-) TimerEvent: {}
+[22.752656] (-) TimerEvent: {}
+[22.853783] (-) TimerEvent: {}
+[22.954670] (-) TimerEvent: {}
+[23.055482] (-) TimerEvent: {}
+[23.156660] (-) TimerEvent: {}
+[23.257509] (-) TimerEvent: {}
+[23.307505] (encoder_vel) StdoutLine: {'line': b'[100%] Built target encoder_vel_node\n'}
+[23.351661] (encoder_vel) CommandEnded: {'returncode': 0}
+[23.353978] (encoder_vel) JobProgress: {'identifier': 'encoder_vel', 'progress': 'install'}
+[23.357626] (-) TimerEvent: {}
+[23.390140] (encoder_vel) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/y/GZ_DiNiu/build/encoder_vel'], 'cwd': '/home/y/GZ_DiNiu/build/encoder_vel', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'zh_CN:zh'), ('USER', 'y'), ('SSH_CLIENT', '172.21.21.8 36090 22'), ('XDG_SESSION_TYPE', 'tty'), ('GIT_ASKPASS', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('BROWSER', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/bin/helpers/browser.sh'), ('MOTD_SHOWN', 'pam'), ('HOME', '/home/y'), ('OLDPWD', '/home/y/GZ_DiNiu'), ('TERM_PROGRAM_VERSION', '1.108.2'), ('VSCODE_IPC_HOOK_CLI', '/run/user/1000/vscode-ipc-9a1660e5-57e4-45d0-9e54-d8e750a4db66.sock'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/node'), ('SSL_CERT_FILE', '/usr/lib/ssl/certs/ca-certificates.crt'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('COLCON_PREFIX_PATH', '/home/y/GZ_DiNiu/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'y'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm-256color'), ('XDG_SESSION_ID', '7'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/home/y/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/y/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/y/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('SSL_CERT_DIR', '/usr/lib/ssl/certs'), ('LANG', 'zh_CN.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-b7729cf214.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/home/y/GZ_DiNiu/build/encoder_vel'), ('SSH_CONNECTION', '172.21.21.8 36090 172.21.21.16 22'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[23.421626] (encoder_vel) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[23.422711] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/lib/encoder_vel/encoder_vel_node\n'}
+[23.432912] (encoder_vel) StdoutLine: {'line': b'-- Set runtime path of "/home/y/GZ_DiNiu/install/encoder_vel/lib/encoder_vel/encoder_vel_node" to ""\n'}
+[23.433913] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/ament_index/resource_index/package_run_dependencies/encoder_vel\n'}
+[23.435545] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/ament_index/resource_index/parent_prefix_path/encoder_vel\n'}
+[23.437173] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/ament_prefix_path.sh\n'}
+[23.438553] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/ament_prefix_path.dsv\n'}
+[23.439730] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/path.sh\n'}
+[23.440815] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/path.dsv\n'}
+[23.441957] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.bash\n'}
+[23.443150] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.sh\n'}
+[23.444336] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.zsh\n'}
+[23.445456] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.dsv\n'}
+[23.446578] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.dsv\n'}
+[23.447971] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/ament_index/resource_index/packages/encoder_vel\n'}
+[23.449405] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/cmake/encoder_velConfig.cmake\n'}
+[23.450394] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/cmake/encoder_velConfig-version.cmake\n'}
+[23.451497] (encoder_vel) StdoutLine: {'line': b'-- Installing: /home/y/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.xml\n'}
+[23.456984] (encoder_vel) CommandEnded: {'returncode': 0}
+[23.458601] (-) TimerEvent: {}
+[23.561422] (-) TimerEvent: {}
+[23.600487] (encoder_vel) JobEnded: {'identifier': 'encoder_vel', 'rc': 0}
+[23.603488] (-) EventReactorShutdown: {}
