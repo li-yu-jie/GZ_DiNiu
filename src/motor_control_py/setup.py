@@ -19,6 +19,7 @@ setup(
     entry_points={
         'console_scripts': [
             'motor_control_node = motor_control_py.motor_control_node:main',
+            'steer_control_node = motor_control_py.steer_control_node:main',
         ],
     },
 )

@@ -10,4 +10,5 @@ setup.py
 ../../build/motor_control_py/motor_control_py.egg-info/zip-safe
 motor_control_py/__init__.py
 motor_control_py/motor_control_node.py
+motor_control_py/steer_control_node.py
 resource/motor_control_py

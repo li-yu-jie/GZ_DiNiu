@@ -92,26 +92,26 @@ class PidController:
         return output, error, self.filtered
 
 
-class MotorControlNode(Node):
+class SteerControlNode(Node):
     def __init__(self):
-        super().__init__('motor_control_node')
+        super().__init__('steer_control_node')
 
-        self.pwm_gpio = self.declare_parameter('pwm_gpio', 18).value
-        self.dir_gpio = self.declare_parameter('dir_gpio', 26).value
+        self.pwm_gpio = self.declare_parameter('pwm_gpio', 19).value
+        self.dir_gpio = self.declare_parameter('dir_gpio', 13).value
         self.pwm_freq = self.declare_parameter('pwm_freq_hz', 100000).value
         self.invert_dir = self.declare_parameter('invert_dir', True).value
-        self.cmd_topic = self.declare_parameter('cmd_topic', 'target_speed').value
-        self.feedback_topic = self.declare_parameter('feedback_topic', 'linear_velocity').value
+        self.cmd_topic = self.declare_parameter('cmd_topic', 'target_steer').value
+        self.feedback_topic = self.declare_parameter('feedback_topic', 'steer_position').value
 
-        self.kp = self.declare_parameter('kp', 85.0).value
-        self.ki = self.declare_parameter('ki', 20.0).value
-        self.kd = self.declare_parameter('kd', 2.0).value
-        self.i_max = self.declare_parameter('i_max', 50.0).value
+        self.kp = self.declare_parameter('kp', 60.0).value
+        self.ki = self.declare_parameter('ki', 10.0).value
+        self.kd = self.declare_parameter('kd', 1.0).value
+        self.i_max = self.declare_parameter('i_max', 30.0).value
         self.control_hz = self.declare_parameter('control_hz', 50.0).value
-        self.max_pwm_percent = self.declare_parameter('max_pwm_percent', 100.0).value
-        self.filter_alpha = self.declare_parameter('filter_alpha', 0.05).value
-        self.deadband = self.declare_parameter('deadband', 0.03).value
-        self.max_pwm_step = self.declare_parameter('max_pwm_step', 1.5).value
+        self.max_pwm_percent = self.declare_parameter('max_pwm_percent', 70.0).value
+        self.filter_alpha = self.declare_parameter('filter_alpha', 0.1).value
+        self.deadband = self.declare_parameter('deadband', 0.01).value
+        self.max_pwm_step = self.declare_parameter('max_pwm_step', 2.0).value
 
         if self.control_hz <= 0.0:
             raise RuntimeError('control_hz must be > 0')
@@ -131,8 +131,8 @@ class MotorControlNode(Node):
         self.pi.set_mode(self.dir_gpio, pigpio.OUTPUT)
         self.pi.write(self.dir_gpio, 0)
 
-        self.drive_pid = PidController(
-            name='drive',
+        self.pid = PidController(
+            name='steer',
             kp=self.kp,
             ki=self.ki,
             kd=self.kd,
@@ -155,34 +155,36 @@ class MotorControlNode(Node):
         return int(percent * 10000)
 
     def on_cmd(self, msg: Float64):
-        self.drive_pid.update_target(msg.data)
-        self.get_logger().info(f'target_speed={msg.data:.3f} m/s')
+        self.pid.update_target(msg.data)
+        self.get_logger().info(f'target_steer={msg.data:.3f}')
 
     def on_feedback(self, msg: Float64):
-        self.drive_pid.update_feedback(msg.data)
+        self.pid.update_feedback(msg.data)
 
     def control_step(self):
         now = self.get_clock().now()
-        drive_result = self.drive_pid.step(now)
-        if drive_result is not None:
-            output, error, filtered = drive_result
-            dir_level = 0 if output >= 0.0 else 1
-            if self.invert_dir:
-                dir_level = 1 - dir_level
-            self.pi.write(self.dir_gpio, dir_level)
+        result = self.pid.step(now)
+        if result is None:
+            return
 
-            percent = int(round(abs(output)))
-            duty = self.percent_to_duty(percent)
-            self.pi.hardware_PWM(self.pwm_gpio, int(self.pwm_freq), duty)
+        output, error, filtered = result
+        dir_level = 0 if output >= 0.0 else 1
+        if self.invert_dir:
+            dir_level = 1 - dir_level
+        self.pi.write(self.dir_gpio, dir_level)
 
-            self.get_logger().info(
-                f'drive fb={filtered:.3f} err={error:.3f} out%={output:.1f} duty={duty}'
-            )
+        percent = int(round(abs(output)))
+        duty = self.percent_to_duty(percent)
+        self.pi.hardware_PWM(self.pwm_gpio, int(self.pwm_freq), duty)
+
+        self.get_logger().info(
+            f'steer fb={filtered:.3f} err={error:.3f} out%={output:.1f} duty={duty}'
+        )
 
 
 def main():
     rclpy.init()
-    node = MotorControlNode()
+    node = SteerControlNode()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
