@@ -1,0 +1,16 @@
+/root/GZ_DiNiu/install/steer_closed_loop/lib/steer_closed_loop/steer_closed_loop_node
+/root/GZ_DiNiu/install/steer_closed_loop/share/ament_index/resource_index/package_run_dependencies/steer_closed_loop
+/root/GZ_DiNiu/install/steer_closed_loop/share/ament_index/resource_index/parent_prefix_path/steer_closed_loop
+/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/ament_prefix_path.sh
+/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/ament_prefix_path.dsv
+/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/path.sh
+/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/path.dsv
+/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.bash
+/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.sh
+/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.zsh
+/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.dsv
+/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.dsv
+/root/GZ_DiNiu/install/steer_closed_loop/share/ament_index/resource_index/packages/steer_closed_loop
+/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/cmake/steer_closed_loopConfig.cmake
+/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/cmake/steer_closed_loopConfig-version.cmake
+/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.xml

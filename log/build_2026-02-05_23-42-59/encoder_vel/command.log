@@ -1,0 +1,6 @@
+Invoking command in '/root/GZ_DiNiu/build/encoder_vel': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /root/GZ_DiNiu/src/encoder_vel -DCMAKE_INSTALL_PREFIX=/root/GZ_DiNiu/install/encoder_vel
+Invoked command in '/root/GZ_DiNiu/build/encoder_vel' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /root/GZ_DiNiu/src/encoder_vel -DCMAKE_INSTALL_PREFIX=/root/GZ_DiNiu/install/encoder_vel
+Invoking command in '/root/GZ_DiNiu/build/encoder_vel': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /root/GZ_DiNiu/build/encoder_vel -- -j4 -l4
+Invoked command in '/root/GZ_DiNiu/build/encoder_vel' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /root/GZ_DiNiu/build/encoder_vel -- -j4 -l4
+Invoking command in '/root/GZ_DiNiu/build/encoder_vel': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /root/GZ_DiNiu/build/encoder_vel
+Invoked command in '/root/GZ_DiNiu/build/encoder_vel' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /root/GZ_DiNiu/build/encoder_vel

@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/y/GZ_DiNiu/src/encoder_vel
+CMAKE_SOURCE_DIR = /root/GZ_DiNiu/src/encoder_vel
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/y/GZ_DiNiu/build/encoder_vel
+CMAKE_BINARY_DIR = /root/GZ_DiNiu/build/encoder_vel
 
 # Utility rule file for uninstall.
 
@@ -78,6 +78,6 @@ CMakeFiles/uninstall.dir/clean:
 .PHONY : CMakeFiles/uninstall.dir/clean
 
 CMakeFiles/uninstall.dir/depend:
-	cd /home/y/GZ_DiNiu/build/encoder_vel && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/y/GZ_DiNiu/src/encoder_vel /home/y/GZ_DiNiu/src/encoder_vel /home/y/GZ_DiNiu/build/encoder_vel /home/y/GZ_DiNiu/build/encoder_vel /home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles/uninstall.dir/DependInfo.cmake --color=$(COLOR)
+	cd /root/GZ_DiNiu/build/encoder_vel && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /root/GZ_DiNiu/src/encoder_vel /root/GZ_DiNiu/src/encoder_vel /root/GZ_DiNiu/build/encoder_vel /root/GZ_DiNiu/build/encoder_vel /root/GZ_DiNiu/build/encoder_vel/CMakeFiles/uninstall.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/uninstall.dir/depend
 

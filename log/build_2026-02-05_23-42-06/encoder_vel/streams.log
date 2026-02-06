@@ -1,0 +1,33 @@
+[0.155s] Invoking command in '/root/GZ_DiNiu/build/encoder_vel': /usr/bin/cmake /root/GZ_DiNiu/src/encoder_vel -DCMAKE_INSTALL_PREFIX=/root/GZ_DiNiu/install/encoder_vel
+[2.983s] -- The C compiler identification is GNU 11.4.0
+[2.984s] -- The CXX compiler identification is GNU 11.4.0
+[2.984s] -- Detecting C compiler ABI info
+[2.985s] -- Detecting C compiler ABI info - done
+[2.985s] -- Check for working C compiler: /usr/bin/cc - skipped
+[2.986s] -- Detecting C compile features
+[2.986s] -- Detecting C compile features - done
+[2.990s] -- Detecting CXX compiler ABI info
+[2.991s] -- Detecting CXX compiler ABI info - done
+[2.992s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[2.994s] -- Detecting CXX compile features
+[2.997s] -- Detecting CXX compile features - done
+[2.998s] -- Configuring incomplete, errors occurred!
+[2.998s] See also "/root/GZ_DiNiu/build/encoder_vel/CMakeFiles/CMakeOutput.log".
+[2.999s] [31mCMake Error at CMakeLists.txt:8 (find_package):
+[3.000s]   By not providing "Findament_cmake.cmake" in CMAKE_MODULE_PATH this project
+[3.001s]   has asked CMake to find a package configuration file provided by
+[3.001s]   "ament_cmake", but CMake did not find one.
+[3.013s] 
+[3.014s]   Could not find a package configuration file provided by "ament_cmake" with
+[3.014s]   any of the following names:
+[3.015s] 
+[3.016s]     ament_cmakeConfig.cmake
+[3.016s]     ament_cmake-config.cmake
+[3.016s] 
+[3.040s]   Add the installation prefix of "ament_cmake" to CMAKE_PREFIX_PATH or set
+[3.040s]   "ament_cmake_DIR" to a directory containing one of the above files.  If
+[3.042s]   "ament_cmake" provides a separate development package or SDK, be sure it
+[3.042s]   has been installed.
+[3.046s] 
+[3.047s] [0m
+[3.098s] Invoked command in '/root/GZ_DiNiu/build/encoder_vel' returned '1': /usr/bin/cmake /root/GZ_DiNiu/src/encoder_vel -DCMAKE_INSTALL_PREFIX=/root/GZ_DiNiu/install/encoder_vel

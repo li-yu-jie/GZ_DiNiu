@@ -1,0 +1,2 @@
+Invoking command in '/root/GZ_DiNiu/build/encoder_vel': /usr/bin/cmake /root/GZ_DiNiu/src/encoder_vel -DCMAKE_INSTALL_PREFIX=/root/GZ_DiNiu/install/encoder_vel
+Invoked command in '/root/GZ_DiNiu/build/encoder_vel' returned '1': /usr/bin/cmake /root/GZ_DiNiu/src/encoder_vel -DCMAKE_INSTALL_PREFIX=/root/GZ_DiNiu/install/encoder_vel

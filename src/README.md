@@ -1,14 +1,16 @@
 # GZ_DiNiu ROS2 Nodes
 
-本仓库包含两个 ROS2 功能包：
+本仓库包含多个 ROS2 功能包：
 - **encoder_vel**：使用 libgpiod 读取编码器并发布线速度（std_msgs/Float64）。
 - **motor_control_py**：使用 pigpio 守护进程输出硬件 PWM，订阅目标速度与反馈速度做 PID 闭环控制。
 - **imu_bno08x**：通过 I2C 读取 BNO08x IMU，发布 Imu 与 MagneticField。
+- **steer_closed_loop**：转向电机闭环控制（霍尔三相编码器计数），支持左右限位与回零。
 
 ## 依赖
 - ROS2 Humble
 - libgpiod (C++ 读取 GPIO)
 - pigpio / pigpiod (Python 输出硬件 PWM)
+- sysfs PWM（/sys/class/pwm/*）
 
 ## 构建
 ```bash
@@ -18,6 +20,26 @@ source install/setup.bash
 ```
 
 ## 运行电机控制（Python）
+## 一键启动（Launch）
+```bash
+ros2 launch motor_control_py bringup.launch.py
+```
+
+可选参数：
+```bash
+# 启动 pigpiod（默认 true）
+ros2 launch motor_control_py bringup.launch.py start_pigpiod:=true
+
+# 使用 sudo 启动 pigpiod（需要免密 sudo）
+ros2 launch motor_control_py bringup.launch.py pigpiod_use_sudo:=true
+
+# 不启动 IMU
+ros2 launch motor_control_py bringup.launch.py enable_imu:=false
+
+# 不启动转向闭环
+ros2 launch motor_control_py bringup.launch.py enable_steer:=false
+```
+
 1) 启动 pigpiod：
 ```bash
 sudo pigpiod
@@ -95,6 +117,24 @@ ros2 topic echo /imu/mag
 - `publish_hz`：发布频率（默认 50）
 - `topic`：发布话题名（默认 linear_velocity）
 
+## 运行转向闭环（C++）
+```bash
+ros2 run steer_closed_loop steer_closed_loop_node
+```
+
+### 发布目标角度（单位：度）
+```bash
+ros2 topic pub /steer_target_deg std_msgs/Float64 "{data: 10.0}"
+```
+
+### 回零（左/右限位）
+```bash
+ros2 topic pub /steer_target_deg std_msgs/Float64 "{data: 999}"
+ros2 topic pub /steer_target_deg std_msgs/Float64 "{data: -999}"
+```
+
+说明：`/steer_target_deg` 中 `>= 999` 触发左限位回零，`<= -999` 触发右限位回零。
+
 ## 常见问题
 - **PWM 没输出**：
   - 确认 `pigpiod` 已启动：`pgrep -a pigpiod`
@@ -105,3 +145,6 @@ ros2 topic echo /imu/mag
 - **编码器无计数**：
   - 检查 A/B 相 GPIO 号和接线
   - 确认 A 相有上升沿波形
+- **转向回零失败**：
+  - 检查左右限位 GPIO 引脚号与接线
+  - 确认限位触发电平与代码配置一致

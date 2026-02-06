@@ -1,0 +1,1 @@
+Invoking command in '/root/GZ_DiNiu/build/steer_closed_loop': /usr/bin/cmake /root/GZ_DiNiu/src/steer_closed_loop -DCMAKE_INSTALL_PREFIX=/root/GZ_DiNiu/install/steer_closed_loop

@@ -54,10 +54,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/y/GZ_DiNiu/src/encoder_vel
+CMAKE_SOURCE_DIR = /root/GZ_DiNiu/src/encoder_vel
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/y/GZ_DiNiu/build/encoder_vel
+CMAKE_BINARY_DIR = /root/GZ_DiNiu/build/encoder_vel
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -83,14 +83,14 @@ clean: CMakeFiles/encoder_vel_node.dir/clean
 CMakeFiles/uninstall.dir/all: CMakeFiles/encoder_vel_uninstall.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/uninstall.dir/build.make CMakeFiles/uninstall.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/uninstall.dir/build.make CMakeFiles/uninstall.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles --progress-num= "Built target uninstall"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/root/GZ_DiNiu/build/encoder_vel/CMakeFiles --progress-num= "Built target uninstall"
 .PHONY : CMakeFiles/uninstall.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/uninstall.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/GZ_DiNiu/build/encoder_vel/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/uninstall.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/GZ_DiNiu/build/encoder_vel/CMakeFiles 0
 .PHONY : CMakeFiles/uninstall.dir/rule
 
 # Convenience name for target.
@@ -109,14 +109,14 @@ CMakeFiles/uninstall.dir/clean:
 CMakeFiles/encoder_vel_uninstall.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/encoder_vel_uninstall.dir/build.make CMakeFiles/encoder_vel_uninstall.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/encoder_vel_uninstall.dir/build.make CMakeFiles/encoder_vel_uninstall.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles --progress-num= "Built target encoder_vel_uninstall"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/root/GZ_DiNiu/build/encoder_vel/CMakeFiles --progress-num= "Built target encoder_vel_uninstall"
 .PHONY : CMakeFiles/encoder_vel_uninstall.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/encoder_vel_uninstall.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/GZ_DiNiu/build/encoder_vel/CMakeFiles 0
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/encoder_vel_uninstall.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/GZ_DiNiu/build/encoder_vel/CMakeFiles 0
 .PHONY : CMakeFiles/encoder_vel_uninstall.dir/rule
 
 # Convenience name for target.
@@ -135,14 +135,14 @@ CMakeFiles/encoder_vel_uninstall.dir/clean:
 CMakeFiles/encoder_vel_node.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/encoder_vel_node.dir/build.make CMakeFiles/encoder_vel_node.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/encoder_vel_node.dir/build.make CMakeFiles/encoder_vel_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles --progress-num=1,2 "Built target encoder_vel_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/root/GZ_DiNiu/build/encoder_vel/CMakeFiles --progress-num=1,2 "Built target encoder_vel_node"
 .PHONY : CMakeFiles/encoder_vel_node.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/encoder_vel_node.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/GZ_DiNiu/build/encoder_vel/CMakeFiles 2
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/encoder_vel_node.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/y/GZ_DiNiu/build/encoder_vel/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /root/GZ_DiNiu/build/encoder_vel/CMakeFiles 0
 .PHONY : CMakeFiles/encoder_vel_node.dir/rule
 
 # Convenience name for target.

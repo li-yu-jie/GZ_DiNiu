@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/y/GZ_DiNiu/src/encoder_vel/src/encoder_vel_node.cpp" "CMakeFiles/encoder_vel_node.dir/src/encoder_vel_node.cpp.o" "gcc" "CMakeFiles/encoder_vel_node.dir/src/encoder_vel_node.cpp.o.d"
+  "/root/GZ_DiNiu/src/encoder_vel/src/encoder_vel_node.cpp" "CMakeFiles/encoder_vel_node.dir/src/encoder_vel_node.cpp.o" "gcc" "CMakeFiles/encoder_vel_node.dir/src/encoder_vel_node.cpp.o.d"
   )
 
 # Targets to which this target links.

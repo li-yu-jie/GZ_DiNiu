@@ -1,0 +1,137 @@
+[0.000000] (-) TimerEvent: {}
+[0.009383] (encoder_vel) JobQueued: {'identifier': 'encoder_vel', 'dependencies': OrderedDict()}
+[0.009803] (imu_bno08x) JobQueued: {'identifier': 'imu_bno08x', 'dependencies': OrderedDict()}
+[0.010362] (motor_control_py) JobQueued: {'identifier': 'motor_control_py', 'dependencies': OrderedDict()}
+[0.011338] (steer_closed_loop) JobQueued: {'identifier': 'steer_closed_loop', 'dependencies': OrderedDict()}
+[0.013167] (encoder_vel) JobStarted: {'identifier': 'encoder_vel'}
+[0.062894] (imu_bno08x) JobStarted: {'identifier': 'imu_bno08x'}
+[0.091751] (motor_control_py) JobStarted: {'identifier': 'motor_control_py'}
+[0.100856] (-) TimerEvent: {}
+[0.128534] (steer_closed_loop) JobStarted: {'identifier': 'steer_closed_loop'}
+[0.162152] (encoder_vel) JobProgress: {'identifier': 'encoder_vel', 'progress': 'cmake'}
+[0.165687] (encoder_vel) Command: {'cmd': ['/usr/bin/cmake', '/root/GZ_DiNiu/src/encoder_vel', '-DCMAKE_INSTALL_PREFIX=/root/GZ_DiNiu/install/encoder_vel'], 'cwd': '/root/GZ_DiNiu/build/encoder_vel', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'zh_CN:zh'), ('USER', 'root'), ('SSH_CLIENT', '172.21.21.8 59916 22'), ('XDG_SESSION_TYPE', 'tty'), ('SHLVL', '1'), ('BROWSER', '/root/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/bin/helpers/browser.sh'), ('MOTD_SHOWN', 'pam'), ('HOME', '/root'), ('OLDPWD', '/root/GZ_DiNiu'), ('TERM_PROGRAM_VERSION', '1.108.2'), ('VSCODE_IPC_HOOK_CLI', '/run/user/0/vscode-ipc-cb3b923c-347a-4b54-9d40-1f77b2410e7b.sock'), ('SSL_CERT_FILE', '/usr/lib/ssl/certs/ca-certificates.crt'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/0/bus'), ('COLORTERM', 'truecolor'), ('LOGNAME', 'root'), ('_', '/usr/bin/colcon'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm-256color'), ('XDG_SESSION_ID', '6'), ('PATH', '/root/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/0'), ('SSL_CERT_DIR', '/usr/lib/ssl/certs'), ('LANG', 'zh_CN.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('TERM_PROGRAM', 'vscode'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/root/GZ_DiNiu/build/encoder_vel'), ('SSH_CONNECTION', '172.21.21.8 59916 172.21.21.105 22'), ('COLCON', '1')]), 'shell': False}
+[0.201286] (-) TimerEvent: {}
+[0.308147] (-) TimerEvent: {}
+[0.409391] (-) TimerEvent: {}
+[0.512011] (-) TimerEvent: {}
+[0.613302] (-) TimerEvent: {}
+[0.714291] (-) TimerEvent: {}
+[0.815261] (-) TimerEvent: {}
+[0.923766] (-) TimerEvent: {}
+[1.025160] (-) TimerEvent: {}
+[1.125944] (-) TimerEvent: {}
+[1.228142] (-) TimerEvent: {}
+[1.329061] (-) TimerEvent: {}
+[1.431641] (-) TimerEvent: {}
+[1.533554] (-) TimerEvent: {}
+[1.634494] (-) TimerEvent: {}
+[1.738271] (-) TimerEvent: {}
+[1.841068] (-) TimerEvent: {}
+[1.943422] (-) TimerEvent: {}
+[2.044655] (-) TimerEvent: {}
+[2.147537] (-) TimerEvent: {}
+[2.249075] (-) TimerEvent: {}
+[2.349947] (-) TimerEvent: {}
+[2.450774] (-) TimerEvent: {}
+[2.551595] (-) TimerEvent: {}
+[2.652337] (-) TimerEvent: {}
+[2.753160] (-) TimerEvent: {}
+[2.854473] (-) TimerEvent: {}
+[2.956077] (-) TimerEvent: {}
+[2.984776] (steer_closed_loop) JobProgress: {'identifier': 'steer_closed_loop', 'progress': 'cmake'}
+[2.985023] (steer_closed_loop) Command: {'cmd': ['/usr/bin/cmake', '/root/GZ_DiNiu/src/steer_closed_loop', '-DCMAKE_INSTALL_PREFIX=/root/GZ_DiNiu/install/steer_closed_loop'], 'cwd': '/root/GZ_DiNiu/build/steer_closed_loop', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'zh_CN:zh'), ('USER', 'root'), ('SSH_CLIENT', '172.21.21.8 59916 22'), ('XDG_SESSION_TYPE', 'tty'), ('SHLVL', '1'), ('BROWSER', '/root/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/bin/helpers/browser.sh'), ('MOTD_SHOWN', 'pam'), ('HOME', '/root'), ('OLDPWD', '/root/GZ_DiNiu'), ('TERM_PROGRAM_VERSION', '1.108.2'), ('VSCODE_IPC_HOOK_CLI', '/run/user/0/vscode-ipc-cb3b923c-347a-4b54-9d40-1f77b2410e7b.sock'), ('SSL_CERT_FILE', '/usr/lib/ssl/certs/ca-certificates.crt'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/0/bus'), ('COLORTERM', 'truecolor'), ('LOGNAME', 'root'), ('_', '/usr/bin/colcon'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm-256color'), ('XDG_SESSION_ID', '6'), ('PATH', '/root/.vscode-server/cli/servers/Stable-c9d77990917f3102ada88be140d28b038d1dd7c7/server/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/0'), ('SSL_CERT_DIR', '/usr/lib/ssl/certs'), ('LANG', 'zh_CN.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('TERM_PROGRAM', 'vscode'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/root/GZ_DiNiu/build/steer_closed_loop'), ('SSH_CONNECTION', '172.21.21.8 59916 172.21.21.105 22'), ('COLCON', '1')]), 'shell': False}
+[2.996511] (encoder_vel) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[2.997396] (encoder_vel) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[2.997974] (encoder_vel) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[2.998365] (encoder_vel) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[2.998754] (encoder_vel) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[2.999281] (encoder_vel) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[2.999939] (encoder_vel) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[3.000431] (encoder_vel) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[3.004381] (encoder_vel) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[3.005571] (encoder_vel) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[3.006646] (encoder_vel) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[3.010644] (encoder_vel) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[3.011556] (encoder_vel) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[3.012110] (encoder_vel) StdoutLine: {'line': b'See also "/root/GZ_DiNiu/build/encoder_vel/CMakeFiles/CMakeOutput.log".\n'}
+[3.012695] (encoder_vel) StderrLine: {'line': b'\x1b[31mCMake Error at CMakeLists.txt:8 (find_package):\n'}
+[3.013580] (encoder_vel) StderrLine: {'line': b'  By not providing "Findament_cmake.cmake" in CMAKE_MODULE_PATH this project\n'}
+[3.014270] (encoder_vel) StderrLine: {'line': b'  has asked CMake to find a package configuration file provided by\n'}
+[3.014814] (encoder_vel) StderrLine: {'line': b'  "ament_cmake", but CMake did not find one.\n'}
+[3.015339] (encoder_vel) StderrLine: {'line': b'\n'}
+[3.027263] (encoder_vel) StderrLine: {'line': b'  Could not find a package configuration file provided by "ament_cmake" with\n'}
+[3.028043] (encoder_vel) StderrLine: {'line': b'  any of the following names:\n'}
+[3.028538] (encoder_vel) StderrLine: {'line': b'\n'}
+[3.029123] (encoder_vel) StderrLine: {'line': b'    ament_cmakeConfig.cmake\n'}
+[3.029720] (encoder_vel) StderrLine: {'line': b'    ament_cmake-config.cmake\n'}
+[3.030201] (encoder_vel) StderrLine: {'line': b'\n'}
+[3.030610] (encoder_vel) StderrLine: {'line': b'  Add the installation prefix of "ament_cmake" to CMAKE_PREFIX_PATH or set\n'}
+[3.053755] (encoder_vel) StderrLine: {'line': b'  "ament_cmake_DIR" to a directory containing one of the above files.  If\n'}
+[3.055088] (encoder_vel) StderrLine: {'line': b'  "ament_cmake" provides a separate development package or SDK, be sure it\n'}
+[3.055992] (encoder_vel) StderrLine: {'line': b'  has been installed.\n'}
+[3.056563] (-) TimerEvent: {}
+[3.059664] (encoder_vel) StderrLine: {'line': b'\n'}
+[3.060437] (encoder_vel) StderrLine: {'line': b'\x1b[0m\n'}
+[3.111711] (encoder_vel) CommandEnded: {'returncode': 1}
+[3.156831] (-) TimerEvent: {}
+[3.271828] (-) TimerEvent: {}
+[3.361239] (encoder_vel) JobEnded: {'identifier': 'encoder_vel', 'rc': 1}
+[3.372193] (-) TimerEvent: {}
+[3.449279] (steer_closed_loop) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[3.475643] (-) TimerEvent: {}
+[3.579673] (-) TimerEvent: {}
+[3.683650] (-) TimerEvent: {}
+[3.787648] (-) TimerEvent: {}
+[3.891708] (-) TimerEvent: {}
+[3.983837] (steer_closed_loop) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[3.995692] (-) TimerEvent: {}
+[4.027591] (steer_closed_loop) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[4.099698] (-) TimerEvent: {}
+[4.200870] (-) TimerEvent: {}
+[4.304329] (-) TimerEvent: {}
+[4.411666] (-) TimerEvent: {}
+[4.503198] (steer_closed_loop) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[4.514318] (-) TimerEvent: {}
+[4.547938] (steer_closed_loop) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[4.549183] (steer_closed_loop) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[4.550822] (steer_closed_loop) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[4.577606] (steer_closed_loop) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[4.614509] (-) TimerEvent: {}
+[4.716755] (-) TimerEvent: {}
+[4.818999] (-) TimerEvent: {}
+[4.921217] (-) TimerEvent: {}
+[5.023349] (-) TimerEvent: {}
+[5.115454] (steer_closed_loop) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[5.126829] (-) TimerEvent: {}
+[5.161823] (steer_closed_loop) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[5.164660] (steer_closed_loop) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[5.167936] (steer_closed_loop) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[5.227054] (-) TimerEvent: {}
+[5.329544] (-) TimerEvent: {}
+[5.380272] (steer_closed_loop) StderrLine: {'line': b'\x1b[31mCMake Error at CMakeLists.txt:8 (find_package):\n'}
+[5.383303] (steer_closed_loop) StderrLine: {'line': b'  By not providing "Findament_cmake.cmake" in CMAKE_MODULE_PATH this project\n'}
+[5.385878] (steer_closed_loop) StderrLine: {'line': b'  has asked CMake to find a package configuration file provided by\n'}
+[5.388156] (steer_closed_loop) StderrLine: {'line': b'  "ament_cmake", but CMake did not find one.\n'}
+[5.389925] (steer_closed_loop) StderrLine: {'line': b'\n'}
+[5.391863] (steer_closed_loop) StderrLine: {'line': b'  Could not find a package configuration file provided by "ament_cmake" with\n'}
+[5.396492] (steer_closed_loop) StderrLine: {'line': b'  any of the following names:\n'}
+[5.398005] (steer_closed_loop) StderrLine: {'line': b'\n'}
+[5.399185] (steer_closed_loop) StderrLine: {'line': b'    ament_cmakeConfig.cmake\n'}
+[5.400438] (steer_closed_loop) StderrLine: {'line': b'    ament_cmake-config.cmake\n'}
+[5.401783] (steer_closed_loop) StderrLine: {'line': b'\n'}
+[5.402771] (steer_closed_loop) StderrLine: {'line': b'  Add the installation prefix of "ament_cmake" to CMAKE_PREFIX_PATH or set\n'}
+[5.415534] (steer_closed_loop) StderrLine: {'line': b'  "ament_cmake_DIR" to a directory containing one of the above files.  If\n'}
+[5.417431] (steer_closed_loop) StderrLine: {'line': b'  "ament_cmake" provides a separate development package or SDK, be sure it\n'}
+[5.418646] (steer_closed_loop) StderrLine: {'line': b'  has been installed.\n'}
+[5.420181] (steer_closed_loop) StderrLine: {'line': b'\n'}
+[5.421568] (steer_closed_loop) StderrLine: {'line': b'\x1b[0m\n'}
+[5.422990] (steer_closed_loop) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[5.424256] (steer_closed_loop) StdoutLine: {'line': b'See also "/root/GZ_DiNiu/build/steer_closed_loop/CMakeFiles/CMakeOutput.log".\n'}
+[5.435788] (-) TimerEvent: {}
+[5.448735] (steer_closed_loop) JobEnded: {'identifier': 'steer_closed_loop', 'rc': 'SIGINT'}
+[5.536042] (-) TimerEvent: {}
+[5.557305] (imu_bno08x) JobEnded: {'identifier': 'imu_bno08x', 'rc': 'SIGINT'}
+[5.636383] (-) TimerEvent: {}
+[5.737873] (-) TimerEvent: {}
+[5.756530] (motor_control_py) JobEnded: {'identifier': 'motor_control_py', 'rc': 'SIGINT'}
+[5.763008] (-) EventReactorShutdown: {}

@@ -66,6 +66,7 @@ static const char *forward_codes[] = {"100", "110", "010", "011", "001", "101"};
 
 static std::atomic<bool> exit_flag{false};
 static std::atomic<double> target_angle_deg{0.0};
+static std::atomic<int> home_request{0}; // 0 none, 1 left, 2 right
 
 // ---------------- 时间工具 ----------------
 static unsigned long long micros64() {
@@ -340,8 +341,28 @@ static void input_thread() {
     while (!exit_flag.load(std::memory_order_relaxed)) {
         std::cout << "\n输入目标角度(deg)，回车确认：";
         if (!std::getline(std::cin, line)) break;
+        if (line == "homeL" || line == "HOME_L" || line == "left") {
+            home_request.store(1, std::memory_order_relaxed);
+            std::cout << "收到回左限位命令\n";
+            continue;
+        }
+        if (line == "homeR" || line == "HOME_R" || line == "right") {
+            home_request.store(2, std::memory_order_relaxed);
+            std::cout << "收到回右限位命令\n";
+            continue;
+        }
         try {
             double val = std::stod(line);
+            if (val >= 999.0) {
+                home_request.store(1, std::memory_order_relaxed);
+                std::cout << "收到回左限位命令\n";
+                continue;
+            }
+            if (val <= -999.0) {
+                home_request.store(2, std::memory_order_relaxed);
+                std::cout << "收到回右限位命令\n";
+                continue;
+            }
             target_angle_deg.store(val, std::memory_order_relaxed);
             std::cout << "目标角度更新为 " << val << " deg\n";
         } catch (...) {
@@ -435,6 +456,29 @@ static bool home_to_left(DirGpio &dir, double deg_per_step) {
     return false;
 }
 
+static bool home_to_right(DirGpio &dir, double deg_per_step) {
+    if (limit_right_active()) {
+        set_angle_deg(LIMIT_RIGHT_DEG, deg_per_step);
+        return true;
+    }
+
+    bool forward = !HOME_TO_LEFT_FORWARD;
+    if (!setDirection(dir, forward)) return false;
+    if (!setPWMDutyCycle(HOME_PWM_PERCENT)) return false;
+
+    while (!exit_flag.load(std::memory_order_relaxed)) {
+        if (limit_right_active()) {
+            setPWMDutyCycle(0);
+            set_angle_deg(LIMIT_RIGHT_DEG, deg_per_step);
+            return true;
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    }
+
+    setPWMDutyCycle(0);
+    return false;
+}
+
 int main(int argc, char **argv) {
     signal(SIGINT, sig_handler);
 
@@ -519,6 +563,20 @@ int main(int argc, char **argv) {
         auto now = std::chrono::steady_clock::now();
         if (now < next_control) continue;
         next_control = now + control_period;
+
+        int req = home_request.exchange(0, std::memory_order_relaxed);
+        if (req != 0) {
+            setPWMDutyCycle(0);
+            bool ok = (req == 1) ? home_to_left(dir, deg_per_step) : home_to_right(dir, deg_per_step);
+            integral = 0.0;
+            prev_error = 0.0;
+            prev_output = 0.0;
+            if (!ok) {
+                std::cerr << "回限位失败\n";
+                break;
+            }
+            continue;
+        }
 
         if (limit_left_active()) set_angle_deg(LIMIT_LEFT_DEG, deg_per_step);
         if (limit_right_active()) set_angle_deg(LIMIT_RIGHT_DEG, deg_per_step);

@@ -1,0 +1,10 @@
+/root/GZ_DiNiu/build/steer_closed_loop/CMakeFiles/uninstall.dir
+/root/GZ_DiNiu/build/steer_closed_loop/CMakeFiles/steer_closed_loop_uninstall.dir
+/root/GZ_DiNiu/build/steer_closed_loop/CMakeFiles/steer_closed_loop_node.dir
+/root/GZ_DiNiu/build/steer_closed_loop/CMakeFiles/test.dir
+/root/GZ_DiNiu/build/steer_closed_loop/CMakeFiles/edit_cache.dir
+/root/GZ_DiNiu/build/steer_closed_loop/CMakeFiles/rebuild_cache.dir
+/root/GZ_DiNiu/build/steer_closed_loop/CMakeFiles/list_install_components.dir
+/root/GZ_DiNiu/build/steer_closed_loop/CMakeFiles/install.dir
+/root/GZ_DiNiu/build/steer_closed_loop/CMakeFiles/install/local.dir
+/root/GZ_DiNiu/build/steer_closed_loop/CMakeFiles/install/strip.dir

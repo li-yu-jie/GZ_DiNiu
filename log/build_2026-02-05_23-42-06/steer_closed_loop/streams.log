@@ -1,0 +1,32 @@
+[2.859s] Invoking command in '/root/GZ_DiNiu/build/steer_closed_loop': /usr/bin/cmake /root/GZ_DiNiu/src/steer_closed_loop -DCMAKE_INSTALL_PREFIX=/root/GZ_DiNiu/install/steer_closed_loop
+[3.321s] -- The C compiler identification is GNU 11.4.0
+[3.856s] -- The CXX compiler identification is GNU 11.4.0
+[3.899s] -- Detecting C compiler ABI info
+[4.375s] -- Detecting C compiler ABI info - done
+[4.420s] -- Check for working C compiler: /usr/bin/cc - skipped
+[4.421s] -- Detecting C compile features
+[4.423s] -- Detecting C compile features - done
+[4.450s] -- Detecting CXX compiler ABI info
+[4.987s] -- Detecting CXX compiler ABI info - done
+[5.034s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[5.036s] -- Detecting CXX compile features
+[5.040s] -- Detecting CXX compile features - done
+[5.253s] [31mCMake Error at CMakeLists.txt:8 (find_package):
+[5.256s]   By not providing "Findament_cmake.cmake" in CMAKE_MODULE_PATH this project
+[5.258s]   has asked CMake to find a package configuration file provided by
+[5.260s]   "ament_cmake", but CMake did not find one.
+[5.262s] 
+[5.264s]   Could not find a package configuration file provided by "ament_cmake" with
+[5.269s]   any of the following names:
+[5.270s] 
+[5.271s]     ament_cmakeConfig.cmake
+[5.273s]     ament_cmake-config.cmake
+[5.274s] 
+[5.275s]   Add the installation prefix of "ament_cmake" to CMAKE_PREFIX_PATH or set
+[5.288s]   "ament_cmake_DIR" to a directory containing one of the above files.  If
+[5.290s]   "ament_cmake" provides a separate development package or SDK, be sure it
+[5.291s]   has been installed.
+[5.292s] 
+[5.294s] [0m
+[5.295s] -- Configuring incomplete, errors occurred!
+[5.296s] See also "/root/GZ_DiNiu/build/steer_closed_loop/CMakeFiles/CMakeOutput.log".

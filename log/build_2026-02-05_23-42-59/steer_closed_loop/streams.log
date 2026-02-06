@@ -1,0 +1,51 @@
+[2.993s] Invoking command in '/root/GZ_DiNiu/build/steer_closed_loop': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /root/GZ_DiNiu/src/steer_closed_loop -DCMAKE_INSTALL_PREFIX=/root/GZ_DiNiu/install/steer_closed_loop
+[3.073s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[4.058s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[4.692s] -- Found rclcpp: 16.0.17 (/opt/ros/humble/share/rclcpp/cmake)
+[5.141s] -- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[5.213s] -- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[5.302s] -- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[5.398s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[5.539s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[5.953s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[5.978s] -- Found rmw_fastrtps_cpp: 6.2.9 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)
+[6.644s] -- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "3.0.2")  
+[6.995s] -- Found FastRTPS: /opt/ros/humble/include  
+[7.696s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[7.772s] -- Looking for pthread.h
+[8.158s] -- Looking for pthread.h - found
+[8.160s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[8.547s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[8.552s] -- Found Threads: TRUE  
+[8.832s] -- Found PkgConfig: /usr/bin/pkg-config (found version "0.29.2") 
+[8.839s] -- Checking for module 'libgpiod'
+[8.894s] --   Found libgpiod, version 1.6.3
+[9.357s] -- Configuring done
+[9.412s] -- Generating done
+[9.427s] -- Build files have been written to: /root/GZ_DiNiu/build/steer_closed_loop
+[9.477s] Invoked command in '/root/GZ_DiNiu/build/steer_closed_loop' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /root/GZ_DiNiu/src/steer_closed_loop -DCMAKE_INSTALL_PREFIX=/root/GZ_DiNiu/install/steer_closed_loop
+[9.479s] Invoking command in '/root/GZ_DiNiu/build/steer_closed_loop': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /root/GZ_DiNiu/build/steer_closed_loop -- -j4 -l4
+[9.681s] [ 50%] [32mBuilding CXX object CMakeFiles/steer_closed_loop_node.dir/src/steer_closed_loop_node.cpp.o[0m
+[49.350s] [100%] [32m[1mLinking CXX executable steer_closed_loop_node[0m
+[51.304s] [100%] Built target steer_closed_loop_node
+[51.365s] Invoked command in '/root/GZ_DiNiu/build/steer_closed_loop' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /root/GZ_DiNiu/build/steer_closed_loop -- -j4 -l4
+[51.385s] Invoking command in '/root/GZ_DiNiu/build/steer_closed_loop': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /root/GZ_DiNiu/build/steer_closed_loop
+[51.426s] -- Install configuration: ""
+[51.432s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/lib/steer_closed_loop/steer_closed_loop_node
+[51.471s] -- Set runtime path of "/root/GZ_DiNiu/install/steer_closed_loop/lib/steer_closed_loop/steer_closed_loop_node" to ""
+[51.478s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/ament_index/resource_index/package_run_dependencies/steer_closed_loop
+[51.484s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/ament_index/resource_index/parent_prefix_path/steer_closed_loop
+[51.485s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/ament_prefix_path.sh
+[51.491s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/ament_prefix_path.dsv
+[51.493s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/path.sh
+[51.496s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/path.dsv
+[51.499s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.bash
+[51.502s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.sh
+[51.505s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.zsh
+[51.507s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.dsv
+[51.511s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.dsv
+[51.513s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/ament_index/resource_index/packages/steer_closed_loop
+[51.516s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/cmake/steer_closed_loopConfig.cmake
+[51.519s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/cmake/steer_closed_loopConfig-version.cmake
+[51.521s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.xml
+[51.531s] Invoked command in '/root/GZ_DiNiu/build/steer_closed_loop' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /root/GZ_DiNiu/build/steer_closed_loop

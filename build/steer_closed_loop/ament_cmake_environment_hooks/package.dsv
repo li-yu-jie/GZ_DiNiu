@@ -1,0 +1,4 @@
+source;share/steer_closed_loop/local_setup.bash
+source;share/steer_closed_loop/local_setup.dsv
+source;share/steer_closed_loop/local_setup.sh
+source;share/steer_closed_loop/local_setup.zsh
