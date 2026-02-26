@@ -27,6 +27,20 @@ ros2 run motor_control_py motor_control_node
 ros2 run motor_control_py motor_control_node --ros-args -p cmd_vel_scale:=0.0
 ```
 
+## 一键启动（推荐）
+```bash
+ros2 launch motor_control_py cmd_vel_full.launch.py
+```
+
+常用参数：
+```bash
+# 使用 sudo -n 启动 pigpiod
+ros2 launch motor_control_py cmd_vel_full.launch.py pigpiod_use_sudo:=true
+
+# 不启动转向闭环
+ros2 launch motor_control_py cmd_vel_full.launch.py enable_steer:=false
+```
+
 ## 4. 发布 /cmd_vel
 ```bash
 ros2 topic pub -r 20 /cmd_vel geometry_msgs/msg/Twist \

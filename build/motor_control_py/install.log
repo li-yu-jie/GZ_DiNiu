@@ -6,6 +6,7 @@
 /root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages/motor_control_py/__pycache__/steer_control_node.cpython-310.pyc
 /root/GZ_DiNiu/install/motor_control_py/share/ament_index/resource_index/packages/motor_control_py
 /root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/package.xml
+/root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/launch/cmd_vel_full.launch.py
 /root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/launch/bringup.launch.py
 /root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages/motor_control_py-0.0.1-py3.10.egg-info/zip-safe
 /root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages/motor_control_py-0.0.1-py3.10.egg-info/PKG-INFO
