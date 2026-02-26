@@ -1,5 +1,6 @@
 import pigpio
 import rclpy
+from time import monotonic
 from geometry_msgs.msg import Twist
 from rclpy.node import Node
 from std_msgs.msg import Float64
@@ -104,6 +105,7 @@ class MotorControlNode(Node):
         self.cmd_topic = self.declare_parameter('cmd_topic', '/cmd_vel').value
         self.cmd_vel_axis = str(self.declare_parameter('cmd_vel_axis', 'x').value).lower()
         self.cmd_vel_scale = float(self.declare_parameter('cmd_vel_scale', 1.0).value)
+        self.cmd_timeout_s = float(self.declare_parameter('cmd_timeout_s', 0.3).value)
         self.feedback_topic = self.declare_parameter('feedback_topic', 'linear_velocity').value
         self.enable_steer_cmd = bool(self.declare_parameter('enable_steer_cmd', True).value)
         self.steer_topic = self.declare_parameter('steer_topic', 'steer_target_rate_deg_s').value
@@ -133,6 +135,8 @@ class MotorControlNode(Node):
             raise RuntimeError('max_pwm_step must be > 0')
         if self.cmd_vel_axis not in ('x', 'y', 'z'):
             raise RuntimeError("cmd_vel_axis must be one of: 'x', 'y', 'z'")
+        if self.cmd_timeout_s < 0.0:
+            raise RuntimeError('cmd_timeout_s must be >= 0')
 
         self.pi = pigpio.pi()
         if not self.pi.connected:
@@ -156,6 +160,8 @@ class MotorControlNode(Node):
         self.sub_cmd = self.create_subscription(Twist, self.cmd_topic, self.on_cmd_vel, 10)
         self.sub_fb = self.create_subscription(Float64, self.feedback_topic, self.on_feedback, 10)
         self.steer_pub = self.create_publisher(Float64, self.steer_topic, 10)
+        self.last_cmd_time = monotonic()
+        self.timed_out = False
 
         period = 1.0 / self.control_hz
         self.timer = self.create_timer(period, self.control_step)
@@ -166,6 +172,9 @@ class MotorControlNode(Node):
         return int(percent * 10000)
 
     def on_cmd_vel(self, msg: Twist):
+        self.last_cmd_time = monotonic()
+        self.timed_out = False
+
         axis_value = {
             'x': float(msg.linear.x),
             'y': float(msg.linear.y),
@@ -190,6 +199,14 @@ class MotorControlNode(Node):
         self.drive_pid.update_feedback(msg.data)
 
     def control_step(self):
+        if self.cmd_timeout_s > 0.0 and (monotonic() - self.last_cmd_time) > self.cmd_timeout_s:
+            self.drive_pid.update_target(0.0)
+            if not self.timed_out:
+                self.get_logger().warn(
+                    f'cmd_vel timeout ({self.cmd_timeout_s:.2f}s): target_speed forced to 0'
+                )
+                self.timed_out = True
+
         now = self.get_clock().now()
         drive_result = self.drive_pid.step(now)
         if drive_result is not None:
