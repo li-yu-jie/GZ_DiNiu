@@ -1,12 +1,13 @@
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess
-from launch.conditions import IfCondition
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, GroupAction
+from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 
 def generate_launch_description() -> LaunchDescription:
     start_pigpiod = LaunchConfiguration("start_pigpiod")
+    pigpiod_use_sudo = LaunchConfiguration("pigpiod_use_sudo")
     enable_imu = LaunchConfiguration("enable_imu")
     enable_steer = LaunchConfiguration("enable_steer")
 
@@ -14,8 +15,13 @@ def generate_launch_description() -> LaunchDescription:
         [
             DeclareLaunchArgument(
                 "start_pigpiod",
+                default_value="true",
+                description="Start pigpiod daemon.",
+            ),
+            DeclareLaunchArgument(
+                "pigpiod_use_sudo",
                 default_value="false",
-                description="Start pigpiod daemon (no sudo).",
+                description="Use sudo -n when starting pigpiod.",
             ),
             DeclareLaunchArgument(
                 "enable_imu",
@@ -27,9 +33,19 @@ def generate_launch_description() -> LaunchDescription:
                 default_value="true",
                 description="Launch the steering closed-loop node.",
             ),
-            ExecuteProcess(
-                cmd=["sudo", "pigpiod"],
-                output="screen",
+            GroupAction(
+                actions=[
+                    ExecuteProcess(
+                        cmd=["sudo", "-n", "pigpiod"],
+                        output="screen",
+                        condition=IfCondition(pigpiod_use_sudo),
+                    ),
+                    ExecuteProcess(
+                        cmd=["pigpiod"],
+                        output="screen",
+                        condition=UnlessCondition(pigpiod_use_sudo),
+                    ),
+                ],
                 condition=IfCondition(start_pigpiod),
             ),
             Node(

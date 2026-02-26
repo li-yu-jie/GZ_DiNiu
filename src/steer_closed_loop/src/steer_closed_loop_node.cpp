@@ -1,624 +1,602 @@
 #include <gpiod.h>
 
 #include <atomic>
+#include <cerrno>
 #include <chrono>
 #include <cmath>
 #include <cstring>
 #include <fstream>
-#include <iostream>
 #include <string>
 #include <thread>
 
-#include <errno.h>
-#include <fcntl.h>
 #include <poll.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/float64.hpp"
 
-// ================= PWM 配置（sysfs PWM） =================
-const std::string PWM_CHIP_PATH = "/sys/class/pwm/pwmchip0/";
-const int PWM_CHANNEL = 1;               // GPIO19 -> PWM1 通道（取决于你的系统映射）
-const long PWM_PERIOD_NS = 100000;       // 10kHz
-// =========================================================
+namespace {
+constexpr int kCodeCount = 6;
+const char *kForwardCodes[kCodeCount] = {"100", "110", "010", "011", "001", "101"};
+}  // namespace
 
-// ================= 方向 GPIO 配置（libgpiod） =============
-const int DIR_GPIO_OFFSET = 16;          // GPIO21 控制正反转（BCM21）
-const int MAX_GPIOCHIP = 2;
-// =========================================================
+class SteerRateClosedLoopNode : public rclcpp::Node {
+public:
+  SteerRateClosedLoopNode() : Node("steer_closed_loop"), running_(true) {
+    // Hardware mapping and topic names are parameterized so field tuning can be done
+    // from launch/CLI without recompiling.
+    chip_path_ = declare_parameter<std::string>("chip_path", "/dev/gpiochip0");
+    hu_offset_ = declare_parameter<int>("hu_gpio", 5);
+    hv_offset_ = declare_parameter<int>("hv_gpio", 6);
+    hw_offset_ = declare_parameter<int>("hw_gpio", 13);
 
-// ================= 编码器 GPIO 配置 =======================
-#define HU_LINE_OFFSET 5
-#define HV_LINE_OFFSET 6
-#define HW_LINE_OFFSET 13
-// =========================================================
+    dir_offset_ = declare_parameter<int>("dir_gpio", 16);
+    limit_left_offset_ = declare_parameter<int>("limit_left_gpio", 24);
+    limit_right_offset_ = declare_parameter<int>("limit_right_gpio", 25);
+    limit_active_level_ = declare_parameter<int>("limit_active_level", 1);
+    positive_dir_hits_left_limit_ = declare_parameter<bool>("positive_dir_hits_left_limit", true);
+    limit_use_bias_ = declare_parameter<bool>("limit_use_bias", true);
+    limit_bias_ = declare_parameter<std::string>("limit_bias", "pull_down");
+    limit_startup_grace_s_ = declare_parameter<double>("limit_startup_grace_s", 0.5);
 
-// ================= 限位 GPIO 配置（libgpiod） =============
-const int LIMIT_LEFT_GPIO_OFFSET = 24;   // 左限位（GPIO24）
-const int LIMIT_RIGHT_GPIO_OFFSET = 25;  // 右限位（GPIO25）
-const int LIMIT_ACTIVE_LEVEL = 1;        // 高电平触发
-const double LIMIT_LEFT_DEG = 45.5;
-const double LIMIT_RIGHT_DEG = -46.5;
-const double HOME_PWM_PERCENT = 40.0;    // 中速复位，可调
-const bool HOME_TO_LEFT_FORWARD = true;  // 设为 true 表示“forward”方向朝左
-// =========================================================
+    pwm_chip_path_ = declare_parameter<std::string>("pwm_chip_path", "/sys/class/pwm/pwmchip0/");
+    pwm_channel_ = declare_parameter<int>("pwm_channel", 1);
+    pwm_period_ns_ = declare_parameter<long>("pwm_period_ns", 100000);
 
-// ================= 编码器参数 =============================
-#define ENCODER_COUNTS_PER_REV 5770
-#define EVENT_DEBOUNCE_US 100
-// =========================================================
+    cmd_topic_ = declare_parameter<std::string>("cmd_topic", "steer_target_rate_deg_s");
+    feedback_topic_ = declare_parameter<std::string>("feedback_topic", "steer_rate_deg_s");
 
-// ================= 控制参数 ===============================
-const double CONTROL_HZ = 50.0;
-const double KP = 1.2;
-const double KI = 0.0;
-const double KD = 0.0;
-const double I_MAX = 50.0;
-const double DEAD_BAND_DEG = 0.5;
-const double MAX_PWM_PERCENT = 70.0;
-const double MAX_PWM_STEP = 2.0;
-const bool INVERT_ENCODER = true;
-// =========================================================
+    encoder_counts_per_rev_ = declare_parameter<int>("encoder_counts_per_rev", 5770);
+    invert_encoder_ = declare_parameter<bool>("invert_encoder", true);
+    event_debounce_us_ = declare_parameter<int>("event_debounce_us", 100);
 
-static const char *forward_codes[] = {"100", "110", "010", "011", "001", "101"};
-#define CODE_COUNT 6
+    control_hz_ = declare_parameter<double>("control_hz", 50.0);
+    kp_ = declare_parameter<double>("kp", 3.0);
+    ki_ = declare_parameter<double>("ki", 0.5);
+    kd_ = declare_parameter<double>("kd", 0.0);
+    i_max_ = declare_parameter<double>("i_max", 400.0);
+    rate_deadband_deg_s_ = declare_parameter<double>("rate_deadband_deg_s", 0.2);
+    max_pwm_percent_ = declare_parameter<double>("max_pwm_percent", 100.0);
+    max_pwm_step_ = declare_parameter<double>("max_pwm_step", 2.0);
+    cmd_timeout_s_ = declare_parameter<double>("cmd_timeout_s", 0.3);
+    debug_hz_ = declare_parameter<double>("debug_hz", 2.0);
 
-static std::atomic<bool> exit_flag{false};
-static std::atomic<double> target_angle_deg{0.0};
-static std::atomic<int> home_request{0}; // 0 none, 1 left, 2 right
+    validate_parameters();
+    deg_per_step_ = 360.0 / static_cast<double>(encoder_counts_per_rev_);
 
-// ---------------- 时间工具 ----------------
-static unsigned long long micros64() {
-    using namespace std::chrono;
-    return (unsigned long long)duration_cast<microseconds>(
-               steady_clock::now().time_since_epoch())
-        .count();
-}
+    open_pwm();
+    open_gpio();
 
-// ---------------- PWM sysfs ----------------
-static bool writeToFile(const std::string &path, const std::string &value) {
-    std::ofstream file(path);
-    if (!file.is_open()) {
-        std::cerr << "无法打开文件: " << path << "\n";
-        return false;
+    cmd_sub_ = create_subscription<std_msgs::msg::Float64>(
+      cmd_topic_, 10, std::bind(&SteerRateClosedLoopNode::on_cmd, this, std::placeholders::_1));
+    feedback_pub_ = create_publisher<std_msgs::msg::Float64>(feedback_topic_, 10);
+
+    encoder_thread_ = std::thread([this]() { this->encoder_loop(); });
+
+    const auto period = std::chrono::duration<double>(1.0 / control_hz_);
+    timer_ = create_wall_timer(
+      std::chrono::duration_cast<std::chrono::nanoseconds>(period),
+      std::bind(&SteerRateClosedLoopNode::control_step, this));
+
+    last_control_time_ = now();
+    last_rate_time_ = last_control_time_;
+    last_rate_step_ = read_signed_steps();
+    last_cmd_time_ = std::chrono::steady_clock::now();
+    startup_time_ = std::chrono::steady_clock::now();
+    next_debug_time_ = std::chrono::steady_clock::now();
+
+    RCLCPP_INFO(
+      get_logger(),
+      "steer_closed_loop(rate) started. cmd_topic=%s feedback_topic=%s",
+      cmd_topic_.c_str(), feedback_topic_.c_str());
+  }
+
+  ~SteerRateClosedLoopNode() override {
+    running_.store(false, std::memory_order_relaxed);
+    if (encoder_thread_.joinable()) {
+      encoder_thread_.join();
     }
-    file << value;
-    file.close();
-    return true;
-}
+    stop_motor();
+    close_gpio();
+    close_pwm();
+  }
 
-static bool initPWM() {
-    std::string exportPath = PWM_CHIP_PATH + "export";
-    (void)writeToFile(exportPath, std::to_string(PWM_CHANNEL));
-
-    std::string periodPath = PWM_CHIP_PATH + "pwm" + std::to_string(PWM_CHANNEL) + "/period";
-    if (!writeToFile(periodPath, std::to_string(PWM_PERIOD_NS))) return false;
-
-    std::string dutyPath = PWM_CHIP_PATH + "pwm" + std::to_string(PWM_CHANNEL) + "/duty_cycle";
-    if (!writeToFile(dutyPath, "0")) return false;
-
-    std::string enablePath = PWM_CHIP_PATH + "pwm" + std::to_string(PWM_CHANNEL) + "/enable";
-    if (!writeToFile(enablePath, "1")) return false;
-
-    std::cout << "PWM 初始化完成（pwmchip0/pwm" << PWM_CHANNEL << "）\n";
-    return true;
-}
-
-static bool setPWMDutyCycle(double dutyPercent) {
-    if (dutyPercent < 0) dutyPercent = 0;
-    if (dutyPercent > 100) dutyPercent = 100;
-
-    long dutyNs = (long)std::llround((double)PWM_PERIOD_NS * (dutyPercent / 100.0));
-    std::string dutyPath = PWM_CHIP_PATH + "pwm" + std::to_string(PWM_CHANNEL) + "/duty_cycle";
-    return writeToFile(dutyPath, std::to_string(dutyNs));
-}
-
-static void closePWM() {
-    std::string enablePath = PWM_CHIP_PATH + "pwm" + std::to_string(PWM_CHANNEL) + "/enable";
-    (void)writeToFile(enablePath, "0");
-    std::string unexportPath = PWM_CHIP_PATH + "unexport";
-    (void)writeToFile(unexportPath, std::to_string(PWM_CHANNEL));
-}
-
-// ---------------- 方向 GPIO ----------------
-static char *detect_gpiochip_path(char out[32]) {
-    struct stat st;
-    for (int i = 0; i < MAX_GPIOCHIP; i++) {
-        char p[32];
-        snprintf(p, sizeof(p), "/dev/gpiochip%d", i);
-        if (stat(p, &st) == 0 && S_ISCHR(st.st_mode)) {
-            int fd = open(p, O_RDONLY);
-            if (fd >= 0) {
-                close(fd);
-                strncpy(out, p, 31);
-                out[31] = '\0';
-                return out;
-            }
-        }
+private:
+  void validate_parameters() {
+    if (encoder_counts_per_rev_ <= 0) {
+      throw std::runtime_error("encoder_counts_per_rev must be > 0");
     }
-    return nullptr;
-}
-
-struct DirGpio {
-    gpiod_chip *chip = nullptr;
-    gpiod_line *line = nullptr;
-};
-
-static bool initDirectionGPIO(DirGpio &dir) {
-    char chip_path[32] = {0};
-    if (!detect_gpiochip_path(chip_path)) {
-        std::cerr << "未检测到 /dev/gpiochipX\n";
-        return false;
+    if (control_hz_ <= 0.0) {
+      throw std::runtime_error("control_hz must be > 0");
     }
-
-    dir.chip = gpiod_chip_open(chip_path);
-    if (!dir.chip) {
-        perror("打开GPIO芯片失败");
-        return false;
+    if (max_pwm_percent_ <= 0.0 || max_pwm_percent_ > 100.0) {
+      throw std::runtime_error("max_pwm_percent must be in (0, 100]");
     }
-
-    dir.line = gpiod_chip_get_line(dir.chip, DIR_GPIO_OFFSET);
-    if (!dir.line) {
-        perror("获取方向GPIO线失败");
-        gpiod_chip_close(dir.chip);
-        dir.chip = nullptr;
-        return false;
+    if (max_pwm_step_ <= 0.0) {
+      throw std::runtime_error("max_pwm_step must be > 0");
     }
-
-    if (gpiod_line_request_output(dir.line, "motor-dir", 0) != 0) {
-        perror("请求方向GPIO输出失败");
-        gpiod_chip_close(dir.chip);
-        dir.chip = nullptr;
-        dir.line = nullptr;
-        return false;
+    if (cmd_timeout_s_ < 0.0) {
+      throw std::runtime_error("cmd_timeout_s must be >= 0");
     }
-    return true;
-}
-
-static bool setDirection(DirGpio &dir, bool forward) {
-    if (!dir.line) return false;
-    int val = forward ? 1 : 0;
-    return gpiod_line_set_value(dir.line, val) == 0;
-}
-
-static void closeDirectionGPIO(DirGpio &dir) {
-    if (dir.line) {
-        gpiod_line_release(dir.line);
-        dir.line = nullptr;
+    if (pwm_period_ns_ <= 0) {
+      throw std::runtime_error("pwm_period_ns must be > 0");
     }
-    if (dir.chip) {
-        gpiod_chip_close(dir.chip);
-        dir.chip = nullptr;
+  }
+
+  static double clamp(double v, double lo, double hi) {
+    if (v < lo) {
+      return lo;
     }
-}
-
-// ---------------- 编码器 ----------------
-static gpiod_chip *chip = nullptr;
-static gpiod_line *hu_line = nullptr;
-static gpiod_line *hv_line = nullptr;
-static gpiod_line *hw_line = nullptr;
-static gpiod_line *limit_left_line = nullptr;
-static gpiod_line *limit_right_line = nullptr;
-static char gpiochip_path[32] = {0};
-
-static int hu_level = 0, hv_level = 0, hw_level = 0;
-static unsigned long long last_evt_us_hu = 0;
-static unsigned long long last_evt_us_hv = 0;
-static unsigned long long last_evt_us_hw = 0;
-
-static long total_step = 0;
-static char last_code[4] = "000";
-
-static int is_valid_hall_code(const char *code) {
-    for (int i = 0; i < CODE_COUNT; i++) {
-        if (strcmp(code, forward_codes[i]) == 0) return 1;
+    if (v > hi) {
+      return hi;
     }
-    return 0;
-}
+    return v;
+  }
 
-static int get_code_index(const char *code) {
-    for (int i = 0; i < CODE_COUNT; i++) {
-        if (strcmp(code, forward_codes[i]) == 0) return i;
+  static int code_index(const char *code) {
+    for (int i = 0; i < kCodeCount; ++i) {
+      if (std::strcmp(code, kForwardCodes[i]) == 0) {
+        return i;
+      }
     }
     return -1;
-}
+  }
 
-static void make_code(char out[4]) {
-    snprintf(out, 4, "%d%d%d", hu_level, hv_level, hw_level);
-}
+  void on_cmd(const std_msgs::msg::Float64::SharedPtr msg) {
+    target_rate_deg_s_.store(msg->data, std::memory_order_relaxed);
+    last_cmd_time_ = std::chrono::steady_clock::now();
+  }
 
-static void update_encoder(const char *current_code) {
-    if (!is_valid_hall_code(current_code)) return;
+  void control_step() {
+    // Main velocity loop: estimate rate -> PID -> direction + PWM.
+    const auto tnow = now();
+    const double dt = (tnow - last_control_time_).seconds();
+    if (dt <= 0.0) {
+      return;
+    }
+    last_control_time_ = tnow;
 
-    if (strcmp(last_code, "000") == 0) {
-        strncpy(last_code, current_code, 3);
-        last_code[3] = '\0';
-        return;
+    const double measured_rate = compute_rate_deg_s(tnow);
+    publish_rate(measured_rate);
+
+    double target_rate = target_rate_deg_s_.load(std::memory_order_relaxed);
+    // Failsafe: if commands stop arriving, automatically decay target to zero.
+    if (cmd_timeout_s_ > 0.0) {
+      const auto age = std::chrono::duration<double>(std::chrono::steady_clock::now() - last_cmd_time_).count();
+      if (age > cmd_timeout_s_) {
+        target_rate = 0.0;
+      }
     }
 
-    if (strcmp(current_code, last_code) == 0) return;
-
-    int curr_idx = get_code_index(current_code);
-    int last_idx = get_code_index(last_code);
-    if (curr_idx < 0 || last_idx < 0) return;
-
-    if ((last_idx + 1) % CODE_COUNT == curr_idx) {
-        total_step++;
-        strncpy(last_code, current_code, 3);
-        last_code[3] = '\0';
-        return;
+    double error = target_rate - measured_rate;
+    if (std::abs(error) < rate_deadband_deg_s_) {
+      error = 0.0;
     }
 
-    if ((last_idx - 1 + CODE_COUNT) % CODE_COUNT == curr_idx) {
-        total_step--;
-        strncpy(last_code, current_code, 3);
-        last_code[3] = '\0';
-        return;
+    integral_ = clamp(integral_ + error * dt, -i_max_, i_max_);
+    const double derivative = (error - prev_error_) / dt;
+    prev_error_ = error;
+
+    const double raw = kp_ * error + ki_ * integral_ + kd_ * derivative;
+    double out = clamp(raw, -max_pwm_percent_, max_pwm_percent_);
+
+    const double delta = out - prev_output_;
+    if (delta > max_pwm_step_) {
+      out = prev_output_ + max_pwm_step_;
+    } else if (delta < -max_pwm_step_) {
+      out = prev_output_ - max_pwm_step_;
+    }
+    prev_output_ = out;
+
+    // Limit safety: prevent driving deeper into an active end-stop.
+    if (out > 0.0 && positive_limit_active()) {
+      out = 0.0;
+      integral_ = 0.0;
+    }
+    if (out < 0.0 && negative_limit_active()) {
+      out = 0.0;
+      integral_ = 0.0;
     }
 
-    strncpy(last_code, current_code, 3);
-    last_code[3] = '\0';
-}
+    set_direction(out >= 0.0);
+    set_pwm(std::abs(out));
 
-static void process_one_event(gpiod_line *line,
-                              unsigned long long *plast_us,
-                              int *plevel) {
-    gpiod_line_event ev;
-    if (gpiod_line_event_read(line, &ev) < 0) return;
-
-    unsigned long long now_us = micros64();
-    if (*plast_us != 0 && (now_us - *plast_us) < (unsigned long long)EVENT_DEBOUNCE_US) {
-        return;
+    if (std::chrono::steady_clock::now() >= next_debug_time_) {
+      RCLCPP_INFO(
+        get_logger(),
+        "rate=%.2f target=%.2f err=%.2f out%%=%.2f L=%d R=%d",
+        measured_rate, target_rate, error, out,
+        static_cast<int>(limit_left_active()), static_cast<int>(limit_right_active()));
+      const auto period = std::chrono::duration<double>(1.0 / debug_hz_);
+      next_debug_time_ += std::chrono::duration_cast<std::chrono::steady_clock::duration>(period);
     }
-    *plast_us = now_us;
+  }
 
-    if (ev.event_type == GPIOD_LINE_EVENT_RISING_EDGE) *plevel = 1;
-    else if (ev.event_type == GPIOD_LINE_EVENT_FALLING_EDGE) *plevel = 0;
+  double compute_rate_deg_s(const rclcpp::Time &tnow) {
+    // Rate is derived from hall-step delta over dt.
+    const long current_step = read_signed_steps();
+    const double dt = (tnow - last_rate_time_).seconds();
+    if (dt <= 0.0) {
+      return 0.0;
+    }
+    const long delta = current_step - last_rate_step_;
+    last_rate_step_ = current_step;
+    last_rate_time_ = tnow;
+    return (static_cast<double>(delta) * deg_per_step_) / dt;
+  }
+
+  void publish_rate(double rate_deg_s) {
+    std_msgs::msg::Float64 msg;
+    msg.data = rate_deg_s;
+    feedback_pub_->publish(msg);
+  }
+
+  long read_signed_steps() const {
+    const long steps = total_step_.load(std::memory_order_relaxed);
+    return invert_encoder_ ? -steps : steps;
+  }
+
+  bool limit_left_active() const {
+    if (in_limit_startup_grace()) {
+      return false;
+    }
+    if (!limit_left_line_) {
+      return false;
+    }
+    const int v = gpiod_line_get_value(limit_left_line_);
+    return v == limit_active_level_;
+  }
+
+  bool limit_right_active() const {
+    if (in_limit_startup_grace()) {
+      return false;
+    }
+    if (!limit_right_line_) {
+      return false;
+    }
+    const int v = gpiod_line_get_value(limit_right_line_);
+    return v == limit_active_level_;
+  }
+
+  bool positive_limit_active() const {
+    return positive_dir_hits_left_limit_ ? limit_left_active() : limit_right_active();
+  }
+
+  bool negative_limit_active() const {
+    return positive_dir_hits_left_limit_ ? limit_right_active() : limit_left_active();
+  }
+
+  bool in_limit_startup_grace() const {
+    // Ignore limit switches briefly after startup to avoid power-on glitches.
+    if (limit_startup_grace_s_ <= 0.0) {
+      return false;
+    }
+    const auto age = std::chrono::duration<double>(std::chrono::steady_clock::now() - startup_time_).count();
+    return age < limit_startup_grace_s_;
+  }
+
+  void encoder_loop() {
+    // Dedicated thread for hall event polling to keep control loop timing stable.
+    pollfd fds[3];
+    fds[0].fd = gpiod_line_event_get_fd(hu_line_);
+    fds[1].fd = gpiod_line_event_get_fd(hv_line_);
+    fds[2].fd = gpiod_line_event_get_fd(hw_line_);
+    fds[0].events = POLLIN;
+    fds[1].events = POLLIN;
+    fds[2].events = POLLIN;
+
+    if (fds[0].fd < 0 || fds[1].fd < 0 || fds[2].fd < 0) {
+      RCLCPP_ERROR(
+        get_logger(),
+        "event fd invalid: hu=%d hv=%d hw=%d",
+        fds[0].fd, fds[1].fd, fds[2].fd);
+      return;
+    }
+
+    while (running_.load(std::memory_order_relaxed) && rclcpp::ok()) {
+      const int ret = poll(fds, 3, 20);
+      if (ret == 0) {
+        continue;
+      }
+      if (ret < 0) {
+        if (errno == EINTR) {
+          continue;
+        }
+        RCLCPP_ERROR_THROTTLE(
+          get_logger(), *get_clock(), 2000,
+          "poll failed: errno=%d", errno);
+        continue;
+      }
+      if (fds[0].revents & POLLIN) {
+        process_event(hu_line_, last_evt_us_hu_, hu_level_);
+      }
+      if (fds[1].revents & POLLIN) {
+        process_event(hv_line_, last_evt_us_hv_, hv_level_);
+      }
+      if (fds[2].revents & POLLIN) {
+        process_event(hw_line_, last_evt_us_hw_, hw_level_);
+      }
+    }
+  }
+
+  void process_event(gpiod_line *line, unsigned long long &last_evt_us, int &level) {
+    gpiod_line_event ev{};
+    if (gpiod_line_event_read(line, &ev) < 0) {
+      return;
+    }
+
+    const auto now_us = static_cast<unsigned long long>(
+      std::chrono::duration_cast<std::chrono::microseconds>(
+        std::chrono::steady_clock::now().time_since_epoch()).count());
+    // Simple software debounce on each hall channel.
+    if (last_evt_us != 0 && now_us - last_evt_us < static_cast<unsigned long long>(event_debounce_us_)) {
+      return;
+    }
+    last_evt_us = now_us;
+
+    if (ev.event_type == GPIOD_LINE_EVENT_RISING_EDGE) {
+      level = 1;
+    } else if (ev.event_type == GPIOD_LINE_EVENT_FALLING_EDGE) {
+      level = 0;
+    }
 
     char code[4];
-    make_code(code);
-    update_encoder(code);
-}
-
-static int gpio_init_irq() {
-    if (detect_gpiochip_path(gpiochip_path) == nullptr) {
-        std::cerr << "错误：未检测到GPIO芯片（/dev/gpiochipX）\n";
-        return -1;
+    std::snprintf(code, sizeof(code), "%d%d%d", hu_level_, hv_level_, hw_level_);
+    const int curr = code_index(code);
+    if (curr < 0) {
+      return;
+    }
+    if (last_code_idx_ < 0) {
+      last_code_idx_ = curr;
+      return;
+    }
+    if (curr == last_code_idx_) {
+      return;
     }
 
-    chip = gpiod_chip_open(gpiochip_path);
-    if (!chip) {
-        perror("打开GPIO芯片失败");
-        return -1;
+    // Valid 6-step commutation sequence only; jump codes are ignored.
+    if ((last_code_idx_ + 1) % kCodeCount == curr) {
+      total_step_.fetch_add(1, std::memory_order_relaxed);
+    } else if ((last_code_idx_ - 1 + kCodeCount) % kCodeCount == curr) {
+      total_step_.fetch_sub(1, std::memory_order_relaxed);
     }
+    last_code_idx_ = curr;
+  }
 
-    hu_line = gpiod_chip_get_line(chip, HU_LINE_OFFSET);
-    hv_line = gpiod_chip_get_line(chip, HV_LINE_OFFSET);
-    hw_line = gpiod_chip_get_line(chip, HW_LINE_OFFSET);
-    if (!hu_line || !hv_line || !hw_line) {
-        perror("获取GPIO线失败");
-        return -1;
+  bool write_file(const std::string &path, const std::string &value) {
+    std::ofstream f(path);
+    if (!f.is_open()) {
+      RCLCPP_ERROR(get_logger(), "open file failed: %s", path.c_str());
+      return false;
     }
-
-    const char *consumer = "hall-encoder-irq";
-    if (gpiod_line_request_both_edges_events(hu_line, consumer) ||
-        gpiod_line_request_both_edges_events(hv_line, consumer) ||
-        gpiod_line_request_both_edges_events(hw_line, consumer)) {
-        perror("请求GPIO事件模式失败（权限/占用？）");
-        return -1;
-    }
-
-    int v;
-    v = gpiod_line_get_value(hu_line); hu_level = (v < 0) ? 0 : v;
-    v = gpiod_line_get_value(hv_line); hv_level = (v < 0) ? 0 : v;
-    v = gpiod_line_get_value(hw_line); hw_level = (v < 0) ? 0 : v;
-    return 0;
-}
-
-static void gpio_deinit() {
-    if (hu_line) { gpiod_line_release(hu_line); hu_line = nullptr; }
-    if (hv_line) { gpiod_line_release(hv_line); hv_line = nullptr; }
-    if (hw_line) { gpiod_line_release(hw_line); hw_line = nullptr; }
-    if (limit_left_line) { gpiod_line_release(limit_left_line); limit_left_line = nullptr; }
-    if (limit_right_line) { gpiod_line_release(limit_right_line); limit_right_line = nullptr; }
-    if (chip) { gpiod_chip_close(chip); chip = nullptr; }
-}
-
-// ---------------- 控制逻辑 ----------------
-static double clamp(double v, double lo, double hi) {
-    if (v < lo) return lo;
-    if (v > hi) return hi;
-    return v;
-}
-
-static void target_callback(const std_msgs::msg::Float64::SharedPtr msg) {
-    double val = msg->data;
-    if (val >= 999.0) {
-        home_request.store(1, std::memory_order_relaxed);
-        return;
-    }
-    if (val <= -999.0) {
-        home_request.store(2, std::memory_order_relaxed);
-        return;
-    }
-    target_angle_deg.store(val, std::memory_order_relaxed);
-}
-
-static bool init_limit_gpio() {
-    if (detect_gpiochip_path(gpiochip_path) == nullptr) {
-        std::cerr << "错误：未检测到GPIO芯片（/dev/gpiochipX）\n";
-        return false;
-    }
-
-    if (!chip) {
-        chip = gpiod_chip_open(gpiochip_path);
-        if (!chip) {
-            perror("打开GPIO芯片失败");
-            return false;
-        }
-    }
-
-    limit_left_line = gpiod_chip_get_line(chip, LIMIT_LEFT_GPIO_OFFSET);
-    limit_right_line = gpiod_chip_get_line(chip, LIMIT_RIGHT_GPIO_OFFSET);
-    if (!limit_left_line || !limit_right_line) {
-        perror("获取限位GPIO线失败");
-        return false;
-    }
-
-    const char *consumer = "limit-switch";
-#ifdef GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_DOWN
-    gpiod_line_request_config cfg = {};
-    cfg.consumer = consumer;
-    cfg.request_type = GPIOD_LINE_REQUEST_DIRECTION_INPUT;
-    cfg.flags = GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_DOWN;
-    if (gpiod_line_request(limit_left_line, &cfg, 0) != 0 ||
-        gpiod_line_request(limit_right_line, &cfg, 0) != 0) {
-        perror("请求限位GPIO输入失败（权限/占用？）");
-        return false;
-    }
-#else
-    if (gpiod_line_request_input(limit_left_line, consumer) != 0 ||
-        gpiod_line_request_input(limit_right_line, consumer) != 0) {
-        perror("请求限位GPIO输入失败（权限/占用？）");
-        return false;
-    }
-#endif
-
+    f << value;
     return true;
-}
+  }
 
-static bool limit_left_active() {
-    if (!limit_left_line) return false;
-    int v = gpiod_line_get_value(limit_left_line);
-    if (v < 0) return false;
-    return v == LIMIT_ACTIVE_LEVEL;
-}
+  void open_pwm() {
+    // sysfs PWM setup: export -> period -> duty=0 -> enable.
+    (void)write_file(pwm_chip_path_ + "export", std::to_string(pwm_channel_));
+    if (!write_file(
+        pwm_chip_path_ + "pwm" + std::to_string(pwm_channel_) + "/period",
+        std::to_string(pwm_period_ns_))) {
+      throw std::runtime_error("set pwm period failed");
+    }
+    if (!write_file(
+        pwm_chip_path_ + "pwm" + std::to_string(pwm_channel_) + "/duty_cycle", "0")) {
+      throw std::runtime_error("set pwm duty failed");
+    }
+    if (!write_file(
+        pwm_chip_path_ + "pwm" + std::to_string(pwm_channel_) + "/enable", "1")) {
+      throw std::runtime_error("enable pwm failed");
+    }
+  }
 
-static bool limit_right_active() {
-    if (!limit_right_line) return false;
-    int v = gpiod_line_get_value(limit_right_line);
-    if (v < 0) return false;
-    return v == LIMIT_ACTIVE_LEVEL;
-}
+  void close_pwm() {
+    (void)write_file(pwm_chip_path_ + "pwm" + std::to_string(pwm_channel_) + "/enable", "0");
+    (void)write_file(pwm_chip_path_ + "unexport", std::to_string(pwm_channel_));
+  }
 
-static void set_angle_deg(double angle_deg, double deg_per_step) {
-    long steps = (long)std::llround(angle_deg / deg_per_step);
-    total_step = INVERT_ENCODER ? -steps : steps;
-}
+  void set_pwm(double percent) {
+    percent = clamp(percent, 0.0, 100.0);
+    const long duty = static_cast<long>(std::llround(
+      static_cast<double>(pwm_period_ns_) * (percent / 100.0)));
+    (void)write_file(
+      pwm_chip_path_ + "pwm" + std::to_string(pwm_channel_) + "/duty_cycle",
+      std::to_string(duty));
+  }
 
-static bool home_to_left(DirGpio &dir, double deg_per_step) {
-    if (limit_left_active()) {
-        set_angle_deg(LIMIT_LEFT_DEG, deg_per_step);
-        return true;
+  void stop_motor() {
+    set_pwm(0.0);
+  }
+
+  void open_gpio() {
+    chip_ = gpiod_chip_open(chip_path_.c_str());
+    if (!chip_) {
+      throw std::runtime_error("open gpio chip failed: " + chip_path_);
     }
 
-    bool forward = HOME_TO_LEFT_FORWARD;
-    if (!setDirection(dir, forward)) return false;
-    if (!setPWMDutyCycle(HOME_PWM_PERCENT)) return false;
-
-    while (!exit_flag.load(std::memory_order_relaxed) && rclcpp::ok()) {
-        if (limit_left_active()) {
-            setPWMDutyCycle(0);
-            set_angle_deg(LIMIT_LEFT_DEG, deg_per_step);
-            return true;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    dir_line_ = gpiod_chip_get_line(chip_, dir_offset_);
+    hu_line_ = gpiod_chip_get_line(chip_, hu_offset_);
+    hv_line_ = gpiod_chip_get_line(chip_, hv_offset_);
+    hw_line_ = gpiod_chip_get_line(chip_, hw_offset_);
+    limit_left_line_ = gpiod_chip_get_line(chip_, limit_left_offset_);
+    limit_right_line_ = gpiod_chip_get_line(chip_, limit_right_offset_);
+    if (!dir_line_ || !hu_line_ || !hv_line_ || !hw_line_ || !limit_left_line_ || !limit_right_line_) {
+      throw std::runtime_error("get gpio line failed");
     }
 
-    setPWMDutyCycle(0);
-    return false;
-}
-
-static bool home_to_right(DirGpio &dir, double deg_per_step) {
-    if (limit_right_active()) {
-        set_angle_deg(LIMIT_RIGHT_DEG, deg_per_step);
-        return true;
+    if (gpiod_line_request_output(dir_line_, "steer-dir", 0) != 0) {
+      throw std::runtime_error("request dir output failed");
+    }
+    if (gpiod_line_request_both_edges_events(hu_line_, "steer-hu") != 0 ||
+        gpiod_line_request_both_edges_events(hv_line_, "steer-hv") != 0 ||
+        gpiod_line_request_both_edges_events(hw_line_, "steer-hw") != 0) {
+      throw std::runtime_error("request hall events failed");
+    }
+#ifdef GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_UP
+    // Prefer explicit pull bias on limit inputs to avoid floating states.
+    if (limit_use_bias_) {
+      gpiod_line_request_config cfg_l = {};
+      gpiod_line_request_config cfg_r = {};
+      cfg_l.consumer = "steer-limit-l";
+      cfg_r.consumer = "steer-limit-r";
+      cfg_l.request_type = GPIOD_LINE_REQUEST_DIRECTION_INPUT;
+      cfg_r.request_type = GPIOD_LINE_REQUEST_DIRECTION_INPUT;
+      if (limit_bias_ == "pull_up") {
+        cfg_l.flags = GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_UP;
+        cfg_r.flags = GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_UP;
+      } else if (limit_bias_ == "pull_down") {
+        cfg_l.flags = GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_DOWN;
+        cfg_r.flags = GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_DOWN;
+      } else {
+        cfg_l.flags = GPIOD_LINE_REQUEST_FLAG_BIAS_DISABLE;
+        cfg_r.flags = GPIOD_LINE_REQUEST_FLAG_BIAS_DISABLE;
+      }
+      if (gpiod_line_request(limit_left_line_, &cfg_l, 0) != 0 ||
+          gpiod_line_request(limit_right_line_, &cfg_r, 0) != 0) {
+        throw std::runtime_error("request limit input with bias failed");
+      }
+    } else
+#endif
+    {
+      if (gpiod_line_request_input(limit_left_line_, "steer-limit-l") != 0 ||
+          gpiod_line_request_input(limit_right_line_, "steer-limit-r") != 0) {
+        throw std::runtime_error("request limit input failed");
+      }
     }
 
-    bool forward = !HOME_TO_LEFT_FORWARD;
-    if (!setDirection(dir, forward)) return false;
-    if (!setPWMDutyCycle(HOME_PWM_PERCENT)) return false;
+    int v = gpiod_line_get_value(hu_line_);
+    hu_level_ = (v < 0) ? 0 : v;
+    v = gpiod_line_get_value(hv_line_);
+    hv_level_ = (v < 0) ? 0 : v;
+    v = gpiod_line_get_value(hw_line_);
+    hw_level_ = (v < 0) ? 0 : v;
 
-    while (!exit_flag.load(std::memory_order_relaxed) && rclcpp::ok()) {
-        if (limit_right_active()) {
-            setPWMDutyCycle(0);
-            set_angle_deg(LIMIT_RIGHT_DEG, deg_per_step);
-            return true;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    char code[4];
+    std::snprintf(code, sizeof(code), "%d%d%d", hu_level_, hv_level_, hw_level_);
+    last_code_idx_ = code_index(code);
+  }
+
+  void close_gpio() {
+    if (dir_line_) {
+      gpiod_line_release(dir_line_);
+      dir_line_ = nullptr;
     }
+    if (hu_line_) {
+      gpiod_line_release(hu_line_);
+      hu_line_ = nullptr;
+    }
+    if (hv_line_) {
+      gpiod_line_release(hv_line_);
+      hv_line_ = nullptr;
+    }
+    if (hw_line_) {
+      gpiod_line_release(hw_line_);
+      hw_line_ = nullptr;
+    }
+    if (limit_left_line_) {
+      gpiod_line_release(limit_left_line_);
+      limit_left_line_ = nullptr;
+    }
+    if (limit_right_line_) {
+      gpiod_line_release(limit_right_line_);
+      limit_right_line_ = nullptr;
+    }
+    if (chip_) {
+      gpiod_chip_close(chip_);
+      chip_ = nullptr;
+    }
+  }
 
-    setPWMDutyCycle(0);
-    return false;
-}
+  void set_direction(bool forward) {
+    if (!dir_line_) {
+      return;
+    }
+    (void)gpiod_line_set_value(dir_line_, forward ? 1 : 0);
+  }
+
+private:
+  std::string chip_path_;
+  std::string pwm_chip_path_;
+  std::string cmd_topic_;
+  std::string feedback_topic_;
+
+  int hu_offset_{};
+  int hv_offset_{};
+  int hw_offset_{};
+  int dir_offset_{};
+  int limit_left_offset_{};
+  int limit_right_offset_{};
+  int limit_active_level_{};
+  bool positive_dir_hits_left_limit_{true};
+  bool limit_use_bias_{true};
+  std::string limit_bias_{"pull_down"};
+  double limit_startup_grace_s_{0.5};
+
+  int pwm_channel_{};
+  long pwm_period_ns_{};
+
+  int encoder_counts_per_rev_{};
+  bool invert_encoder_{};
+  int event_debounce_us_{};
+
+  double control_hz_{};
+  double kp_{};
+  double ki_{};
+  double kd_{};
+  double i_max_{};
+  double rate_deadband_deg_s_{};
+  double max_pwm_percent_{};
+  double max_pwm_step_{};
+  double cmd_timeout_s_{};
+  double debug_hz_{};
+
+  double deg_per_step_{};
+  double integral_{0.0};
+  double prev_error_{0.0};
+  double prev_output_{0.0};
+
+  rclcpp::Time last_control_time_;
+  rclcpp::Time last_rate_time_;
+  long last_rate_step_{0};
+  std::chrono::steady_clock::time_point last_cmd_time_;
+  std::chrono::steady_clock::time_point startup_time_;
+  std::chrono::steady_clock::time_point next_debug_time_;
+
+  std::atomic<bool> running_;
+  std::atomic<double> target_rate_deg_s_{0.0};
+  std::atomic<long> total_step_{0};
+
+  int hu_level_{0};
+  int hv_level_{0};
+  int hw_level_{0};
+  int last_code_idx_{-1};
+  unsigned long long last_evt_us_hu_{0};
+  unsigned long long last_evt_us_hv_{0};
+  unsigned long long last_evt_us_hw_{0};
+
+  gpiod_chip *chip_{nullptr};
+  gpiod_line *dir_line_{nullptr};
+  gpiod_line *hu_line_{nullptr};
+  gpiod_line *hv_line_{nullptr};
+  gpiod_line *hw_line_{nullptr};
+  gpiod_line *limit_left_line_{nullptr};
+  gpiod_line *limit_right_line_{nullptr};
+
+  std::thread encoder_thread_;
+
+  rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr cmd_sub_;
+  rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr feedback_pub_;
+  rclcpp::TimerBase::SharedPtr timer_;
+};
 
 int main(int argc, char **argv) {
-    rclcpp::init(argc, argv);
-    auto node = std::make_shared<rclcpp::Node>("steer_closed_loop");
-    auto sub = node->create_subscription<std_msgs::msg::Float64>(
-        "steer_target_deg", 10, target_callback);
-
-    if (!initPWM()) {
-        std::cerr << "PWM初始化失败\n";
-        rclcpp::shutdown();
-        return 1;
-    }
-
-    DirGpio dir;
-    if (!initDirectionGPIO(dir)) {
-        std::cerr << "方向GPIO初始化失败\n";
-        closePWM();
-        rclcpp::shutdown();
-        return 1;
-    }
-
-    if (!init_limit_gpio()) {
-        std::cerr << "限位GPIO初始化失败\n";
-        closeDirectionGPIO(dir);
-        closePWM();
-        rclcpp::shutdown();
-        return 1;
-    }
-
-    if (gpio_init_irq() != 0) {
-        std::cerr << "编码器GPIO初始化失败\n";
-        closeDirectionGPIO(dir);
-        closePWM();
-        gpio_deinit();
-        rclcpp::shutdown();
-        return 1;
-    }
-
-    int fd_hu = gpiod_line_event_get_fd(hu_line);
-    int fd_hv = gpiod_line_event_get_fd(hv_line);
-    int fd_hw = gpiod_line_event_get_fd(hw_line);
-    if (fd_hu < 0 || fd_hv < 0 || fd_hw < 0) {
-        std::cerr << "获取事件fd失败\n";
-        gpio_deinit();
-        closeDirectionGPIO(dir);
-        closePWM();
-        rclcpp::shutdown();
-        return 1;
-    }
-
-    pollfd fds[3];
-    fds[0].fd = fd_hu; fds[0].events = POLLIN;
-    fds[1].fd = fd_hv; fds[1].events = POLLIN;
-    fds[2].fd = fd_hw; fds[2].events = POLLIN;
-
-    std::thread control_thread([&]() {
-        const double steps_per_rev = (double)ENCODER_COUNTS_PER_REV;
-        const double deg_per_step = 360.0 / steps_per_rev;
-
-        if (!home_to_left(dir, deg_per_step)) {
-            std::cerr << "左限位复位失败\n";
-            exit_flag.store(true, std::memory_order_relaxed);
-        }
-
-        double integral = 0.0;
-        double prev_error = 0.0;
-        double prev_output = 0.0;
-
-        auto last_time = std::chrono::steady_clock::now();
-        auto next_control = last_time;
-        const auto control_period = std::chrono::duration_cast<std::chrono::steady_clock::duration>(
-            std::chrono::duration<double>(1.0 / CONTROL_HZ));
-        auto next_debug = last_time + std::chrono::milliseconds(500);
-
-        while (!exit_flag.load(std::memory_order_relaxed) && rclcpp::ok()) {
-            int ret = poll(fds, 3, 5);
-            if (ret > 0) {
-                if (fds[0].revents & POLLIN) process_one_event(hu_line, &last_evt_us_hu, &hu_level);
-                if (fds[1].revents & POLLIN) process_one_event(hv_line, &last_evt_us_hv, &hv_level);
-                if (fds[2].revents & POLLIN) process_one_event(hw_line, &last_evt_us_hw, &hw_level);
-            } else if (ret < 0 && errno != EINTR) {
-                perror("poll失败");
-                break;
-            }
-
-            auto now = std::chrono::steady_clock::now();
-            if (now < next_control) continue;
-            next_control = now + control_period;
-
-            int req = home_request.exchange(0, std::memory_order_relaxed);
-            if (req != 0) {
-                setPWMDutyCycle(0);
-                bool ok = (req == 1) ? home_to_left(dir, deg_per_step) : home_to_right(dir, deg_per_step);
-                integral = 0.0;
-                prev_error = 0.0;
-                prev_output = 0.0;
-                if (!ok) {
-                    std::cerr << "回限位失败\n";
-                    break;
-                }
-                continue;
-            }
-
-            if (limit_left_active()) set_angle_deg(LIMIT_LEFT_DEG, deg_per_step);
-            if (limit_right_active()) set_angle_deg(LIMIT_RIGHT_DEG, deg_per_step);
-
-            double angle = (double)(INVERT_ENCODER ? -total_step : total_step) * deg_per_step;
-            double target = target_angle_deg.load(std::memory_order_relaxed);
-            const double min_deg = std::min(LIMIT_LEFT_DEG, LIMIT_RIGHT_DEG);
-            const double max_deg = std::max(LIMIT_LEFT_DEG, LIMIT_RIGHT_DEG);
-            if (target > max_deg) target = max_deg;
-            if (target < min_deg) target = min_deg;
-            double error = target - angle;
-            if (std::abs(error) < DEAD_BAND_DEG) error = 0.0;
-
-            double dt = std::chrono::duration<double>(now - last_time).count();
-            if (dt <= 0.0) continue;
-            last_time = now;
-
-            integral += error * dt;
-            integral = clamp(integral, -I_MAX, I_MAX);
-            double derivative = (error - prev_error) / dt;
-            prev_error = error;
-
-            double raw_output = (KP * error) + (KI * integral) + (KD * derivative);
-            double output = clamp(raw_output, -MAX_PWM_PERCENT, MAX_PWM_PERCENT);
-
-            double delta = output - prev_output;
-            if (delta > MAX_PWM_STEP) output = prev_output + MAX_PWM_STEP;
-            else if (delta < -MAX_PWM_STEP) output = prev_output - MAX_PWM_STEP;
-            prev_output = output;
-
-            bool forward = output >= 0.0;
-            if (!setDirection(dir, forward)) {
-                std::cerr << "设置方向失败\n";
-                break;
-            }
-
-            double duty = std::abs(output);
-            if (!setPWMDutyCycle(duty)) {
-                std::cerr << "设置PWM失败\n";
-                break;
-            }
-
-            if (now >= next_debug) {
-                int l = limit_left_line ? gpiod_line_get_value(limit_left_line) : -1;
-                int r = limit_right_line ? gpiod_line_get_value(limit_right_line) : -1;
-                RCLCPP_INFO(node->get_logger(),
-                            "angle=%.2f target=%.2f err=%.2f out%%=%.2f steps=%ld L=%d R=%d",
-                            angle, target, error, output, total_step, l, r);
-                next_debug = now + std::chrono::milliseconds(500);
-            }
-        }
-
-        exit_flag.store(true, std::memory_order_relaxed);
-        setPWMDutyCycle(0);
-        closePWM();
-        closeDirectionGPIO(dir);
-        gpio_deinit();
-        std::cout << "\n退出\n";
-    });
-
+  rclcpp::init(argc, argv);
+  try {
+    auto node = std::make_shared<SteerRateClosedLoopNode>();
     rclcpp::spin(node);
-    exit_flag.store(true, std::memory_order_relaxed);
-    if (control_thread.joinable()) control_thread.join();
-    rclcpp::shutdown();
-    return 0;
+  } catch (const std::exception &e) {
+    std::fprintf(stderr, "steer_closed_loop startup error: %s\n", e.what());
+  }
+  rclcpp::shutdown();
+  return 0;
 }

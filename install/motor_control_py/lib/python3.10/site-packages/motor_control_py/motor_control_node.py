@@ -1,5 +1,6 @@
 import pigpio
 import rclpy
+from geometry_msgs.msg import Twist
 from rclpy.node import Node
 from std_msgs.msg import Float64
 
@@ -100,8 +101,15 @@ class MotorControlNode(Node):
         self.dir_gpio = self.declare_parameter('dir_gpio', 26).value
         self.pwm_freq = self.declare_parameter('pwm_freq_hz', 100000).value
         self.invert_dir = self.declare_parameter('invert_dir', True).value
-        self.cmd_topic = self.declare_parameter('cmd_topic', 'target_speed').value
+        self.cmd_topic = self.declare_parameter('cmd_topic', '/cmd_vel').value
+        self.cmd_vel_axis = str(self.declare_parameter('cmd_vel_axis', 'x').value).lower()
+        self.cmd_vel_scale = float(self.declare_parameter('cmd_vel_scale', 1.0).value)
         self.feedback_topic = self.declare_parameter('feedback_topic', 'linear_velocity').value
+        self.enable_steer_cmd = bool(self.declare_parameter('enable_steer_cmd', True).value)
+        self.steer_topic = self.declare_parameter('steer_topic', 'steer_target_rate_deg_s').value
+        self.steer_rate_scale_deg_per_rad_s = float(
+            self.declare_parameter('steer_rate_scale_deg_per_rad_s', 30.0).value
+        )
 
         self.kp = self.declare_parameter('kp', 85.0).value
         self.ki = self.declare_parameter('ki', 20.0).value
@@ -123,6 +131,8 @@ class MotorControlNode(Node):
             raise RuntimeError('deadband must be >= 0')
         if self.max_pwm_step <= 0.0:
             raise RuntimeError('max_pwm_step must be > 0')
+        if self.cmd_vel_axis not in ('x', 'y', 'z'):
+            raise RuntimeError("cmd_vel_axis must be one of: 'x', 'y', 'z'")
 
         self.pi = pigpio.pi()
         if not self.pi.connected:
@@ -143,8 +153,9 @@ class MotorControlNode(Node):
             filter_alpha=self.filter_alpha,
         )
 
-        self.sub_cmd = self.create_subscription(Float64, self.cmd_topic, self.on_cmd, 10)
+        self.sub_cmd = self.create_subscription(Twist, self.cmd_topic, self.on_cmd_vel, 10)
         self.sub_fb = self.create_subscription(Float64, self.feedback_topic, self.on_feedback, 10)
+        self.steer_pub = self.create_publisher(Float64, self.steer_topic, 10)
 
         period = 1.0 / self.control_hz
         self.timer = self.create_timer(period, self.control_step)
@@ -154,9 +165,26 @@ class MotorControlNode(Node):
         percent = max(0, min(100, percent))
         return int(percent * 10000)
 
-    def on_cmd(self, msg: Float64):
-        self.drive_pid.update_target(msg.data)
-        self.get_logger().info(f'target_speed={msg.data:.3f} m/s')
+    def on_cmd_vel(self, msg: Twist):
+        axis_value = {
+            'x': float(msg.linear.x),
+            'y': float(msg.linear.y),
+            'z': float(msg.linear.z),
+        }[self.cmd_vel_axis]
+        target_speed = axis_value * self.cmd_vel_scale
+        self.drive_pid.update_target(target_speed)
+
+        steer_rate_deg_s = float(msg.angular.z) * self.steer_rate_scale_deg_per_rad_s
+        if self.enable_steer_cmd:
+            steer_msg = Float64()
+            steer_msg.data = steer_rate_deg_s
+            self.steer_pub.publish(steer_msg)
+
+        self.get_logger().info(
+            f'cmd_vel linear=({msg.linear.x:.3f},{msg.linear.y:.3f},{msg.linear.z:.3f}) '
+            f'axis={self.cmd_vel_axis} target_speed={target_speed:.3f} m/s '
+            f'angular.z={msg.angular.z:.3f} steer_rate_deg_s={steer_rate_deg_s:.2f}'
+        )
 
     def on_feedback(self, msg: Float64):
         self.drive_pid.update_feedback(msg.data)
