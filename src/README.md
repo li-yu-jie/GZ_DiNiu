@@ -20,9 +20,12 @@ source install/setup.bash
 ```
 
 ## 运行电机控制（Python）
+启动 pigpiod：
+```bash
+sudo pigpiod
 ## 一键启动（Launch）
 ```bash
-ros2 launch motor_control_py bringup.launch.py
+ros2 launch motor_control_py bringup.launch.py start_pigpiod:=true
 ```
 
 可选参数：
