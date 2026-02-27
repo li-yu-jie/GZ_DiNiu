@@ -47,6 +47,10 @@ ros2 topic pub -r 20 /cmd_vel geometry_msgs/msg/Twist \
 "{linear: {x: 0.3, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: -0.4}}"
 ```
 
+说明：
+- 角速度控制与直线控制都建议持续发布（例如 `-r 20`）。
+- `motor_control_node` 默认开启直线超时停止（`cmd_timeout_s=0.3`），超过该时间未收到新 `/cmd_vel` 会自动把驱动目标速度置 0。
+
 ## 5. 观察反馈
 驱动速度反馈：
 ```bash
@@ -72,6 +76,7 @@ ros2 topic pub -1 /cmd_vel geometry_msgs/msg/Twist \
 ## 7. 常用参数
 `motor_control_node`：
 - `cmd_vel_scale`：`linear` 到驱动速度的缩放，设为 `0.0` 可仅测转向
+- `cmd_timeout_s`：直线速度命令超时（秒），默认 `0.3`；设为 `0.0` 关闭超时
 - `steer_rate_scale_deg_per_rad_s`：`angular.z` 到 `deg/s` 的缩放
 - `steer_topic`：默认 `steer_target_rate_deg_s`
 
@@ -81,3 +86,17 @@ ros2 topic pub -1 /cmd_vel geometry_msgs/msg/Twist \
 - `kp` `ki` `kd` `i_max`：角速度闭环参数
 - `limit_active_level`：限位触发电平（`1` 或 `0`）
 - `positive_dir_hits_left_limit`：正方向对应哪侧限位
+
+## 8. 快速测试
+1) 一键启动：
+```bash
+ros2 launch motor_control_py cmd_vel_full.launch.py
+```
+
+2) 发布 5 秒运动命令：
+```bash
+ros2 topic pub -r 20 /cmd_vel geometry_msgs/msg/Twist \
+"{linear: {x: 0.3, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: -0.3}}"
+```
+
+3) 停止发布后，驱动轮应在约 `0.3s` 内自动停止（默认超时保护生效）。
