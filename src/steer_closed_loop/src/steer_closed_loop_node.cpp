@@ -50,8 +50,8 @@ public:
     event_debounce_us_ = declare_parameter<int>("event_debounce_us", 100);
 
     control_hz_ = declare_parameter<double>("control_hz", 50.0);
-    kp_ = declare_parameter<double>("kp", 3.0);
-    ki_ = declare_parameter<double>("ki", 0.5);
+    kp_ = declare_parameter<double>("kp", 30.0);
+    ki_ = declare_parameter<double>("ki", 0.0);
     kd_ = declare_parameter<double>("kd", 0.0);
     i_max_ = declare_parameter<double>("i_max", 400.0);
     rate_deadband_deg_s_ = declare_parameter<double>("rate_deadband_deg_s", 0.2);

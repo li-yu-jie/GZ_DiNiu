@@ -1,0 +1,613 @@
+[0.000000] (-) TimerEvent: {}
+[0.001967] (encoder_vel) JobQueued: {'identifier': 'encoder_vel', 'dependencies': OrderedDict()}
+[0.002593] (imu_bno08x) JobQueued: {'identifier': 'imu_bno08x', 'dependencies': OrderedDict()}
+[0.002797] (motor_control_py) JobQueued: {'identifier': 'motor_control_py', 'dependencies': OrderedDict()}
+[0.003092] (steer_closed_loop) JobQueued: {'identifier': 'steer_closed_loop', 'dependencies': OrderedDict()}
+[0.003262] (encoder_vel) JobStarted: {'identifier': 'encoder_vel'}
+[0.037344] (imu_bno08x) JobStarted: {'identifier': 'imu_bno08x'}
+[0.070895] (motor_control_py) JobStarted: {'identifier': 'motor_control_py'}
+[0.098493] (-) TimerEvent: {}
+[0.108625] (steer_closed_loop) JobStarted: {'identifier': 'steer_closed_loop'}
+[0.142056] (encoder_vel) JobProgress: {'identifier': 'encoder_vel', 'progress': 'cmake'}
+[0.146278] (encoder_vel) JobProgress: {'identifier': 'encoder_vel', 'progress': 'build'}
+[0.149639] (encoder_vel) Command: {'cmd': ['/usr/bin/cmake', '--build', '/root/GZ_DiNiu/build/encoder_vel', '--', '-j4', '-l4'], 'cwd': '/root/GZ_DiNiu/build/encoder_vel', 'env': OrderedDict([('PYTHON_BASIC_REPL', '1'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'zh_CN:zh'), ('USER', 'root'), ('SSH_CLIENT', '172.21.21.71 40168 22'), ('XDG_SESSION_TYPE', 'tty'), ('GIT_ASKPASS', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('BROWSER', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/bin/helpers/browser.sh'), ('MOTD_SHOWN', 'pam'), ('HOME', '/root'), ('TERM_PROGRAM_VERSION', '1.109.5'), ('VSCODE_IPC_HOOK_CLI', '/run/user/0/vscode-ipc-edf42b23-7390-40d8-9037-d2a05e579058.sock'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/node'), ('SSL_CERT_FILE', '/usr/lib/ssl/certs/ca-certificates.crt'), ('PYDEVD_DISABLE_FILE_VALIDATION', '1'), ('BUNDLED_DEBUGPY_PATH', '/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/bundled/libs/debugpy'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/0/bus'), ('COLORTERM', 'truecolor'), ('COLCON_PREFIX_PATH', '/root/GZ_DiNiu/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'root'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm-256color'), ('XDG_SESSION_ID', '4'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/root/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/root/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/bundled/scripts/noConfigScripts'), ('XDG_RUNTIME_DIR', '/run/user/0'), ('SSL_CERT_DIR', '/usr/lib/ssl/certs'), ('VSCODE_DEBUGPY_ADAPTER_ENDPOINTS', '/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/.noConfigDebugAdapterEndpoints/endpoint-e8455e4bc5ae7857.txt'), ('LANG', 'zh_CN.UTF-8'), ('PYTHONSTARTUP', '/root/.vscode-server/data/User/workspaceStorage/e27fd8106bbe855e3903281f63733cdf/ms-python.python/pythonrc.py'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/0/vscode-git-074a3076fc.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/root/GZ_DiNiu/install/encoder_vel:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/root/GZ_DiNiu/build/encoder_vel'), ('SSH_CONNECTION', '172.21.21.71 40168 172.21.21.105 22'), ('PYTHONPATH', '/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/encoder_vel:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble')]), 'shell': False}
+[0.201085] (-) TimerEvent: {}
+[0.301934] (-) TimerEvent: {}
+[0.403123] (-) TimerEvent: {}
+[0.504593] (-) TimerEvent: {}
+[0.605412] (-) TimerEvent: {}
+[0.706229] (-) TimerEvent: {}
+[0.806990] (-) TimerEvent: {}
+[0.907712] (-) TimerEvent: {}
+[1.008505] (-) TimerEvent: {}
+[1.109348] (-) TimerEvent: {}
+[1.210186] (-) TimerEvent: {}
+[1.311113] (-) TimerEvent: {}
+[1.411901] (-) TimerEvent: {}
+[1.512923] (-) TimerEvent: {}
+[1.613792] (-) TimerEvent: {}
+[1.715437] (-) TimerEvent: {}
+[1.816349] (-) TimerEvent: {}
+[1.917213] (-) TimerEvent: {}
+[2.018101] (-) TimerEvent: {}
+[2.118830] (-) TimerEvent: {}
+[2.219619] (-) TimerEvent: {}
+[2.320418] (-) TimerEvent: {}
+[2.421464] (-) TimerEvent: {}
+[2.522404] (-) TimerEvent: {}
+[2.623281] (-) TimerEvent: {}
+[2.725225] (-) TimerEvent: {}
+[2.826058] (-) TimerEvent: {}
+[2.926860] (-) TimerEvent: {}
+[3.027806] (-) TimerEvent: {}
+[3.128667] (-) TimerEvent: {}
+[3.229643] (-) TimerEvent: {}
+[3.321230] (encoder_vel) StdoutLine: {'line': b'[100%] Built target encoder_vel_node\n'}
+[3.329898] (-) TimerEvent: {}
+[3.331908] (steer_closed_loop) JobProgress: {'identifier': 'steer_closed_loop', 'progress': 'cmake'}
+[3.336003] (steer_closed_loop) JobProgress: {'identifier': 'steer_closed_loop', 'progress': 'build'}
+[3.337902] (steer_closed_loop) Command: {'cmd': ['/usr/bin/cmake', '--build', '/root/GZ_DiNiu/build/steer_closed_loop', '--', '-j4', '-l4'], 'cwd': '/root/GZ_DiNiu/build/steer_closed_loop', 'env': OrderedDict([('PYTHON_BASIC_REPL', '1'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'zh_CN:zh'), ('USER', 'root'), ('SSH_CLIENT', '172.21.21.71 40168 22'), ('XDG_SESSION_TYPE', 'tty'), ('GIT_ASKPASS', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('BROWSER', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/bin/helpers/browser.sh'), ('MOTD_SHOWN', 'pam'), ('HOME', '/root'), ('TERM_PROGRAM_VERSION', '1.109.5'), ('VSCODE_IPC_HOOK_CLI', '/run/user/0/vscode-ipc-edf42b23-7390-40d8-9037-d2a05e579058.sock'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/node'), ('SSL_CERT_FILE', '/usr/lib/ssl/certs/ca-certificates.crt'), ('PYDEVD_DISABLE_FILE_VALIDATION', '1'), ('BUNDLED_DEBUGPY_PATH', '/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/bundled/libs/debugpy'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/0/bus'), ('COLORTERM', 'truecolor'), ('COLCON_PREFIX_PATH', '/root/GZ_DiNiu/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'root'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm-256color'), ('XDG_SESSION_ID', '4'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/root/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/root/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/bundled/scripts/noConfigScripts'), ('XDG_RUNTIME_DIR', '/run/user/0'), ('SSL_CERT_DIR', '/usr/lib/ssl/certs'), ('VSCODE_DEBUGPY_ADAPTER_ENDPOINTS', '/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/.noConfigDebugAdapterEndpoints/endpoint-e8455e4bc5ae7857.txt'), ('LANG', 'zh_CN.UTF-8'), ('PYTHONSTARTUP', '/root/.vscode-server/data/User/workspaceStorage/e27fd8106bbe855e3903281f63733cdf/ms-python.python/pythonrc.py'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/0/vscode-git-074a3076fc.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/root/GZ_DiNiu/install/encoder_vel:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/root/GZ_DiNiu/build/steer_closed_loop'), ('SSH_CONNECTION', '172.21.21.71 40168 172.21.21.105 22'), ('PYTHONPATH', '/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/encoder_vel:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble')]), 'shell': False}
+[3.355859] (encoder_vel) CommandEnded: {'returncode': 0}
+[3.359429] (encoder_vel) JobProgress: {'identifier': 'encoder_vel', 'progress': 'install'}
+[3.401550] (encoder_vel) Command: {'cmd': ['/usr/bin/cmake', '--install', '/root/GZ_DiNiu/build/encoder_vel'], 'cwd': '/root/GZ_DiNiu/build/encoder_vel', 'env': OrderedDict([('PYTHON_BASIC_REPL', '1'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'zh_CN:zh'), ('USER', 'root'), ('SSH_CLIENT', '172.21.21.71 40168 22'), ('XDG_SESSION_TYPE', 'tty'), ('GIT_ASKPASS', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('BROWSER', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/bin/helpers/browser.sh'), ('MOTD_SHOWN', 'pam'), ('HOME', '/root'), ('TERM_PROGRAM_VERSION', '1.109.5'), ('VSCODE_IPC_HOOK_CLI', '/run/user/0/vscode-ipc-edf42b23-7390-40d8-9037-d2a05e579058.sock'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/node'), ('SSL_CERT_FILE', '/usr/lib/ssl/certs/ca-certificates.crt'), ('PYDEVD_DISABLE_FILE_VALIDATION', '1'), ('BUNDLED_DEBUGPY_PATH', '/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/bundled/libs/debugpy'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/0/bus'), ('COLORTERM', 'truecolor'), ('COLCON_PREFIX_PATH', '/root/GZ_DiNiu/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'root'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm-256color'), ('XDG_SESSION_ID', '4'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/root/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/root/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/bundled/scripts/noConfigScripts'), ('XDG_RUNTIME_DIR', '/run/user/0'), ('SSL_CERT_DIR', '/usr/lib/ssl/certs'), ('VSCODE_DEBUGPY_ADAPTER_ENDPOINTS', '/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/.noConfigDebugAdapterEndpoints/endpoint-e8455e4bc5ae7857.txt'), ('LANG', 'zh_CN.UTF-8'), ('PYTHONSTARTUP', '/root/.vscode-server/data/User/workspaceStorage/e27fd8106bbe855e3903281f63733cdf/ms-python.python/pythonrc.py'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/0/vscode-git-074a3076fc.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/root/GZ_DiNiu/install/encoder_vel:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/root/GZ_DiNiu/build/encoder_vel'), ('SSH_CONNECTION', '172.21.21.71 40168 172.21.21.105 22'), ('PYTHONPATH', '/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/encoder_vel:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble')]), 'shell': False}
+[3.431947] (-) TimerEvent: {}
+[3.471392] (encoder_vel) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[3.473802] (encoder_vel) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/encoder_vel/lib/encoder_vel/encoder_vel_node\n'}
+[3.477774] (encoder_vel) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/encoder_vel/share/ament_index/resource_index/package_run_dependencies/encoder_vel\n'}
+[3.479437] (encoder_vel) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/encoder_vel/share/ament_index/resource_index/parent_prefix_path/encoder_vel\n'}
+[3.480114] (encoder_vel) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/ament_prefix_path.sh\n'}
+[3.480805] (encoder_vel) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/ament_prefix_path.dsv\n'}
+[3.487919] (encoder_vel) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/path.sh\n'}
+[3.498180] (encoder_vel) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/environment/path.dsv\n'}
+[3.500437] (encoder_vel) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.bash\n'}
+[3.502337] (encoder_vel) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.sh\n'}
+[3.505414] (encoder_vel) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.zsh\n'}
+[3.507638] (encoder_vel) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/local_setup.dsv\n'}
+[3.510451] (encoder_vel) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.dsv\n'}
+[3.518593] (encoder_vel) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/encoder_vel/share/ament_index/resource_index/packages/encoder_vel\n'}
+[3.519589] (encoder_vel) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/cmake/encoder_velConfig.cmake\n'}
+[3.520541] (encoder_vel) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/cmake/encoder_velConfig-version.cmake\n'}
+[3.521180] (encoder_vel) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.xml\n'}
+[3.521973] (encoder_vel) CommandEnded: {'returncode': 0}
+[3.534445] (-) TimerEvent: {}
+[3.576099] (steer_closed_loop) StdoutLine: {'line': b'\x1b[35m\x1b[1mConsolidate compiler generated dependencies of target steer_closed_loop_node\x1b[0m\n'}
+[3.635196] (-) TimerEvent: {}
+[3.710774] (encoder_vel) JobEnded: {'identifier': 'encoder_vel', 'rc': 0}
+[3.735429] (-) TimerEvent: {}
+[3.801608] (steer_closed_loop) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding CXX object CMakeFiles/steer_closed_loop_node.dir/src/steer_closed_loop_node.cpp.o\x1b[0m\n'}
+[3.836106] (-) TimerEvent: {}
+[3.937992] (-) TimerEvent: {}
+[4.038844] (-) TimerEvent: {}
+[4.140538] (-) TimerEvent: {}
+[4.241804] (-) TimerEvent: {}
+[4.342919] (-) TimerEvent: {}
+[4.444978] (-) TimerEvent: {}
+[4.545795] (-) TimerEvent: {}
+[4.647272] (-) TimerEvent: {}
+[4.749650] (-) TimerEvent: {}
+[4.851848] (-) TimerEvent: {}
+[4.953646] (-) TimerEvent: {}
+[5.055098] (-) TimerEvent: {}
+[5.156351] (-) TimerEvent: {}
+[5.258241] (-) TimerEvent: {}
+[5.360083] (-) TimerEvent: {}
+[5.462368] (-) TimerEvent: {}
+[5.563462] (-) TimerEvent: {}
+[5.665140] (-) TimerEvent: {}
+[5.767453] (-) TimerEvent: {}
+[5.869121] (-) TimerEvent: {}
+[5.971219] (-) TimerEvent: {}
+[6.059865] (motor_control_py) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/motor_control_py', 'build', '--build-base', '/root/GZ_DiNiu/build/motor_control_py/build', 'install', '--record', '/root/GZ_DiNiu/build/motor_control_py/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/root/GZ_DiNiu/src/motor_control_py', 'env': {'PYTHON_BASIC_REPL': '1', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'LANGUAGE': 'zh_CN:zh', 'USER': 'root', 'SSH_CLIENT': '172.21.21.71 40168 22', 'XDG_SESSION_TYPE': 'tty', 'GIT_ASKPASS': '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/extensions/git/dist/askpass.sh', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib', 'BROWSER': '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/bin/helpers/browser.sh', 'MOTD_SHOWN': 'pam', 'HOME': '/root', 'TERM_PROGRAM_VERSION': '1.109.5', 'VSCODE_IPC_HOOK_CLI': '/run/user/0/vscode-ipc-edf42b23-7390-40d8-9037-d2a05e579058.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/node', 'SSL_CERT_FILE': '/usr/lib/ssl/certs/ca-certificates.crt', 'PYDEVD_DISABLE_FILE_VALIDATION': '1', 'BUNDLED_DEBUGPY_PATH': '/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/bundled/libs/debugpy', 'VSCODE_PYTHON_AUTOACTIVATE_GUARD': '1', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/0/bus', 'COLORTERM': 'truecolor', 'COLCON_PREFIX_PATH': '/root/GZ_DiNiu/install', 'ROS_DISTRO': 'humble', 'LOGNAME': 'root', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '4', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/opt/ros/humble/bin:/root/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/root/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/bundled/scripts/noConfigScripts', 'XDG_RUNTIME_DIR': '/run/user/0', 'SSL_CERT_DIR': '/usr/lib/ssl/certs', 'VSCODE_DEBUGPY_ADAPTER_ENDPOINTS': '/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/.noConfigDebugAdapterEndpoints/endpoint-e8455e4bc5ae7857.txt', 'LANG': 'zh_CN.UTF-8', 'PYTHONSTARTUP': '/root/.vscode-server/data/User/workspaceStorage/e27fd8106bbe855e3903281f63733cdf/ms-python.python/pythonrc.py', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'VSCODE_GIT_IPC_HANDLE': '/run/user/0/vscode-git-074a3076fc.sock', 'TERM_PROGRAM': 'vscode', 'AMENT_PREFIX_PATH': '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/root/GZ_DiNiu/install/encoder_vel:/opt/ros/humble', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'PWD': '/root/GZ_DiNiu/build/motor_control_py', 'SSH_CONNECTION': '172.21.21.71 40168 172.21.21.105 22', 'PYTHONPATH': '/root/GZ_DiNiu/build/motor_control_py/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/encoder_vel'}, 'shell': False}
+[6.078633] (-) TimerEvent: {}
+[6.181288] (-) TimerEvent: {}
+[6.283998] (-) TimerEvent: {}
+[6.325458] (imu_bno08x) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/imu_bno08x', 'build', '--build-base', '/root/GZ_DiNiu/build/imu_bno08x/build', 'install', '--record', '/root/GZ_DiNiu/build/imu_bno08x/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/root/GZ_DiNiu/src/imu_bno08x', 'env': {'PYTHON_BASIC_REPL': '1', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'LANGUAGE': 'zh_CN:zh', 'USER': 'root', 'SSH_CLIENT': '172.21.21.71 40168 22', 'XDG_SESSION_TYPE': 'tty', 'GIT_ASKPASS': '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/extensions/git/dist/askpass.sh', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib', 'BROWSER': '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/bin/helpers/browser.sh', 'MOTD_SHOWN': 'pam', 'HOME': '/root', 'TERM_PROGRAM_VERSION': '1.109.5', 'VSCODE_IPC_HOOK_CLI': '/run/user/0/vscode-ipc-edf42b23-7390-40d8-9037-d2a05e579058.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/node', 'SSL_CERT_FILE': '/usr/lib/ssl/certs/ca-certificates.crt', 'PYDEVD_DISABLE_FILE_VALIDATION': '1', 'BUNDLED_DEBUGPY_PATH': '/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/bundled/libs/debugpy', 'VSCODE_PYTHON_AUTOACTIVATE_GUARD': '1', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/0/bus', 'COLORTERM': 'truecolor', 'COLCON_PREFIX_PATH': '/root/GZ_DiNiu/install', 'ROS_DISTRO': 'humble', 'LOGNAME': 'root', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '4', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/opt/ros/humble/bin:/root/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/root/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/bundled/scripts/noConfigScripts', 'XDG_RUNTIME_DIR': '/run/user/0', 'SSL_CERT_DIR': '/usr/lib/ssl/certs', 'VSCODE_DEBUGPY_ADAPTER_ENDPOINTS': '/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/.noConfigDebugAdapterEndpoints/endpoint-e8455e4bc5ae7857.txt', 'LANG': 'zh_CN.UTF-8', 'PYTHONSTARTUP': '/root/.vscode-server/data/User/workspaceStorage/e27fd8106bbe855e3903281f63733cdf/ms-python.python/pythonrc.py', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'VSCODE_GIT_IPC_HANDLE': '/run/user/0/vscode-git-074a3076fc.sock', 'TERM_PROGRAM': 'vscode', 'AMENT_PREFIX_PATH': '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/root/GZ_DiNiu/install/encoder_vel:/opt/ros/humble', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'PWD': '/root/GZ_DiNiu/build/imu_bno08x', 'SSH_CONNECTION': '172.21.21.71 40168 172.21.21.105 22', 'PYTHONPATH': '/root/GZ_DiNiu/build/imu_bno08x/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/encoder_vel'}, 'shell': False}
+[6.384222] (-) TimerEvent: {}
+[6.486306] (-) TimerEvent: {}
+[6.587159] (-) TimerEvent: {}
+[6.690233] (-) TimerEvent: {}
+[6.791797] (-) TimerEvent: {}
+[6.898983] (-) TimerEvent: {}
+[7.002811] (-) TimerEvent: {}
+[7.107958] (-) TimerEvent: {}
+[7.214580] (-) TimerEvent: {}
+[7.315423] (-) TimerEvent: {}
+[7.417382] (-) TimerEvent: {}
+[7.518884] (-) TimerEvent: {}
+[7.621439] (-) TimerEvent: {}
+[7.725410] (-) TimerEvent: {}
+[7.838003] (-) TimerEvent: {}
+[7.938893] (-) TimerEvent: {}
+[8.039826] (-) TimerEvent: {}
+[8.141215] (-) TimerEvent: {}
+[8.243329] (-) TimerEvent: {}
+[8.344568] (-) TimerEvent: {}
+[8.445686] (-) TimerEvent: {}
+[8.549624] (-) TimerEvent: {}
+[8.653167] (-) TimerEvent: {}
+[8.755801] (-) TimerEvent: {}
+[8.832228] (motor_control_py) StdoutLine: {'line': b'running egg_info\n'}
+[8.838254] (motor_control_py) StdoutLine: {'line': b'writing ../../build/motor_control_py/motor_control_py.egg-info/PKG-INFO\n'}
+[8.852261] (motor_control_py) StdoutLine: {'line': b'writing dependency_links to ../../build/motor_control_py/motor_control_py.egg-info/dependency_links.txt\n'}
+[8.855975] (-) TimerEvent: {}
+[8.868223] (motor_control_py) StdoutLine: {'line': b'writing entry points to ../../build/motor_control_py/motor_control_py.egg-info/entry_points.txt\n'}
+[8.874323] (motor_control_py) StdoutLine: {'line': b'writing requirements to ../../build/motor_control_py/motor_control_py.egg-info/requires.txt\n'}
+[8.877812] (motor_control_py) StdoutLine: {'line': b'writing top-level names to ../../build/motor_control_py/motor_control_py.egg-info/top_level.txt\n'}
+[8.895264] (motor_control_py) StdoutLine: {'line': b"reading manifest file '../../build/motor_control_py/motor_control_py.egg-info/SOURCES.txt'\n"}
+[8.902088] (motor_control_py) StdoutLine: {'line': b"writing manifest file '../../build/motor_control_py/motor_control_py.egg-info/SOURCES.txt'\n"}
+[8.918298] (motor_control_py) StdoutLine: {'line': b'running build\n'}
+[8.919275] (motor_control_py) StdoutLine: {'line': b'running build_py\n'}
+[8.923262] (motor_control_py) StdoutLine: {'line': b'running install\n'}
+[8.928481] (motor_control_py) StdoutLine: {'line': b'running install_lib\n'}
+[8.940220] (motor_control_py) StdoutLine: {'line': b'running install_data\n'}
+[8.945103] (motor_control_py) StdoutLine: {'line': b'running install_egg_info\n'}
+[8.956915] (-) TimerEvent: {}
+[8.964048] (motor_control_py) StdoutLine: {'line': b"removing '/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages/motor_control_py-0.0.1-py3.10.egg-info' (and everything under it)\n"}
+[8.967962] (motor_control_py) StdoutLine: {'line': b'Copying ../../build/motor_control_py/motor_control_py.egg-info to /root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages/motor_control_py-0.0.1-py3.10.egg-info\n'}
+[8.983587] (motor_control_py) StdoutLine: {'line': b'running install_scripts\n'}
+[9.059350] (-) TimerEvent: {}
+[9.164600] (-) TimerEvent: {}
+[9.189003] (motor_control_py) StdoutLine: {'line': b'Installing motor_control_node script to /root/GZ_DiNiu/install/motor_control_py/lib/motor_control_py\n'}
+[9.193800] (motor_control_py) StdoutLine: {'line': b'Installing steer_control_node script to /root/GZ_DiNiu/install/motor_control_py/lib/motor_control_py\n'}
+[9.202780] (motor_control_py) StdoutLine: {'line': b"writing list of installed files to '/root/GZ_DiNiu/build/motor_control_py/install.log'\n"}
+[9.265546] (-) TimerEvent: {}
+[9.368756] (-) TimerEvent: {}
+[9.408207] (motor_control_py) CommandEnded: {'returncode': 0}
+[9.450519] (imu_bno08x) StdoutLine: {'line': b'running egg_info\n'}
+[9.454362] (imu_bno08x) StdoutLine: {'line': b'writing ../../build/imu_bno08x/imu_bno08x.egg-info/PKG-INFO\n'}
+[9.455897] (imu_bno08x) StdoutLine: {'line': b'writing dependency_links to ../../build/imu_bno08x/imu_bno08x.egg-info/dependency_links.txt\n'}
+[9.457200] (imu_bno08x) StdoutLine: {'line': b'writing entry points to ../../build/imu_bno08x/imu_bno08x.egg-info/entry_points.txt\n'}
+[9.458348] (imu_bno08x) StdoutLine: {'line': b'writing requirements to ../../build/imu_bno08x/imu_bno08x.egg-info/requires.txt\n'}
+[9.459690] (imu_bno08x) StdoutLine: {'line': b'writing top-level names to ../../build/imu_bno08x/imu_bno08x.egg-info/top_level.txt\n'}
+[9.469954] (-) TimerEvent: {}
+[9.472650] (imu_bno08x) StdoutLine: {'line': b"reading manifest file '../../build/imu_bno08x/imu_bno08x.egg-info/SOURCES.txt'\n"}
+[9.483612] (imu_bno08x) StdoutLine: {'line': b"writing manifest file '../../build/imu_bno08x/imu_bno08x.egg-info/SOURCES.txt'\n"}
+[9.490195] (imu_bno08x) StdoutLine: {'line': b'running build\n'}
+[9.496524] (imu_bno08x) StdoutLine: {'line': b'running build_py\n'}
+[9.518102] (imu_bno08x) StdoutLine: {'line': b'running install\n'}
+[9.519310] (imu_bno08x) StdoutLine: {'line': b'running install_lib\n'}
+[9.519752] (imu_bno08x) StdoutLine: {'line': b'running install_data\n'}
+[9.520131] (imu_bno08x) StdoutLine: {'line': b'running install_egg_info\n'}
+[9.520477] (imu_bno08x) StdoutLine: {'line': b"removing '/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x-0.0.1-py3.10.egg-info' (and everything under it)\n"}
+[9.520826] (imu_bno08x) StdoutLine: {'line': b'Copying ../../build/imu_bno08x/imu_bno08x.egg-info to /root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x-0.0.1-py3.10.egg-info\n'}
+[9.521255] (motor_control_py) JobEnded: {'identifier': 'motor_control_py', 'rc': 0}
+[9.524624] (imu_bno08x) StdoutLine: {'line': b'running install_scripts\n'}
+[9.570165] (-) TimerEvent: {}
+[9.649388] (imu_bno08x) StdoutLine: {'line': b'Installing imu_bno08x_node script to /root/GZ_DiNiu/install/imu_bno08x/lib/imu_bno08x\n'}
+[9.651875] (imu_bno08x) StdoutLine: {'line': b"writing list of installed files to '/root/GZ_DiNiu/build/imu_bno08x/install.log'\n"}
+[9.674511] (-) TimerEvent: {}
+[9.776263] (-) TimerEvent: {}
+[9.834055] (imu_bno08x) CommandEnded: {'returncode': 0}
+[9.876725] (-) TimerEvent: {}
+[9.913836] (imu_bno08x) JobEnded: {'identifier': 'imu_bno08x', 'rc': 0}
+[9.976908] (-) TimerEvent: {}
+[10.077683] (-) TimerEvent: {}
+[10.178587] (-) TimerEvent: {}
+[10.279448] (-) TimerEvent: {}
+[10.380288] (-) TimerEvent: {}
+[10.481059] (-) TimerEvent: {}
+[10.581818] (-) TimerEvent: {}
+[10.682648] (-) TimerEvent: {}
+[10.783426] (-) TimerEvent: {}
+[10.884213] (-) TimerEvent: {}
+[10.985032] (-) TimerEvent: {}
+[11.085908] (-) TimerEvent: {}
+[11.186778] (-) TimerEvent: {}
+[11.287619] (-) TimerEvent: {}
+[11.388483] (-) TimerEvent: {}
+[11.489487] (-) TimerEvent: {}
+[11.590330] (-) TimerEvent: {}
+[11.691103] (-) TimerEvent: {}
+[11.791965] (-) TimerEvent: {}
+[11.892751] (-) TimerEvent: {}
+[11.993624] (-) TimerEvent: {}
+[12.094470] (-) TimerEvent: {}
+[12.195400] (-) TimerEvent: {}
+[12.296221] (-) TimerEvent: {}
+[12.396996] (-) TimerEvent: {}
+[12.497886] (-) TimerEvent: {}
+[12.598752] (-) TimerEvent: {}
+[12.699613] (-) TimerEvent: {}
+[12.800509] (-) TimerEvent: {}
+[12.901434] (-) TimerEvent: {}
+[13.002309] (-) TimerEvent: {}
+[13.103155] (-) TimerEvent: {}
+[13.203988] (-) TimerEvent: {}
+[13.304765] (-) TimerEvent: {}
+[13.405592] (-) TimerEvent: {}
+[13.506469] (-) TimerEvent: {}
+[13.607335] (-) TimerEvent: {}
+[13.708219] (-) TimerEvent: {}
+[13.809043] (-) TimerEvent: {}
+[13.909942] (-) TimerEvent: {}
+[14.010955] (-) TimerEvent: {}
+[14.112071] (-) TimerEvent: {}
+[14.212904] (-) TimerEvent: {}
+[14.313748] (-) TimerEvent: {}
+[14.414632] (-) TimerEvent: {}
+[14.515942] (-) TimerEvent: {}
+[14.616677] (-) TimerEvent: {}
+[14.717487] (-) TimerEvent: {}
+[14.818358] (-) TimerEvent: {}
+[14.919205] (-) TimerEvent: {}
+[15.020037] (-) TimerEvent: {}
+[15.120931] (-) TimerEvent: {}
+[15.221907] (-) TimerEvent: {}
+[15.322819] (-) TimerEvent: {}
+[15.423690] (-) TimerEvent: {}
+[15.524607] (-) TimerEvent: {}
+[15.625454] (-) TimerEvent: {}
+[15.726327] (-) TimerEvent: {}
+[15.827176] (-) TimerEvent: {}
+[15.928009] (-) TimerEvent: {}
+[16.028902] (-) TimerEvent: {}
+[16.129668] (-) TimerEvent: {}
+[16.230511] (-) TimerEvent: {}
+[16.331326] (-) TimerEvent: {}
+[16.432201] (-) TimerEvent: {}
+[16.533465] (-) TimerEvent: {}
+[16.634278] (-) TimerEvent: {}
+[16.735206] (-) TimerEvent: {}
+[16.836008] (-) TimerEvent: {}
+[16.936847] (-) TimerEvent: {}
+[17.037827] (-) TimerEvent: {}
+[17.138707] (-) TimerEvent: {}
+[17.239573] (-) TimerEvent: {}
+[17.340503] (-) TimerEvent: {}
+[17.441917] (-) TimerEvent: {}
+[17.542778] (-) TimerEvent: {}
+[17.643788] (-) TimerEvent: {}
+[17.744636] (-) TimerEvent: {}
+[17.845427] (-) TimerEvent: {}
+[17.946438] (-) TimerEvent: {}
+[18.047241] (-) TimerEvent: {}
+[18.148142] (-) TimerEvent: {}
+[18.249009] (-) TimerEvent: {}
+[18.349781] (-) TimerEvent: {}
+[18.450671] (-) TimerEvent: {}
+[18.551447] (-) TimerEvent: {}
+[18.652275] (-) TimerEvent: {}
+[18.753389] (-) TimerEvent: {}
+[18.854248] (-) TimerEvent: {}
+[18.955066] (-) TimerEvent: {}
+[19.055962] (-) TimerEvent: {}
+[19.156777] (-) TimerEvent: {}
+[19.257677] (-) TimerEvent: {}
+[19.358600] (-) TimerEvent: {}
+[19.459500] (-) TimerEvent: {}
+[19.560597] (-) TimerEvent: {}
+[19.661366] (-) TimerEvent: {}
+[19.762240] (-) TimerEvent: {}
+[19.863064] (-) TimerEvent: {}
+[19.963844] (-) TimerEvent: {}
+[20.064698] (-) TimerEvent: {}
+[20.165739] (-) TimerEvent: {}
+[20.267078] (-) TimerEvent: {}
+[20.367927] (-) TimerEvent: {}
+[20.468829] (-) TimerEvent: {}
+[20.569644] (-) TimerEvent: {}
+[20.670494] (-) TimerEvent: {}
+[20.771298] (-) TimerEvent: {}
+[20.872170] (-) TimerEvent: {}
+[20.973111] (-) TimerEvent: {}
+[21.074031] (-) TimerEvent: {}
+[21.175059] (-) TimerEvent: {}
+[21.275873] (-) TimerEvent: {}
+[21.376796] (-) TimerEvent: {}
+[21.477598] (-) TimerEvent: {}
+[21.578434] (-) TimerEvent: {}
+[21.679235] (-) TimerEvent: {}
+[21.780116] (-) TimerEvent: {}
+[21.880954] (-) TimerEvent: {}
+[21.981805] (-) TimerEvent: {}
+[22.082720] (-) TimerEvent: {}
+[22.183626] (-) TimerEvent: {}
+[22.285008] (-) TimerEvent: {}
+[22.386009] (-) TimerEvent: {}
+[22.486861] (-) TimerEvent: {}
+[22.587659] (-) TimerEvent: {}
+[22.688467] (-) TimerEvent: {}
+[22.789294] (-) TimerEvent: {}
+[22.890415] (-) TimerEvent: {}
+[22.991174] (-) TimerEvent: {}
+[23.091974] (-) TimerEvent: {}
+[23.193544] (-) TimerEvent: {}
+[23.294426] (-) TimerEvent: {}
+[23.395227] (-) TimerEvent: {}
+[23.496051] (-) TimerEvent: {}
+[23.596891] (-) TimerEvent: {}
+[23.697758] (-) TimerEvent: {}
+[23.798637] (-) TimerEvent: {}
+[23.899540] (-) TimerEvent: {}
+[24.000423] (-) TimerEvent: {}
+[24.101629] (-) TimerEvent: {}
+[24.202525] (-) TimerEvent: {}
+[24.303384] (-) TimerEvent: {}
+[24.404241] (-) TimerEvent: {}
+[24.505016] (-) TimerEvent: {}
+[24.605833] (-) TimerEvent: {}
+[24.706710] (-) TimerEvent: {}
+[24.807490] (-) TimerEvent: {}
+[24.908413] (-) TimerEvent: {}
+[25.009308] (-) TimerEvent: {}
+[25.110206] (-) TimerEvent: {}
+[25.211060] (-) TimerEvent: {}
+[25.311848] (-) TimerEvent: {}
+[25.412687] (-) TimerEvent: {}
+[25.513823] (-) TimerEvent: {}
+[25.615420] (-) TimerEvent: {}
+[25.716603] (-) TimerEvent: {}
+[25.817584] (-) TimerEvent: {}
+[25.918511] (-) TimerEvent: {}
+[26.019414] (-) TimerEvent: {}
+[26.120259] (-) TimerEvent: {}
+[26.221096] (-) TimerEvent: {}
+[26.322029] (-) TimerEvent: {}
+[26.424024] (-) TimerEvent: {}
+[26.525014] (-) TimerEvent: {}
+[26.625916] (-) TimerEvent: {}
+[26.726804] (-) TimerEvent: {}
+[26.827648] (-) TimerEvent: {}
+[26.928507] (-) TimerEvent: {}
+[27.029331] (-) TimerEvent: {}
+[27.130370] (-) TimerEvent: {}
+[27.231217] (-) TimerEvent: {}
+[27.331990] (-) TimerEvent: {}
+[27.432768] (-) TimerEvent: {}
+[27.533645] (-) TimerEvent: {}
+[27.634544] (-) TimerEvent: {}
+[27.735371] (-) TimerEvent: {}
+[27.839321] (-) TimerEvent: {}
+[27.940659] (-) TimerEvent: {}
+[28.041373] (-) TimerEvent: {}
+[28.142129] (-) TimerEvent: {}
+[28.242815] (-) TimerEvent: {}
+[28.343593] (-) TimerEvent: {}
+[28.444463] (-) TimerEvent: {}
+[28.545311] (-) TimerEvent: {}
+[28.646132] (-) TimerEvent: {}
+[28.746939] (-) TimerEvent: {}
+[28.847732] (-) TimerEvent: {}
+[28.948579] (-) TimerEvent: {}
+[29.049412] (-) TimerEvent: {}
+[29.150329] (-) TimerEvent: {}
+[29.251236] (-) TimerEvent: {}
+[29.352473] (-) TimerEvent: {}
+[29.453305] (-) TimerEvent: {}
+[29.554158] (-) TimerEvent: {}
+[29.655032] (-) TimerEvent: {}
+[29.755966] (-) TimerEvent: {}
+[29.856712] (-) TimerEvent: {}
+[29.957547] (-) TimerEvent: {}
+[30.058617] (-) TimerEvent: {}
+[30.159866] (-) TimerEvent: {}
+[30.261498] (-) TimerEvent: {}
+[30.362658] (-) TimerEvent: {}
+[30.463410] (-) TimerEvent: {}
+[30.564267] (-) TimerEvent: {}
+[30.665114] (-) TimerEvent: {}
+[30.766043] (-) TimerEvent: {}
+[30.867104] (-) TimerEvent: {}
+[30.968100] (-) TimerEvent: {}
+[31.069158] (-) TimerEvent: {}
+[31.170220] (-) TimerEvent: {}
+[31.271251] (-) TimerEvent: {}
+[31.372088] (-) TimerEvent: {}
+[31.473569] (-) TimerEvent: {}
+[31.574560] (-) TimerEvent: {}
+[31.675386] (-) TimerEvent: {}
+[31.776327] (-) TimerEvent: {}
+[31.877166] (-) TimerEvent: {}
+[31.978282] (-) TimerEvent: {}
+[32.079166] (-) TimerEvent: {}
+[32.180002] (-) TimerEvent: {}
+[32.280787] (-) TimerEvent: {}
+[32.381623] (-) TimerEvent: {}
+[32.482453] (-) TimerEvent: {}
+[32.583223] (-) TimerEvent: {}
+[32.684020] (-) TimerEvent: {}
+[32.784966] (-) TimerEvent: {}
+[32.886072] (-) TimerEvent: {}
+[32.986946] (-) TimerEvent: {}
+[33.087809] (-) TimerEvent: {}
+[33.188640] (-) TimerEvent: {}
+[33.289500] (-) TimerEvent: {}
+[33.390321] (-) TimerEvent: {}
+[33.491154] (-) TimerEvent: {}
+[33.592007] (-) TimerEvent: {}
+[33.692922] (-) TimerEvent: {}
+[33.793796] (-) TimerEvent: {}
+[33.894721] (-) TimerEvent: {}
+[33.995527] (-) TimerEvent: {}
+[34.096425] (-) TimerEvent: {}
+[34.197214] (-) TimerEvent: {}
+[34.298066] (-) TimerEvent: {}
+[34.398845] (-) TimerEvent: {}
+[34.499822] (-) TimerEvent: {}
+[34.600777] (-) TimerEvent: {}
+[34.701556] (-) TimerEvent: {}
+[34.802462] (-) TimerEvent: {}
+[34.903305] (-) TimerEvent: {}
+[35.004131] (-) TimerEvent: {}
+[35.104940] (-) TimerEvent: {}
+[35.205825] (-) TimerEvent: {}
+[35.306799] (-) TimerEvent: {}
+[35.407642] (-) TimerEvent: {}
+[35.508509] (-) TimerEvent: {}
+[35.609269] (-) TimerEvent: {}
+[35.710048] (-) TimerEvent: {}
+[35.811003] (-) TimerEvent: {}
+[35.912139] (-) TimerEvent: {}
+[36.013466] (-) TimerEvent: {}
+[36.114600] (-) TimerEvent: {}
+[36.215681] (-) TimerEvent: {}
+[36.316771] (-) TimerEvent: {}
+[36.417788] (-) TimerEvent: {}
+[36.520328] (-) TimerEvent: {}
+[36.621089] (-) TimerEvent: {}
+[36.721953] (-) TimerEvent: {}
+[36.822741] (-) TimerEvent: {}
+[36.923524] (-) TimerEvent: {}
+[37.024381] (-) TimerEvent: {}
+[37.125175] (-) TimerEvent: {}
+[37.226074] (-) TimerEvent: {}
+[37.326967] (-) TimerEvent: {}
+[37.427838] (-) TimerEvent: {}
+[37.528661] (-) TimerEvent: {}
+[37.629511] (-) TimerEvent: {}
+[37.730478] (-) TimerEvent: {}
+[37.831743] (-) TimerEvent: {}
+[37.932823] (-) TimerEvent: {}
+[38.034930] (-) TimerEvent: {}
+[38.136076] (-) TimerEvent: {}
+[38.237089] (-) TimerEvent: {}
+[38.338042] (-) TimerEvent: {}
+[38.439053] (-) TimerEvent: {}
+[38.540744] (-) TimerEvent: {}
+[38.642955] (-) TimerEvent: {}
+[38.744029] (-) TimerEvent: {}
+[38.845330] (-) TimerEvent: {}
+[38.946197] (-) TimerEvent: {}
+[39.047624] (-) TimerEvent: {}
+[39.148574] (-) TimerEvent: {}
+[39.249411] (-) TimerEvent: {}
+[39.350320] (-) TimerEvent: {}
+[39.451166] (-) TimerEvent: {}
+[39.552473] (-) TimerEvent: {}
+[39.653384] (-) TimerEvent: {}
+[39.754725] (-) TimerEvent: {}
+[39.855625] (-) TimerEvent: {}
+[39.956459] (-) TimerEvent: {}
+[40.057239] (-) TimerEvent: {}
+[40.158211] (-) TimerEvent: {}
+[40.259417] (-) TimerEvent: {}
+[40.360448] (-) TimerEvent: {}
+[40.461509] (-) TimerEvent: {}
+[40.562740] (-) TimerEvent: {}
+[40.664016] (-) TimerEvent: {}
+[40.765515] (-) TimerEvent: {}
+[40.866565] (-) TimerEvent: {}
+[40.967538] (-) TimerEvent: {}
+[41.068493] (-) TimerEvent: {}
+[41.169389] (-) TimerEvent: {}
+[41.270951] (-) TimerEvent: {}
+[41.372301] (-) TimerEvent: {}
+[41.473654] (-) TimerEvent: {}
+[41.574904] (-) TimerEvent: {}
+[41.675693] (-) TimerEvent: {}
+[41.776472] (-) TimerEvent: {}
+[41.877355] (-) TimerEvent: {}
+[41.978229] (-) TimerEvent: {}
+[42.079028] (-) TimerEvent: {}
+[42.179810] (-) TimerEvent: {}
+[42.280687] (-) TimerEvent: {}
+[42.381474] (-) TimerEvent: {}
+[42.482284] (-) TimerEvent: {}
+[42.583073] (-) TimerEvent: {}
+[42.683963] (-) TimerEvent: {}
+[42.785254] (-) TimerEvent: {}
+[42.886431] (-) TimerEvent: {}
+[42.987451] (-) TimerEvent: {}
+[43.088576] (-) TimerEvent: {}
+[43.189730] (-) TimerEvent: {}
+[43.290807] (-) TimerEvent: {}
+[43.391966] (-) TimerEvent: {}
+[43.492770] (-) TimerEvent: {}
+[43.595037] (-) TimerEvent: {}
+[43.697393] (-) TimerEvent: {}
+[43.798607] (-) TimerEvent: {}
+[43.899783] (-) TimerEvent: {}
+[44.000669] (-) TimerEvent: {}
+[44.101537] (-) TimerEvent: {}
+[44.202487] (-) TimerEvent: {}
+[44.303455] (-) TimerEvent: {}
+[44.404251] (-) TimerEvent: {}
+[44.505165] (-) TimerEvent: {}
+[44.606049] (-) TimerEvent: {}
+[44.706886] (-) TimerEvent: {}
+[44.807776] (-) TimerEvent: {}
+[44.908648] (-) TimerEvent: {}
+[45.009502] (-) TimerEvent: {}
+[45.110326] (-) TimerEvent: {}
+[45.211118] (-) TimerEvent: {}
+[45.312032] (-) TimerEvent: {}
+[45.413875] (-) TimerEvent: {}
+[45.514725] (-) TimerEvent: {}
+[45.615656] (-) TimerEvent: {}
+[45.716560] (-) TimerEvent: {}
+[45.821134] (-) TimerEvent: {}
+[45.921960] (-) TimerEvent: {}
+[46.022846] (-) TimerEvent: {}
+[46.124028] (-) TimerEvent: {}
+[46.225378] (-) TimerEvent: {}
+[46.326415] (-) TimerEvent: {}
+[46.427126] (-) TimerEvent: {}
+[46.527893] (-) TimerEvent: {}
+[46.628770] (-) TimerEvent: {}
+[46.729555] (-) TimerEvent: {}
+[46.830419] (-) TimerEvent: {}
+[46.931165] (-) TimerEvent: {}
+[47.031924] (-) TimerEvent: {}
+[47.132941] (-) TimerEvent: {}
+[47.233684] (-) TimerEvent: {}
+[47.334452] (-) TimerEvent: {}
+[47.435560] (-) TimerEvent: {}
+[47.536493] (-) TimerEvent: {}
+[47.637302] (-) TimerEvent: {}
+[47.738061] (-) TimerEvent: {}
+[47.838861] (-) TimerEvent: {}
+[47.939916] (-) TimerEvent: {}
+[48.041139] (-) TimerEvent: {}
+[48.142001] (-) TimerEvent: {}
+[48.242894] (-) TimerEvent: {}
+[48.343837] (-) TimerEvent: {}
+[48.445088] (-) TimerEvent: {}
+[48.546617] (-) TimerEvent: {}
+[48.647673] (-) TimerEvent: {}
+[48.687116] (steer_closed_loop) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable steer_closed_loop_node\x1b[0m\n'}
+[48.748008] (-) TimerEvent: {}
+[48.848811] (-) TimerEvent: {}
+[48.949670] (-) TimerEvent: {}
+[49.050672] (-) TimerEvent: {}
+[49.151714] (-) TimerEvent: {}
+[49.252976] (-) TimerEvent: {}
+[49.354161] (-) TimerEvent: {}
+[49.455763] (-) TimerEvent: {}
+[49.556920] (-) TimerEvent: {}
+[49.657731] (-) TimerEvent: {}
+[49.758624] (-) TimerEvent: {}
+[49.859439] (-) TimerEvent: {}
+[49.960210] (-) TimerEvent: {}
+[50.061148] (-) TimerEvent: {}
+[50.162399] (-) TimerEvent: {}
+[50.263202] (-) TimerEvent: {}
+[50.364265] (-) TimerEvent: {}
+[50.465173] (-) TimerEvent: {}
+[50.565933] (-) TimerEvent: {}
+[50.628567] (steer_closed_loop) StdoutLine: {'line': b'[100%] Built target steer_closed_loop_node\n'}
+[50.666063] (-) TimerEvent: {}
+[50.679811] (steer_closed_loop) CommandEnded: {'returncode': 0}
+[50.685067] (steer_closed_loop) JobProgress: {'identifier': 'steer_closed_loop', 'progress': 'install'}
+[50.685255] (steer_closed_loop) Command: {'cmd': ['/usr/bin/cmake', '--install', '/root/GZ_DiNiu/build/steer_closed_loop'], 'cwd': '/root/GZ_DiNiu/build/steer_closed_loop', 'env': OrderedDict([('PYTHON_BASIC_REPL', '1'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'zh_CN:zh'), ('USER', 'root'), ('SSH_CLIENT', '172.21.21.71 40168 22'), ('XDG_SESSION_TYPE', 'tty'), ('GIT_ASKPASS', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('BROWSER', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/bin/helpers/browser.sh'), ('MOTD_SHOWN', 'pam'), ('HOME', '/root'), ('TERM_PROGRAM_VERSION', '1.109.5'), ('VSCODE_IPC_HOOK_CLI', '/run/user/0/vscode-ipc-edf42b23-7390-40d8-9037-d2a05e579058.sock'), ('ROS_PYTHON_VERSION', '3'), ('VSCODE_GIT_ASKPASS_MAIN', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/node'), ('SSL_CERT_FILE', '/usr/lib/ssl/certs/ca-certificates.crt'), ('PYDEVD_DISABLE_FILE_VALIDATION', '1'), ('BUNDLED_DEBUGPY_PATH', '/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/bundled/libs/debugpy'), ('VSCODE_PYTHON_AUTOACTIVATE_GUARD', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/0/bus'), ('COLORTERM', 'truecolor'), ('COLCON_PREFIX_PATH', '/root/GZ_DiNiu/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'root'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm-256color'), ('XDG_SESSION_ID', '4'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/root/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/root/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/root/.vscode-server/cli/servers/Stable-072586267e68ece9a47aa43f8c108e0dcbf44622/server/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/bundled/scripts/noConfigScripts'), ('XDG_RUNTIME_DIR', '/run/user/0'), ('SSL_CERT_DIR', '/usr/lib/ssl/certs'), ('VSCODE_DEBUGPY_ADAPTER_ENDPOINTS', '/root/.vscode-server/extensions/ms-python.debugpy-2025.18.0/.noConfigDebugAdapterEndpoints/endpoint-e8455e4bc5ae7857.txt'), ('LANG', 'zh_CN.UTF-8'), ('PYTHONSTARTUP', '/root/.vscode-server/data/User/workspaceStorage/e27fd8106bbe855e3903281f63733cdf/ms-python.python/pythonrc.py'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/0/vscode-git-074a3076fc.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/root/GZ_DiNiu/install/encoder_vel:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/root/GZ_DiNiu/build/steer_closed_loop'), ('SSH_CONNECTION', '172.21.21.71 40168 172.21.21.105 22'), ('PYTHONPATH', '/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/encoder_vel:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble')]), 'shell': False}
+[50.713430] (steer_closed_loop) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[50.716004] (steer_closed_loop) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/steer_closed_loop/lib/steer_closed_loop/steer_closed_loop_node\n'}
+[50.746777] (steer_closed_loop) StdoutLine: {'line': b'-- Set runtime path of "/root/GZ_DiNiu/install/steer_closed_loop/lib/steer_closed_loop/steer_closed_loop_node" to ""\n'}
+[50.747792] (steer_closed_loop) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/ament_index/resource_index/package_run_dependencies/steer_closed_loop\n'}
+[50.748393] (steer_closed_loop) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/ament_index/resource_index/parent_prefix_path/steer_closed_loop\n'}
+[50.750800] (steer_closed_loop) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/ament_prefix_path.sh\n'}
+[50.751524] (steer_closed_loop) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/ament_prefix_path.dsv\n'}
+[50.752265] (steer_closed_loop) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/path.sh\n'}
+[50.752779] (steer_closed_loop) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/path.dsv\n'}
+[50.753179] (steer_closed_loop) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.bash\n'}
+[50.754203] (steer_closed_loop) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.sh\n'}
+[50.756295] (steer_closed_loop) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.zsh\n'}
+[50.757006] (steer_closed_loop) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.dsv\n'}
+[50.757778] (steer_closed_loop) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.dsv\n'}
+[50.760143] (steer_closed_loop) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/ament_index/resource_index/packages/steer_closed_loop\n'}
+[50.766032] (steer_closed_loop) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/cmake/steer_closed_loopConfig.cmake\n'}
+[50.766759] (-) TimerEvent: {}
+[50.767457] (steer_closed_loop) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/cmake/steer_closed_loopConfig-version.cmake\n'}
+[50.768258] (steer_closed_loop) StdoutLine: {'line': b'-- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.xml\n'}
+[50.768851] (steer_closed_loop) CommandEnded: {'returncode': 0}
+[50.848638] (steer_closed_loop) JobEnded: {'identifier': 'steer_closed_loop', 'rc': 0}
+[50.852773] (-) EventReactorShutdown: {}
