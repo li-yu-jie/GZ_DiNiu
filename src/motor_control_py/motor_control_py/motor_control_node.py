@@ -199,13 +199,7 @@ class MotorControlNode(Node):
         self.drive_pid.update_feedback(msg.data)
 
     def control_step(self):
-        if self.cmd_timeout_s > 0.0 and (monotonic() - self.last_cmd_time) > self.cmd_timeout_s:
-            self.drive_pid.update_target(0.0)
-            if not self.timed_out:
-                self.get_logger().warn(
-                    f'cmd_vel timeout ({self.cmd_timeout_s:.2f}s): target_speed forced to 0'
-                )
-                self.timed_out = True
+        # Timeout protection disabled: do not force target_speed to 0 on cmd_vel timeout.
 
         now = self.get_clock().now()
         drive_result = self.drive_pid.step(now)
