@@ -1,0 +1,33 @@
+[7.004s] Invoking command in '/root/GZ_DiNiu/src/imu_bno08x': PYTHONPATH=/root/GZ_DiNiu/build/imu_bno08x/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/imu_bno08x build --build-base /root/GZ_DiNiu/build/imu_bno08x/build install --record /root/GZ_DiNiu/build/imu_bno08x/install.log --single-version-externally-managed install_data
+[8.795s] Traceback (most recent call last):
+[8.797s]   File "/root/GZ_DiNiu/src/imu_bno08x/setup.py", line 1, in <module>
+[8.800s]     from setuptools import setup
+[8.818s]   File "/usr/lib/python3/dist-packages/setuptools/__init__.py", line 16, in <module>
+[8.822s]     import setuptools.version
+[8.825s]   File "/usr/lib/python3/dist-packages/setuptools/version.py", line 1, in <module>
+[8.832s]     import pkg_resources
+[8.834s]   File "/usr/lib/python3/dist-packages/pkg_resources/__init__.py", line 3267, in <module>
+[8.882s]     def _initialize_master_working_set():
+[8.888s]   File "/usr/lib/python3/dist-packages/pkg_resources/__init__.py", line 3241, in _call_aside
+[8.894s]     f(*args, **kwargs)
+[8.902s]   File "/usr/lib/python3/dist-packages/pkg_resources/__init__.py", line 3279, in _initialize_master_working_set
+[8.909s]     working_set = WorkingSet._build_master()
+[8.916s]   File "/usr/lib/python3/dist-packages/pkg_resources/__init__.py", line 564, in _build_master
+[8.919s]     ws = cls()
+[8.922s]   File "/usr/lib/python3/dist-packages/pkg_resources/__init__.py", line 557, in __init__
+[8.925s]     self.add_entry(entry)
+[8.934s]   File "/usr/lib/python3/dist-packages/pkg_resources/__init__.py", line 613, in add_entry
+[8.937s]     for dist in find_distributions(entry, True):
+[8.942s]   File "/usr/lib/python3/dist-packages/pkg_resources/__init__.py", line 2077, in find_on_path
+[8.956s]     for dist in factory(fullpath):
+[8.963s]   File "/usr/lib/python3/dist-packages/pkg_resources/__init__.py", line 2142, in distributions_from_metadata
+[8.973s]     yield Distribution.from_location(
+[8.977s]   File "/usr/lib/python3/dist-packages/pkg_resources/__init__.py", line 2603, in from_location
+[8.980s]     return cls(
+[8.982s]   File "/usr/lib/python3/dist-packages/pkg_resources/__init__.py", line 2584, in __init__
+[8.986s]     self._version = safe_version(version)
+[8.988s]   File "/usr/lib/python3/dist-packages/pkg_resources/__init__.py", line 1323, in safe_version
+[8.990s]     return str(packaging.version.Version(version))
+[8.994s]   File "/usr/lib/python3/dist-packages/pkg_resources/_vendor/packaging/version.py", line 264, in __init__
+[8.998s]     match = self._regex.search(version)
+[9.000s] KeyboardInterrupt

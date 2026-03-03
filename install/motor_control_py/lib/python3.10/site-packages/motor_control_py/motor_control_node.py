@@ -97,7 +97,7 @@ class PidController:
 class MotorControlNode(Node):
     def __init__(self):
         super().__init__('motor_control_node')
-
+        #前进后退电机
         self.pwm_gpio = self.declare_parameter('pwm_gpio', 18).value
         self.dir_gpio = self.declare_parameter('dir_gpio', 26).value
         self.pwm_freq = self.declare_parameter('pwm_freq_hz', 100000).value
@@ -113,15 +113,15 @@ class MotorControlNode(Node):
             self.declare_parameter('steer_rate_scale_deg_per_rad_s', 30.0).value
         )
 
-        self.kp = self.declare_parameter('kp', 180.0).value
-        self.ki = self.declare_parameter('ki', 0.002).value
+        self.kp = self.declare_parameter('kp', 95.0).value
+        self.ki = self.declare_parameter('ki', 0.55).value
         self.kd = self.declare_parameter('kd', 0.0).value
-        self.i_max = self.declare_parameter('i_max', 0.5).value
+        self.i_max = self.declare_parameter('i_max', 70.0).value
         self.control_hz = self.declare_parameter('control_hz', 50.0).value
         self.max_pwm_percent = self.declare_parameter('max_pwm_percent', 100.0).value
         self.filter_alpha = self.declare_parameter('filter_alpha', 0.05).value
-        self.deadband = self.declare_parameter('deadband', 0.03).value
-        self.max_pwm_step = self.declare_parameter('max_pwm_step', 3.3).value
+        self.deadband = self.declare_parameter('deadband', 0.01).value
+        self.max_pwm_step = self.declare_parameter('max_pwm_step', 100).value
 
         if self.control_hz <= 0.0:
             raise RuntimeError('control_hz must be > 0')
