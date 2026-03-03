@@ -1,0 +1,306 @@
+[0.521s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.521s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=4, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0xffffa9e3f9d0>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffffaa020e50>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffffaa020e50>>)
+[1.618s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[1.618s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[1.619s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[1.619s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[1.619s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[1.619s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[1.620s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/root/GZ_DiNiu'
+[1.620s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[1.620s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[1.621s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[1.621s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[1.621s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[1.621s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[1.621s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[1.622s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[1.622s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[1.672s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[1.672s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[1.672s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[1.673s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[1.673s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[1.674s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[1.675s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[1.675s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[1.676s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[1.676s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[1.676s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[1.678s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[1.678s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[1.678s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[1.679s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[1.680s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[1.680s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[1.680s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[1.680s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[1.680s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[1.681s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[1.681s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[1.681s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[1.681s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[1.681s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[1.682s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[1.682s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[1.682s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[1.682s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_vel) by extensions ['ignore', 'ignore_ament_install']
+[1.683s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_vel) by extension 'ignore'
+[1.683s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_vel) by extension 'ignore_ament_install'
+[1.683s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_vel) by extensions ['colcon_pkg']
+[1.683s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_vel) by extension 'colcon_pkg'
+[1.684s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_vel) by extensions ['colcon_meta']
+[1.684s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_vel) by extension 'colcon_meta'
+[1.684s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_vel) by extensions ['ros']
+[1.684s] Level 1:colcon.colcon_core.package_identification:_identify(src/encoder_vel) by extension 'ros'
+[1.696s] DEBUG:colcon.colcon_core.package_identification:Package 'src/encoder_vel' with type 'ros.ament_cmake' and name 'encoder_vel'
+[1.697s] Level 1:colcon.colcon_core.package_identification:_identify(src/imu_bno08x) by extensions ['ignore', 'ignore_ament_install']
+[1.697s] Level 1:colcon.colcon_core.package_identification:_identify(src/imu_bno08x) by extension 'ignore'
+[1.698s] Level 1:colcon.colcon_core.package_identification:_identify(src/imu_bno08x) by extension 'ignore_ament_install'
+[1.698s] Level 1:colcon.colcon_core.package_identification:_identify(src/imu_bno08x) by extensions ['colcon_pkg']
+[1.699s] Level 1:colcon.colcon_core.package_identification:_identify(src/imu_bno08x) by extension 'colcon_pkg'
+[1.699s] Level 1:colcon.colcon_core.package_identification:_identify(src/imu_bno08x) by extensions ['colcon_meta']
+[1.699s] Level 1:colcon.colcon_core.package_identification:_identify(src/imu_bno08x) by extension 'colcon_meta'
+[1.700s] Level 1:colcon.colcon_core.package_identification:_identify(src/imu_bno08x) by extensions ['ros']
+[1.700s] Level 1:colcon.colcon_core.package_identification:_identify(src/imu_bno08x) by extension 'ros'
+[1.703s] DEBUG:colcon.colcon_core.package_identification:Package 'src/imu_bno08x' with type 'ros.ament_python' and name 'imu_bno08x'
+[1.704s] Level 1:colcon.colcon_core.package_identification:_identify(src/motor_control_py) by extensions ['ignore', 'ignore_ament_install']
+[1.705s] Level 1:colcon.colcon_core.package_identification:_identify(src/motor_control_py) by extension 'ignore'
+[1.705s] Level 1:colcon.colcon_core.package_identification:_identify(src/motor_control_py) by extension 'ignore_ament_install'
+[1.705s] Level 1:colcon.colcon_core.package_identification:_identify(src/motor_control_py) by extensions ['colcon_pkg']
+[1.705s] Level 1:colcon.colcon_core.package_identification:_identify(src/motor_control_py) by extension 'colcon_pkg'
+[1.706s] Level 1:colcon.colcon_core.package_identification:_identify(src/motor_control_py) by extensions ['colcon_meta']
+[1.706s] Level 1:colcon.colcon_core.package_identification:_identify(src/motor_control_py) by extension 'colcon_meta'
+[1.706s] Level 1:colcon.colcon_core.package_identification:_identify(src/motor_control_py) by extensions ['ros']
+[1.706s] Level 1:colcon.colcon_core.package_identification:_identify(src/motor_control_py) by extension 'ros'
+[1.708s] DEBUG:colcon.colcon_core.package_identification:Package 'src/motor_control_py' with type 'ros.ament_python' and name 'motor_control_py'
+[1.709s] Level 1:colcon.colcon_core.package_identification:_identify(src/steer_closed_loop) by extensions ['ignore', 'ignore_ament_install']
+[1.709s] Level 1:colcon.colcon_core.package_identification:_identify(src/steer_closed_loop) by extension 'ignore'
+[1.710s] Level 1:colcon.colcon_core.package_identification:_identify(src/steer_closed_loop) by extension 'ignore_ament_install'
+[1.710s] Level 1:colcon.colcon_core.package_identification:_identify(src/steer_closed_loop) by extensions ['colcon_pkg']
+[1.710s] Level 1:colcon.colcon_core.package_identification:_identify(src/steer_closed_loop) by extension 'colcon_pkg'
+[1.711s] Level 1:colcon.colcon_core.package_identification:_identify(src/steer_closed_loop) by extensions ['colcon_meta']
+[1.711s] Level 1:colcon.colcon_core.package_identification:_identify(src/steer_closed_loop) by extension 'colcon_meta'
+[1.711s] Level 1:colcon.colcon_core.package_identification:_identify(src/steer_closed_loop) by extensions ['ros']
+[1.711s] Level 1:colcon.colcon_core.package_identification:_identify(src/steer_closed_loop) by extension 'ros'
+[1.714s] DEBUG:colcon.colcon_core.package_identification:Package 'src/steer_closed_loop' with type 'ros.ament_cmake' and name 'steer_closed_loop'
+[1.714s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[1.715s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[1.715s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[1.715s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[1.715s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[1.803s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[1.803s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[1.813s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 4 installed packages in /root/GZ_DiNiu/install
+[1.822s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 272 installed packages in /opt/ros/humble
+[1.872s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[2.064s] Level 5:colcon.colcon_core.verb:set package 'encoder_vel' build argument 'cmake_args' from command line to 'None'
+[2.064s] Level 5:colcon.colcon_core.verb:set package 'encoder_vel' build argument 'cmake_target' from command line to 'None'
+[2.064s] Level 5:colcon.colcon_core.verb:set package 'encoder_vel' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[2.064s] Level 5:colcon.colcon_core.verb:set package 'encoder_vel' build argument 'cmake_clean_cache' from command line to 'False'
+[2.065s] Level 5:colcon.colcon_core.verb:set package 'encoder_vel' build argument 'cmake_clean_first' from command line to 'False'
+[2.065s] Level 5:colcon.colcon_core.verb:set package 'encoder_vel' build argument 'cmake_force_configure' from command line to 'False'
+[2.065s] Level 5:colcon.colcon_core.verb:set package 'encoder_vel' build argument 'ament_cmake_args' from command line to 'None'
+[2.065s] Level 5:colcon.colcon_core.verb:set package 'encoder_vel' build argument 'catkin_cmake_args' from command line to 'None'
+[2.065s] Level 5:colcon.colcon_core.verb:set package 'encoder_vel' build argument 'catkin_skip_building_tests' from command line to 'False'
+[2.065s] DEBUG:colcon.colcon_core.verb:Building package 'encoder_vel' with the following arguments: {'ament_cmake_args': None, 'build_base': '/root/GZ_DiNiu/build/encoder_vel', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/root/GZ_DiNiu/install/encoder_vel', 'merge_install': False, 'path': '/root/GZ_DiNiu/src/encoder_vel', 'symlink_install': False, 'test_result_base': None}
+[2.067s] Level 5:colcon.colcon_core.verb:set package 'imu_bno08x' build argument 'cmake_args' from command line to 'None'
+[2.067s] Level 5:colcon.colcon_core.verb:set package 'imu_bno08x' build argument 'cmake_target' from command line to 'None'
+[2.067s] Level 5:colcon.colcon_core.verb:set package 'imu_bno08x' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[2.067s] Level 5:colcon.colcon_core.verb:set package 'imu_bno08x' build argument 'cmake_clean_cache' from command line to 'False'
+[2.067s] Level 5:colcon.colcon_core.verb:set package 'imu_bno08x' build argument 'cmake_clean_first' from command line to 'False'
+[2.067s] Level 5:colcon.colcon_core.verb:set package 'imu_bno08x' build argument 'cmake_force_configure' from command line to 'False'
+[2.067s] Level 5:colcon.colcon_core.verb:set package 'imu_bno08x' build argument 'ament_cmake_args' from command line to 'None'
+[2.068s] Level 5:colcon.colcon_core.verb:set package 'imu_bno08x' build argument 'catkin_cmake_args' from command line to 'None'
+[2.068s] Level 5:colcon.colcon_core.verb:set package 'imu_bno08x' build argument 'catkin_skip_building_tests' from command line to 'False'
+[2.068s] DEBUG:colcon.colcon_core.verb:Building package 'imu_bno08x' with the following arguments: {'ament_cmake_args': None, 'build_base': '/root/GZ_DiNiu/build/imu_bno08x', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/root/GZ_DiNiu/install/imu_bno08x', 'merge_install': False, 'path': '/root/GZ_DiNiu/src/imu_bno08x', 'symlink_install': False, 'test_result_base': None}
+[2.069s] Level 5:colcon.colcon_core.verb:set package 'motor_control_py' build argument 'cmake_args' from command line to 'None'
+[2.070s] Level 5:colcon.colcon_core.verb:set package 'motor_control_py' build argument 'cmake_target' from command line to 'None'
+[2.070s] Level 5:colcon.colcon_core.verb:set package 'motor_control_py' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[2.070s] Level 5:colcon.colcon_core.verb:set package 'motor_control_py' build argument 'cmake_clean_cache' from command line to 'False'
+[2.070s] Level 5:colcon.colcon_core.verb:set package 'motor_control_py' build argument 'cmake_clean_first' from command line to 'False'
+[2.070s] Level 5:colcon.colcon_core.verb:set package 'motor_control_py' build argument 'cmake_force_configure' from command line to 'False'
+[2.070s] Level 5:colcon.colcon_core.verb:set package 'motor_control_py' build argument 'ament_cmake_args' from command line to 'None'
+[2.070s] Level 5:colcon.colcon_core.verb:set package 'motor_control_py' build argument 'catkin_cmake_args' from command line to 'None'
+[2.070s] Level 5:colcon.colcon_core.verb:set package 'motor_control_py' build argument 'catkin_skip_building_tests' from command line to 'False'
+[2.071s] DEBUG:colcon.colcon_core.verb:Building package 'motor_control_py' with the following arguments: {'ament_cmake_args': None, 'build_base': '/root/GZ_DiNiu/build/motor_control_py', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/root/GZ_DiNiu/install/motor_control_py', 'merge_install': False, 'path': '/root/GZ_DiNiu/src/motor_control_py', 'symlink_install': False, 'test_result_base': None}
+[2.072s] Level 5:colcon.colcon_core.verb:set package 'steer_closed_loop' build argument 'cmake_args' from command line to 'None'
+[2.073s] Level 5:colcon.colcon_core.verb:set package 'steer_closed_loop' build argument 'cmake_target' from command line to 'None'
+[2.073s] Level 5:colcon.colcon_core.verb:set package 'steer_closed_loop' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[2.073s] Level 5:colcon.colcon_core.verb:set package 'steer_closed_loop' build argument 'cmake_clean_cache' from command line to 'False'
+[2.073s] Level 5:colcon.colcon_core.verb:set package 'steer_closed_loop' build argument 'cmake_clean_first' from command line to 'False'
+[2.074s] Level 5:colcon.colcon_core.verb:set package 'steer_closed_loop' build argument 'cmake_force_configure' from command line to 'False'
+[2.074s] Level 5:colcon.colcon_core.verb:set package 'steer_closed_loop' build argument 'ament_cmake_args' from command line to 'None'
+[2.074s] Level 5:colcon.colcon_core.verb:set package 'steer_closed_loop' build argument 'catkin_cmake_args' from command line to 'None'
+[2.074s] Level 5:colcon.colcon_core.verb:set package 'steer_closed_loop' build argument 'catkin_skip_building_tests' from command line to 'False'
+[2.074s] DEBUG:colcon.colcon_core.verb:Building package 'steer_closed_loop' with the following arguments: {'ament_cmake_args': None, 'build_base': '/root/GZ_DiNiu/build/steer_closed_loop', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/root/GZ_DiNiu/install/steer_closed_loop', 'merge_install': False, 'path': '/root/GZ_DiNiu/src/steer_closed_loop', 'symlink_install': False, 'test_result_base': None}
+[2.075s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[2.078s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[2.080s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/root/GZ_DiNiu/src/encoder_vel' with build type 'ament_cmake'
+[2.080s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/root/GZ_DiNiu/src/encoder_vel'
+[2.091s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[2.092s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[2.092s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.114s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/root/GZ_DiNiu/src/imu_bno08x' with build type 'ament_python'
+[2.115s] Level 1:colcon.colcon_core.shell:create_environment_hook('imu_bno08x', 'ament_prefix_path')
+[2.117s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/imu_bno08x/share/imu_bno08x/hook/ament_prefix_path.ps1'
+[2.122s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/root/GZ_DiNiu/install/imu_bno08x/share/imu_bno08x/hook/ament_prefix_path.dsv'
+[2.126s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/imu_bno08x/share/imu_bno08x/hook/ament_prefix_path.sh'
+[2.130s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[2.130s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.150s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/root/GZ_DiNiu/src/motor_control_py' with build type 'ament_python'
+[2.152s] Level 1:colcon.colcon_core.shell:create_environment_hook('motor_control_py', 'ament_prefix_path')
+[2.153s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/hook/ament_prefix_path.ps1'
+[2.156s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/hook/ament_prefix_path.dsv'
+[2.159s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/hook/ament_prefix_path.sh'
+[2.163s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[2.163s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.183s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/root/GZ_DiNiu/src/steer_closed_loop' with build type 'ament_cmake'
+[2.183s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/root/GZ_DiNiu/src/steer_closed_loop'
+[2.185s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[2.185s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.229s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/root/GZ_DiNiu/build/encoder_vel': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --build /root/GZ_DiNiu/build/encoder_vel -- -j4 -l4
+[3.635s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/root/GZ_DiNiu/src/imu_bno08x'
+[3.636s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[3.637s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[5.072s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/root/GZ_DiNiu/src/motor_control_py'
+[5.073s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[5.074s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[5.125s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/root/GZ_DiNiu/build/steer_closed_loop': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --build /root/GZ_DiNiu/build/steer_closed_loop -- -j4 -l4
+[5.128s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/root/GZ_DiNiu/build/encoder_vel' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --build /root/GZ_DiNiu/build/encoder_vel -- -j4 -l4
+[5.172s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/root/GZ_DiNiu/build/encoder_vel': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --install /root/GZ_DiNiu/build/encoder_vel
+[5.272s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(encoder_vel)
+[5.286s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/root/GZ_DiNiu/build/encoder_vel' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --install /root/GZ_DiNiu/build/encoder_vel
+[5.294s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/encoder_vel' for CMake module files
+[5.297s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/encoder_vel' for CMake config files
+[5.299s] Level 1:colcon.colcon_core.shell:create_environment_hook('encoder_vel', 'cmake_prefix_path')
+[5.301s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/hook/cmake_prefix_path.ps1'
+[5.306s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/hook/cmake_prefix_path.dsv'
+[5.309s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/hook/cmake_prefix_path.sh'
+[5.316s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/encoder_vel/lib'
+[5.318s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/encoder_vel/bin'
+[5.319s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/encoder_vel/lib/pkgconfig/encoder_vel.pc'
+[5.321s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/encoder_vel/lib/python3.10/site-packages'
+[5.323s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/encoder_vel/bin'
+[5.324s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.ps1'
+[5.335s] INFO:colcon.colcon_core.shell:Creating package descriptor '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.dsv'
+[5.339s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.sh'
+[5.344s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.bash'
+[5.350s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.zsh'
+[5.355s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/root/GZ_DiNiu/install/encoder_vel/share/colcon-core/packages/encoder_vel)
+[5.360s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(encoder_vel)
+[5.361s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/encoder_vel' for CMake module files
+[5.364s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/encoder_vel' for CMake config files
+[5.367s] Level 1:colcon.colcon_core.shell:create_environment_hook('encoder_vel', 'cmake_prefix_path')
+[5.368s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/hook/cmake_prefix_path.ps1'
+[5.371s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/hook/cmake_prefix_path.dsv'
+[5.376s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/hook/cmake_prefix_path.sh'
+[5.380s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/encoder_vel/lib'
+[5.381s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/encoder_vel/bin'
+[5.382s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/encoder_vel/lib/pkgconfig/encoder_vel.pc'
+[5.383s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/encoder_vel/lib/python3.10/site-packages'
+[5.385s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/encoder_vel/bin'
+[5.387s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.ps1'
+[5.390s] INFO:colcon.colcon_core.shell:Creating package descriptor '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.dsv'
+[5.401s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.sh'
+[5.404s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.bash'
+[5.408s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/encoder_vel/share/encoder_vel/package.zsh'
+[5.411s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/root/GZ_DiNiu/install/encoder_vel/share/colcon-core/packages/encoder_vel)
+[5.670s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/root/GZ_DiNiu/build/steer_closed_loop' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --build /root/GZ_DiNiu/build/steer_closed_loop -- -j4 -l4
+[5.679s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/root/GZ_DiNiu/build/steer_closed_loop': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --install /root/GZ_DiNiu/build/steer_closed_loop
+[5.782s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(steer_closed_loop)
+[5.784s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/steer_closed_loop' for CMake module files
+[5.786s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/root/GZ_DiNiu/build/steer_closed_loop' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --install /root/GZ_DiNiu/build/steer_closed_loop
+[5.790s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/steer_closed_loop' for CMake config files
+[5.794s] Level 1:colcon.colcon_core.shell:create_environment_hook('steer_closed_loop', 'cmake_prefix_path')
+[5.796s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/hook/cmake_prefix_path.ps1'
+[5.801s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/hook/cmake_prefix_path.dsv'
+[5.805s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/hook/cmake_prefix_path.sh'
+[5.810s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/steer_closed_loop/lib'
+[5.812s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/steer_closed_loop/bin'
+[5.813s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/steer_closed_loop/lib/pkgconfig/steer_closed_loop.pc'
+[5.815s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/steer_closed_loop/lib/python3.10/site-packages'
+[5.817s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/steer_closed_loop/bin'
+[5.820s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.ps1'
+[5.825s] INFO:colcon.colcon_core.shell:Creating package descriptor '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.dsv'
+[5.831s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.sh'
+[5.836s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.bash'
+[5.840s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.zsh'
+[5.845s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/root/GZ_DiNiu/install/steer_closed_loop/share/colcon-core/packages/steer_closed_loop)
+[5.850s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(steer_closed_loop)
+[5.852s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/steer_closed_loop' for CMake module files
+[5.856s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/steer_closed_loop' for CMake config files
+[5.861s] Level 1:colcon.colcon_core.shell:create_environment_hook('steer_closed_loop', 'cmake_prefix_path')
+[5.863s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/hook/cmake_prefix_path.ps1'
+[5.868s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/hook/cmake_prefix_path.dsv'
+[5.872s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/hook/cmake_prefix_path.sh'
+[5.878s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/steer_closed_loop/lib'
+[5.879s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/steer_closed_loop/bin'
+[5.880s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/steer_closed_loop/lib/pkgconfig/steer_closed_loop.pc'
+[5.882s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/steer_closed_loop/lib/python3.10/site-packages'
+[5.884s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/steer_closed_loop/bin'
+[5.887s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.ps1'
+[5.892s] INFO:colcon.colcon_core.shell:Creating package descriptor '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.dsv'
+[5.897s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.sh'
+[5.902s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.bash'
+[5.906s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.zsh'
+[5.911s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/root/GZ_DiNiu/install/steer_closed_loop/share/colcon-core/packages/steer_closed_loop)
+[7.867s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/root/GZ_DiNiu/src/motor_control_py': PYTHONPATH=/root/GZ_DiNiu/build/motor_control_py/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/motor_control_py build --build-base /root/GZ_DiNiu/build/motor_control_py/build install --record /root/GZ_DiNiu/build/motor_control_py/install.log --single-version-externally-managed install_data
+[7.881s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/root/GZ_DiNiu/src/imu_bno08x': PYTHONPATH=/root/GZ_DiNiu/build/imu_bno08x/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/imu_bno08x build --build-base /root/GZ_DiNiu/build/imu_bno08x/build install --record /root/GZ_DiNiu/build/imu_bno08x/install.log --single-version-externally-managed install_data
+[9.622s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/motor_control_py' for CMake module files
+[9.629s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/motor_control_py' for CMake config files
+[9.626s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/root/GZ_DiNiu/src/motor_control_py' returned '0': PYTHONPATH=/root/GZ_DiNiu/build/motor_control_py/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/motor_control_py build --build-base /root/GZ_DiNiu/build/motor_control_py/build install --record /root/GZ_DiNiu/build/motor_control_py/install.log --single-version-externally-managed install_data
+[9.639s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/motor_control_py/lib'
+[9.640s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/motor_control_py/bin'
+[9.641s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/motor_control_py/lib/pkgconfig/motor_control_py.pc'
+[9.643s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages'
+[9.644s] Level 1:colcon.colcon_core.shell:create_environment_hook('motor_control_py', 'pythonpath')
+[9.646s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/hook/pythonpath.ps1'
+[9.657s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/hook/pythonpath.dsv'
+[9.663s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/hook/pythonpath.sh'
+[9.670s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/motor_control_py/bin'
+[9.671s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(motor_control_py)
+[9.674s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/package.ps1'
+[9.691s] INFO:colcon.colcon_core.shell:Creating package descriptor '/root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/package.dsv'
+[9.697s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/package.sh'
+[9.702s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/package.bash'
+[9.706s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/package.zsh'
+[9.711s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/root/GZ_DiNiu/install/motor_control_py/share/colcon-core/packages/motor_control_py)
+[9.728s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/imu_bno08x' for CMake module files
+[9.730s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/root/GZ_DiNiu/src/imu_bno08x' returned '0': PYTHONPATH=/root/GZ_DiNiu/build/imu_bno08x/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/imu_bno08x build --build-base /root/GZ_DiNiu/build/imu_bno08x/build install --record /root/GZ_DiNiu/build/imu_bno08x/install.log --single-version-externally-managed install_data
+[9.732s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/imu_bno08x' for CMake config files
+[9.737s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/imu_bno08x/lib'
+[9.738s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/imu_bno08x/bin'
+[9.739s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/imu_bno08x/lib/pkgconfig/imu_bno08x.pc'
+[9.740s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages'
+[9.740s] Level 1:colcon.colcon_core.shell:create_environment_hook('imu_bno08x', 'pythonpath')
+[9.741s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/imu_bno08x/share/imu_bno08x/hook/pythonpath.ps1'
+[9.760s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/root/GZ_DiNiu/install/imu_bno08x/share/imu_bno08x/hook/pythonpath.dsv'
+[9.763s] INFO:colcon.colcon_core.shell:Creating environment hook '/root/GZ_DiNiu/install/imu_bno08x/share/imu_bno08x/hook/pythonpath.sh'
+[9.767s] Level 1:colcon.colcon_core.environment:checking '/root/GZ_DiNiu/install/imu_bno08x/bin'
+[9.768s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(imu_bno08x)
+[9.770s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/imu_bno08x/share/imu_bno08x/package.ps1'
+[9.775s] INFO:colcon.colcon_core.shell:Creating package descriptor '/root/GZ_DiNiu/install/imu_bno08x/share/imu_bno08x/package.dsv'
+[9.778s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/imu_bno08x/share/imu_bno08x/package.sh'
+[9.781s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/imu_bno08x/share/imu_bno08x/package.bash'
+[9.783s] INFO:colcon.colcon_core.shell:Creating package script '/root/GZ_DiNiu/install/imu_bno08x/share/imu_bno08x/package.zsh'
+[9.834s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/root/GZ_DiNiu/install/imu_bno08x/share/colcon-core/packages/imu_bno08x)
+[9.835s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[9.838s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[9.839s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[9.840s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[9.881s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[9.881s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[9.881s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[9.887s] DEBUG:colcon.colcon_notification.desktop_notification.notify2:Failed to initialize notify2: org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.Notifications was not provided by any .service files
+[9.888s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[9.889s] INFO:colcon.colcon_core.shell:Creating prefix script '/root/GZ_DiNiu/install/local_setup.ps1'
+[9.903s] INFO:colcon.colcon_core.shell:Creating prefix util module '/root/GZ_DiNiu/install/_local_setup_util_ps1.py'
+[9.924s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/root/GZ_DiNiu/install/setup.ps1'
+[9.932s] INFO:colcon.colcon_core.shell:Creating prefix script '/root/GZ_DiNiu/install/local_setup.sh'
+[9.940s] INFO:colcon.colcon_core.shell:Creating prefix util module '/root/GZ_DiNiu/install/_local_setup_util_sh.py'
+[9.945s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/root/GZ_DiNiu/install/setup.sh'
+[9.957s] INFO:colcon.colcon_core.shell:Creating prefix script '/root/GZ_DiNiu/install/local_setup.bash'
+[9.964s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/root/GZ_DiNiu/install/setup.bash'
+[9.987s] INFO:colcon.colcon_core.shell:Creating prefix script '/root/GZ_DiNiu/install/local_setup.zsh'
+[9.993s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/root/GZ_DiNiu/install/setup.zsh'

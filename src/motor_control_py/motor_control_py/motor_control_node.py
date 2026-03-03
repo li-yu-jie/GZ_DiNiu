@@ -113,15 +113,15 @@ class MotorControlNode(Node):
             self.declare_parameter('steer_rate_scale_deg_per_rad_s', 30.0).value
         )
 
-        self.kp = self.declare_parameter('kp', 85.0).value
-        self.ki = self.declare_parameter('ki', 20.0).value
-        self.kd = self.declare_parameter('kd', 2.0).value
-        self.i_max = self.declare_parameter('i_max', 50.0).value
+        self.kp = self.declare_parameter('kp', 180.0).value
+        self.ki = self.declare_parameter('ki', 0.002).value
+        self.kd = self.declare_parameter('kd', 0.0).value
+        self.i_max = self.declare_parameter('i_max', 0.5).value
         self.control_hz = self.declare_parameter('control_hz', 50.0).value
         self.max_pwm_percent = self.declare_parameter('max_pwm_percent', 100.0).value
         self.filter_alpha = self.declare_parameter('filter_alpha', 0.05).value
         self.deadband = self.declare_parameter('deadband', 0.03).value
-        self.max_pwm_step = self.declare_parameter('max_pwm_step', 1.5).value
+        self.max_pwm_step = self.declare_parameter('max_pwm_step', 3.3).value
 
         if self.control_hz <= 0.0:
             raise RuntimeError('control_hz must be > 0')

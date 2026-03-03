@@ -127,6 +127,9 @@ sudo systemctl enable --now ros2-motor-control.service
 ```
 
 常用管理命令：
+# 编译指令
+colcon build
+sudo systemctl restart ros2-motor-control.service
 ```bash
 # 查看状态
 systemctl status pigpiod.service --no-pager -l

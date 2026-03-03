@@ -1,0 +1,25 @@
+[5.493s] Invoking command in '/root/GZ_DiNiu/src/motor_control_py': PYTHONPATH=/root/GZ_DiNiu/build/motor_control_py/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/motor_control_py build --build-base /root/GZ_DiNiu/build/motor_control_py/build install --record /root/GZ_DiNiu/build/motor_control_py/install.log --single-version-externally-managed install_data
+[6.989s] running egg_info
+[6.994s] writing ../../build/motor_control_py/motor_control_py.egg-info/PKG-INFO
+[6.995s] writing dependency_links to ../../build/motor_control_py/motor_control_py.egg-info/dependency_links.txt
+[6.995s] writing entry points to ../../build/motor_control_py/motor_control_py.egg-info/entry_points.txt
+[6.996s] writing requirements to ../../build/motor_control_py/motor_control_py.egg-info/requires.txt
+[7.002s] writing top-level names to ../../build/motor_control_py/motor_control_py.egg-info/top_level.txt
+[7.007s] reading manifest file '../../build/motor_control_py/motor_control_py.egg-info/SOURCES.txt'
+[7.015s] writing manifest file '../../build/motor_control_py/motor_control_py.egg-info/SOURCES.txt'
+[7.019s] running build
+[7.020s] running build_py
+[7.020s] copying motor_control_py/steer_control_node.py -> /root/GZ_DiNiu/build/motor_control_py/build/lib/motor_control_py
+[7.030s] running install
+[7.031s] running install_lib
+[7.038s] copying /root/GZ_DiNiu/build/motor_control_py/build/lib/motor_control_py/steer_control_node.py -> /root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages/motor_control_py
+[7.039s] byte-compiling /root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages/motor_control_py/steer_control_node.py to steer_control_node.cpython-310.pyc
+[7.048s] running install_data
+[7.052s] running install_egg_info
+[7.064s] removing '/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages/motor_control_py-0.0.1-py3.10.egg-info' (and everything under it)
+[7.065s] Copying ../../build/motor_control_py/motor_control_py.egg-info to /root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages/motor_control_py-0.0.1-py3.10.egg-info
+[7.066s] running install_scripts
+[7.202s] Installing motor_control_node script to /root/GZ_DiNiu/install/motor_control_py/lib/motor_control_py
+[7.206s] Installing steer_control_node script to /root/GZ_DiNiu/install/motor_control_py/lib/motor_control_py
+[7.214s] writing list of installed files to '/root/GZ_DiNiu/build/motor_control_py/install.log'
+[7.387s] Invoked command in '/root/GZ_DiNiu/src/motor_control_py' returned '0': PYTHONPATH=/root/GZ_DiNiu/build/motor_control_py/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/motor_control_py build --build-base /root/GZ_DiNiu/build/motor_control_py/build install --record /root/GZ_DiNiu/build/motor_control_py/install.log --single-version-externally-managed install_data

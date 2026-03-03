@@ -103,12 +103,12 @@ class SteerControlNode(Node):
         self.cmd_topic = self.declare_parameter('cmd_topic', 'target_steer').value
         self.feedback_topic = self.declare_parameter('feedback_topic', 'steer_position').value
 
-        self.kp = self.declare_parameter('kp', 60.0).value
-        self.ki = self.declare_parameter('ki', 10.0).value
-        self.kd = self.declare_parameter('kd', 1.0).value
-        self.i_max = self.declare_parameter('i_max', 30.0).value
+        self.kp = self.declare_parameter('kp',50.0).value
+        self.ki = self.declare_parameter('ki', 0.0).value
+        self.kd = self.declare_parameter('kd', 0.0).value
+        self.i_max = self.declare_parameter('i_max', 0.0).value
         self.control_hz = self.declare_parameter('control_hz', 50.0).value
-        self.max_pwm_percent = self.declare_parameter('max_pwm_percent', 70.0).value
+        self.max_pwm_percent = self.declare_parameter('max_pwm_percent',100.0).value
         self.filter_alpha = self.declare_parameter('filter_alpha', 0.1).value
         self.deadband = self.declare_parameter('deadband', 0.01).value
         self.max_pwm_step = self.declare_parameter('max_pwm_step', 2.0).value
