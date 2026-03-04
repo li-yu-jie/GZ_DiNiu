@@ -113,15 +113,19 @@ class MotorControlNode(Node):
             self.declare_parameter('steer_rate_scale_deg_per_rad_s', 30.0).value
         )
 
-        self.kp = self.declare_parameter('kp', 95.0).value
-        self.ki = self.declare_parameter('ki', 0.55).value
-        self.kd = self.declare_parameter('kd', 0.0).value
-        self.i_max = self.declare_parameter('i_max', 70.0).value
+        self.kp = self.declare_parameter('kp', 75.0).value
+        self.ki = self.declare_parameter('ki',0.03).value
+        self.kd = self.declare_parameter('kd', 0.00).value
+        self.i_max = self.declare_parameter('i_max', 3.2).value
         self.control_hz = self.declare_parameter('control_hz', 50.0).value
         self.max_pwm_percent = self.declare_parameter('max_pwm_percent', 100.0).value
         self.filter_alpha = self.declare_parameter('filter_alpha', 0.05).value
-        self.deadband = self.declare_parameter('deadband', 0.01).value
-        self.max_pwm_step = self.declare_parameter('max_pwm_step', 100).value
+        self.deadband = self.declare_parameter('deadband', 0.004).value
+        self.max_pwm_step = self.declare_parameter('max_pwm_step', 50.0).value
+        self.min_effective_pwm_percent = float(
+            self.declare_parameter('min_effective_pwm_percent', 6.0).value
+        )
+        self.drive_log_every_n = int(self.declare_parameter('drive_log_every_n', 10).value)
 
         if self.control_hz <= 0.0:
             raise RuntimeError('control_hz must be > 0')
@@ -133,10 +137,18 @@ class MotorControlNode(Node):
             raise RuntimeError('deadband must be >= 0')
         if self.max_pwm_step <= 0.0:
             raise RuntimeError('max_pwm_step must be > 0')
+        if self.min_effective_pwm_percent < 0.0:
+            raise RuntimeError('min_effective_pwm_percent must be >= 0')
+        if self.min_effective_pwm_percent > self.max_pwm_percent:
+            raise RuntimeError('min_effective_pwm_percent must be <= max_pwm_percent')
         if self.cmd_vel_axis not in ('x', 'y', 'z'):
             raise RuntimeError("cmd_vel_axis must be one of: 'x', 'y', 'z'")
         if self.cmd_timeout_s < 0.0:
             raise RuntimeError('cmd_timeout_s must be >= 0')
+        if self.pwm_freq <= 0:
+            raise RuntimeError('pwm_freq_hz must be > 0')
+        if self.drive_log_every_n <= 0:
+            raise RuntimeError('drive_log_every_n must be > 0')
 
         self.pi = pigpio.pi()
         if not self.pi.connected:
@@ -162,14 +174,15 @@ class MotorControlNode(Node):
         self.steer_pub = self.create_publisher(Float64, self.steer_topic, 10)
         self.last_cmd_time = monotonic()
         self.timed_out = False
+        self.control_tick = 0
 
         period = 1.0 / self.control_hz
         self.timer = self.create_timer(period, self.control_step)
 
     @staticmethod
-    def percent_to_duty(percent: int) -> int:
-        percent = max(0, min(100, percent))
-        return int(percent * 10000)
+    def percent_to_duty(percent: float) -> int:
+        percent = max(0.0, min(100.0, float(percent)))
+        return int(round(percent * 10000))
 
     def on_cmd_vel(self, msg: Twist):
         self.last_cmd_time = monotonic()
@@ -200,23 +213,35 @@ class MotorControlNode(Node):
 
     def control_step(self):
         # Timeout protection disabled: do not force target_speed to 0 on cmd_vel timeout.
+        self.control_tick += 1
 
         now = self.get_clock().now()
         drive_result = self.drive_pid.step(now)
         if drive_result is not None:
             output, error, filtered = drive_result
+            target = self.drive_pid.target
+
+            # Keep low-speed command above static-friction threshold when non-zero.
+            if 0.0 < abs(output) < self.min_effective_pwm_percent:
+                if abs(target) > self.deadband:
+                    output = self.min_effective_pwm_percent if target > 0.0 else -self.min_effective_pwm_percent
+                else:
+                    output = self.min_effective_pwm_percent if output > 0.0 else -self.min_effective_pwm_percent
+
             dir_level = 0 if output >= 0.0 else 1
             if self.invert_dir:
                 dir_level = 1 - dir_level
             self.pi.write(self.dir_gpio, dir_level)
 
-            percent = int(round(abs(output)))
+            percent = abs(output)
             duty = self.percent_to_duty(percent)
             self.pi.hardware_PWM(self.pwm_gpio, int(self.pwm_freq), duty)
 
-            self.get_logger().info(
-                f'drive fb={filtered:.3f} err={error:.3f} out%={output:.1f} duty={duty}'
-            )
+            if (self.control_tick % self.drive_log_every_n) == 0:
+                self.get_logger().info(
+                    f'drive fb={filtered:.3f} err={error:.3f} out%={output:.2f} duty={duty} '
+                    f'f={int(self.pwm_freq)}Hz'
+                )
 
 
 def main():
