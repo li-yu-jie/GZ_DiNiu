@@ -1,0 +1,83 @@
+[0.000000] (-) TimerEvent: {}
+[0.000584] (-) JobUnselected: {'identifier': 'encoder_vel'}
+[0.001545] (-) JobUnselected: {'identifier': 'imu_bno08x'}
+[0.002234] (-) JobUnselected: {'identifier': 'steer_closed_loop'}
+[0.002723] (motor_control_py) JobQueued: {'identifier': 'motor_control_py', 'dependencies': OrderedDict()}
+[0.003061] (motor_control_py) JobStarted: {'identifier': 'motor_control_py'}
+[0.098952] (-) TimerEvent: {}
+[0.199414] (-) TimerEvent: {}
+[0.299837] (-) TimerEvent: {}
+[0.400251] (-) TimerEvent: {}
+[0.500645] (-) TimerEvent: {}
+[0.601004] (-) TimerEvent: {}
+[0.701378] (-) TimerEvent: {}
+[0.801754] (-) TimerEvent: {}
+[0.902123] (-) TimerEvent: {}
+[1.002503] (-) TimerEvent: {}
+[1.102931] (-) TimerEvent: {}
+[1.203393] (-) TimerEvent: {}
+[1.303824] (-) TimerEvent: {}
+[1.404279] (-) TimerEvent: {}
+[1.505575] (-) TimerEvent: {}
+[1.605991] (-) TimerEvent: {}
+[1.706829] (-) TimerEvent: {}
+[1.807315] (-) TimerEvent: {}
+[1.907726] (-) TimerEvent: {}
+[2.008099] (-) TimerEvent: {}
+[2.108458] (-) TimerEvent: {}
+[2.208852] (-) TimerEvent: {}
+[2.309290] (-) TimerEvent: {}
+[2.409718] (-) TimerEvent: {}
+[2.510125] (-) TimerEvent: {}
+[2.610579] (-) TimerEvent: {}
+[2.711112] (-) TimerEvent: {}
+[2.811579] (-) TimerEvent: {}
+[2.912118] (-) TimerEvent: {}
+[3.012565] (-) TimerEvent: {}
+[3.113027] (-) TimerEvent: {}
+[3.213781] (-) TimerEvent: {}
+[3.275780] (motor_control_py) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/motor_control_py', 'build', '--build-base', '/root/GZ_DiNiu/build/motor_control_py/build', 'install', '--record', '/root/GZ_DiNiu/build/motor_control_py/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/root/GZ_DiNiu/src/motor_control_py', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'VSCODE_CWD': '/root', 'VSCODE_ESM_ENTRYPOINT': 'vs/workbench/api/node/extensionHostProcess', 'CODEX_CI': '1', 'LANGUAGE': 'zh_CN:zh', 'USER': 'root', 'SSH_CLIENT': '192.168.1.2 62680 22', 'CODEX_INTERNAL_ORIGINATOR_OVERRIDE': 'codex_vscode', 'VSCODE_NLS_CONFIG': '{"userLocale":"zh-cn","osLocale":"zh-cn","resolvedLanguage":"zh-cn","defaultMessagesFile":"/root/.vscode-server/cli/servers/Stable-0870c2a0c7c0564e7631bfed2675573a94ba4455/server/out/nls.messages.json","languagePack":{"translationsConfigFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/tcf.json","messagesFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/0870c2a0c7c0564e7631bfed2675573a94ba4455/nls.messages.json","corruptMarkerFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/corrupted.info"},"locale":"zh-cn","availableLanguages":{"*":"zh-cn"},"_languagePackId":"9ab4607bfaf603948e938b1d93cb1640.zh-cn","_languagePackSupport":true,"_translationsConfigFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/tcf.json","_cacheRoot":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn","_resolvedLanguagePackCoreLocation":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/0870c2a0c7c0564e7631bfed2675573a94ba4455","_corruptedFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/corrupted.info"}', 'VSCODE_HANDLES_UNCAUGHT_ERRORS': 'true', 'XDG_SESSION_TYPE': 'tty', 'DEBUG': 'release', 'SHLVL': '0', 'LD_LIBRARY_PATH': '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib', 'BROWSER': '/root/.vscode-server/cli/servers/Stable-0870c2a0c7c0564e7631bfed2675573a94ba4455/server/bin/helpers/browser.sh', 'MOTD_SHOWN': 'pam', 'HOME': '/root', 'OLDPWD': '/root/GZ_DiNiu', 'VSCODE_RECONNECTION_GRACE_TIME': '10800000', 'VSCODE_IPC_HOOK_CLI': '/run/user/0/vscode-ipc-69a14ca9-f431-41e6-9ccd-ef0948a3b8ef.sock', 'ROS_PYTHON_VERSION': '3', 'PAGER': 'cat', 'LC_CTYPE': 'C.UTF-8', 'NO_COLOR': '1', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/0/bus', 'COLORTERM': '', 'DEBUGINFOD_URLS': '', 'COLCON_PREFIX_PATH': '/root/GZ_DiNiu/install', 'APPLICATION_INSIGHTS_NO_STATSBEAT': 'true', 'ROS_DISTRO': 'humble', 'LOGNAME': 'root', 'VSCODE_HANDLES_SIGPIPE': 'true', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'RUST_LOG': 'warn', 'TERM': 'dumb', 'XDG_SESSION_ID': '2', 'VSCODE_CLI_REQUIRE_TOKEN': 'bace9d44-5be0-4de3-ac08-fb650908bd30', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/root/.codex/tmp/arg0/codex-arg0kATp5S:/root/.vscode-server/cli/servers/Stable-0870c2a0c7c0564e7631bfed2675573a94ba4455/server/bin/remote-cli:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/root/.vscode-server/extensions/openai.chatgpt-0.4.79/bin/linux-aarch64', 'VSCODE_AGENT_FOLDER': '/root/.vscode-server', 'XDG_RUNTIME_DIR': '/run/user/0', 'LANG': 'zh_CN.UTF-8', 'GH_PAGER': 'cat', 'LS_COLORS': '', 'AMENT_PREFIX_PATH': '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/root/GZ_DiNiu/install/encoder_vel:/opt/ros/humble', 'SHELL': '/bin/bash', 'ELECTRON_RUN_AS_NODE': '1', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'CODEX_THREAD_ID': '019cbdf0-22d1-75a1-8f56-e9ecf39ea33f', 'GIT_PAGER': 'cat', 'PWD': '/root/GZ_DiNiu/build/motor_control_py', 'LC_ALL': 'C.UTF-8', 'SSH_CONNECTION': '192.168.1.2 62680 192.168.1.20 22', 'XDG_DATA_DIRS': '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/root/GZ_DiNiu/build/motor_control_py/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/encoder_vel'}, 'shell': False}
+[3.313918] (-) TimerEvent: {}
+[3.414376] (-) TimerEvent: {}
+[3.514926] (-) TimerEvent: {}
+[3.615426] (-) TimerEvent: {}
+[3.715866] (-) TimerEvent: {}
+[3.816281] (-) TimerEvent: {}
+[3.916681] (-) TimerEvent: {}
+[4.017089] (-) TimerEvent: {}
+[4.117450] (-) TimerEvent: {}
+[4.217867] (-) TimerEvent: {}
+[4.318254] (-) TimerEvent: {}
+[4.418628] (-) TimerEvent: {}
+[4.519008] (-) TimerEvent: {}
+[4.611268] (motor_control_py) StdoutLine: {'line': b'running egg_info\n'}
+[4.615221] (motor_control_py) StdoutLine: {'line': b'writing ../../build/motor_control_py/motor_control_py.egg-info/PKG-INFO\n'}
+[4.616634] (motor_control_py) StdoutLine: {'line': b'writing dependency_links to ../../build/motor_control_py/motor_control_py.egg-info/dependency_links.txt\n'}
+[4.618434] (motor_control_py) StdoutLine: {'line': b'writing entry points to ../../build/motor_control_py/motor_control_py.egg-info/entry_points.txt\n'}
+[4.620047] (-) TimerEvent: {}
+[4.620195] (motor_control_py) StdoutLine: {'line': b'writing requirements to ../../build/motor_control_py/motor_control_py.egg-info/requires.txt\n'}
+[4.620629] (motor_control_py) StdoutLine: {'line': b'writing top-level names to ../../build/motor_control_py/motor_control_py.egg-info/top_level.txt\n'}
+[4.629509] (motor_control_py) StdoutLine: {'line': b"reading manifest file '../../build/motor_control_py/motor_control_py.egg-info/SOURCES.txt'\n"}
+[4.634025] (motor_control_py) StdoutLine: {'line': b"writing manifest file '../../build/motor_control_py/motor_control_py.egg-info/SOURCES.txt'\n"}
+[4.635070] (motor_control_py) StdoutLine: {'line': b'running build\n'}
+[4.635671] (motor_control_py) StdoutLine: {'line': b'running build_py\n'}
+[4.636519] (motor_control_py) StdoutLine: {'line': b'copying motor_control_py/motor_control_node.py -> /root/GZ_DiNiu/build/motor_control_py/build/lib/motor_control_py\n'}
+[4.638209] (motor_control_py) StdoutLine: {'line': b'running install\n'}
+[4.639517] (motor_control_py) StdoutLine: {'line': b'running install_lib\n'}
+[4.644047] (motor_control_py) StdoutLine: {'line': b'copying /root/GZ_DiNiu/build/motor_control_py/build/lib/motor_control_py/motor_control_node.py -> /root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages/motor_control_py\n'}
+[4.654086] (motor_control_py) StdoutLine: {'line': b'byte-compiling /root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages/motor_control_py/motor_control_node.py to motor_control_node.cpython-310.pyc\n'}
+[4.660176] (motor_control_py) StdoutLine: {'line': b'running install_data\n'}
+[4.661208] (motor_control_py) StdoutLine: {'line': b'running install_egg_info\n'}
+[4.669854] (motor_control_py) StdoutLine: {'line': b"removing '/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages/motor_control_py-0.0.1-py3.10.egg-info' (and everything under it)\n"}
+[4.672196] (motor_control_py) StdoutLine: {'line': b'Copying ../../build/motor_control_py/motor_control_py.egg-info to /root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages/motor_control_py-0.0.1-py3.10.egg-info\n'}
+[4.679136] (motor_control_py) StdoutLine: {'line': b'running install_scripts\n'}
+[4.720214] (-) TimerEvent: {}
+[4.767826] (motor_control_py) StdoutLine: {'line': b'Installing motor_control_node script to /root/GZ_DiNiu/install/motor_control_py/lib/motor_control_py\n'}
+[4.768793] (motor_control_py) StdoutLine: {'line': b'Installing speed_web_node script to /root/GZ_DiNiu/install/motor_control_py/lib/motor_control_py\n'}
+[4.769911] (motor_control_py) StdoutLine: {'line': b'Installing steer_control_node script to /root/GZ_DiNiu/install/motor_control_py/lib/motor_control_py\n'}
+[4.775353] (motor_control_py) StdoutLine: {'line': b"writing list of installed files to '/root/GZ_DiNiu/build/motor_control_py/install.log'\n"}
+[4.820589] (-) TimerEvent: {}
+[4.921440] (-) TimerEvent: {}
+[4.933266] (motor_control_py) CommandEnded: {'returncode': 0}
+[4.991020] (motor_control_py) JobEnded: {'identifier': 'motor_control_py', 'rc': 0}
+[4.995196] (-) EventReactorShutdown: {}

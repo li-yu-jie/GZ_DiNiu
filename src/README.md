@@ -44,7 +44,7 @@ ros2 launch motor_control_py cmd_vel_full.launch.py enable_steer:=false
 ## 4. 发布 /cmd_vel
 ```bash
 ros2 topic pub -r 20 /cmd_vel geometry_msgs/msg/Twist \
-"{linear: {x: 0.3, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: -0.4}}"
+"{linear: {x: 0.3, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}"
 ```
 
 说明：
@@ -55,6 +55,20 @@ ros2 topic pub -r 20 /cmd_vel geometry_msgs/msg/Twist \
 驱动速度反馈：
 ```bash
 ros2 topic echo /linear_velocity
+```
+
+实时速度曲线（网页版）：
+```bash
+ros2 run motor_control_py speed_web_node
+```
+浏览器打开：
+```text
+http://<设备IP>:8080
+```
+可选参数：
+```bash
+ros2 run motor_control_py speed_web_node --ros-args \
+  -p web_host:=0.0.0.0 -p web_port:=8080 -p cmd_vel_axis:=x -p cmd_vel_scale:=1.0
 ```
 
 转向角速度反馈：

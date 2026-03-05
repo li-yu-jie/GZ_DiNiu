@@ -12,5 +12,6 @@ launch/bringup.launch.py
 launch/cmd_vel_full.launch.py
 motor_control_py/__init__.py
 motor_control_py/motor_control_node.py
+motor_control_py/speed_web_node.py
 motor_control_py/steer_control_node.py
 resource/motor_control_py

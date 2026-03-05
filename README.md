@@ -156,3 +156,9 @@ systemctl is-active pigpiod.service
 systemctl is-active ros2-motor-control.service
 ```
 期望输出均为 `active`。
+
+网页监控
+source /opt/ros/humble/setup.bash
+source /root/GZ_DiNiu/install/setup.bash
+pkill -f speed_web_node || true
+ros2 run motor_control_py speed_web_node

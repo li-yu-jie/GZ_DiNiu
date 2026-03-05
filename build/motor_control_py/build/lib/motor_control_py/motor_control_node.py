@@ -1,3 +1,4 @@
+from collections import deque
 import pigpio
 import rclpy
 from time import monotonic
@@ -95,37 +96,75 @@ class PidController:
 
 
 class MotorControlNode(Node):
+    @staticmethod
+    def _sign(value: float) -> int:
+        if value > 0.0:
+            return 1
+        if value < 0.0:
+            return -1
+        return 0
+
     def __init__(self):
         super().__init__('motor_control_node')
-        #前进后退电机
+        # 驱动电机 PWM 引脚（BCM 编号）
         self.pwm_gpio = self.declare_parameter('pwm_gpio', 18).value
+        # 驱动电机方向控制引脚（BCM 编号）
         self.dir_gpio = self.declare_parameter('dir_gpio', 26).value
+        # PWM 频率（Hz）
         self.pwm_freq = self.declare_parameter('pwm_freq_hz', 100000).value
+        # 是否反转方向引脚逻辑
         self.invert_dir = self.declare_parameter('invert_dir', True).value
+        # 速度指令订阅话题（Twist）
         self.cmd_topic = self.declare_parameter('cmd_topic', '/cmd_vel').value
+        # cmd_vel 使用的线速度轴：x / y / z
         self.cmd_vel_axis = str(self.declare_parameter('cmd_vel_axis', 'x').value).lower()
+        # cmd_vel 线速度缩放系数
         self.cmd_vel_scale = float(self.declare_parameter('cmd_vel_scale', 1.0).value)
-        self.cmd_timeout_s = float(self.declare_parameter('cmd_timeout_s', 0.3).value)
+        # 指令超时阈值（秒）
+        self.cmd_timeout_s = float(self.declare_parameter('cmd_timeout_s', 0.0).value)
+        # 速度反馈订阅话题（Float64，单位 m/s）
         self.feedback_topic = self.declare_parameter('feedback_topic', 'linear_velocity').value
+        # 是否发布转向控制指令
         self.enable_steer_cmd = bool(self.declare_parameter('enable_steer_cmd', True).value)
+        # 转向目标角速度发布话题（Float64，单位 deg/s）
         self.steer_topic = self.declare_parameter('steer_topic', 'steer_target_rate_deg_s').value
+        # 将 angular.z（rad/s）换算为转向角速度（deg/s）的比例
         self.steer_rate_scale_deg_per_rad_s = float(
             self.declare_parameter('steer_rate_scale_deg_per_rad_s', 30.0).value
         )
 
-        self.kp = self.declare_parameter('kp', 75.0).value
-        self.ki = self.declare_parameter('ki',0.03).value
-        self.kd = self.declare_parameter('kd', 0.00).value
-        self.i_max = self.declare_parameter('i_max', 3.2).value
+        # PID 比例系数
+        self.kp = self.declare_parameter('kp', 85.0).value
+        # PID 积分系数
+        self.ki = self.declare_parameter('ki', 18.0).value
+        # PID 微分系数
+        self.kd = self.declare_parameter('kd', 0.0).value
+        # 积分项绝对值上限（防积分饱和）
+        self.i_max = self.declare_parameter('i_max', 60.0).value
+        # 控制循环频率（Hz）
         self.control_hz = self.declare_parameter('control_hz', 50.0).value
+        # PWM 输出百分比上限（0~100）
         self.max_pwm_percent = self.declare_parameter('max_pwm_percent', 100.0).value
-        self.filter_alpha = self.declare_parameter('filter_alpha', 0.05).value
-        self.deadband = self.declare_parameter('deadband', 0.004).value
-        self.max_pwm_step = self.declare_parameter('max_pwm_step', 50.0).value
+        # 反馈一阶低通滤波系数（0~1）
+        self.filter_alpha = self.declare_parameter('filter_alpha', 0.03).value
+        # 误差死区（|error| 小于该值视为 0）
+        self.deadband = self.declare_parameter('deadband', 0.008).value
+        # 每次控制周期允许的 PWM 最大变化量（百分比）
+        self.max_pwm_step = self.declare_parameter('max_pwm_step', 4.0).value
+        # 产生有效驱动的最小 PWM 百分比
         self.min_effective_pwm_percent = float(
-            self.declare_parameter('min_effective_pwm_percent', 6.0).value
+            self.declare_parameter('min_effective_pwm_percent', 1.0).value
         )
+        # 换向前判定“接近静止”的速度阈值（m/s）
+        self.switch_dir_stop_speed_threshold = float(
+            self.declare_parameter('switch_dir_stop_speed_threshold', 0.05).value
+        )
+        # 驱动状态日志输出频率（每 N 次控制周期打印一次）
         self.drive_log_every_n = int(self.declare_parameter('drive_log_every_n', 10).value)
+        # 反馈中值滤波窗口长度（奇数，>=1）
+        self.feedback_median_window = int(self.declare_parameter('feedback_median_window', 5).value)
+        # 单步反馈变化限幅（m/s），用于抑制偶发尖峰
+        self.feedback_jump_limit = float(self.declare_parameter('feedback_jump_limit', 0.18).value)
 
         if self.control_hz <= 0.0:
             raise RuntimeError('control_hz must be > 0')
@@ -141,6 +180,8 @@ class MotorControlNode(Node):
             raise RuntimeError('min_effective_pwm_percent must be >= 0')
         if self.min_effective_pwm_percent > self.max_pwm_percent:
             raise RuntimeError('min_effective_pwm_percent must be <= max_pwm_percent')
+        if self.switch_dir_stop_speed_threshold < 0.0:
+            raise RuntimeError('switch_dir_stop_speed_threshold must be >= 0')
         if self.cmd_vel_axis not in ('x', 'y', 'z'):
             raise RuntimeError("cmd_vel_axis must be one of: 'x', 'y', 'z'")
         if self.cmd_timeout_s < 0.0:
@@ -149,6 +190,12 @@ class MotorControlNode(Node):
             raise RuntimeError('pwm_freq_hz must be > 0')
         if self.drive_log_every_n <= 0:
             raise RuntimeError('drive_log_every_n must be > 0')
+        if self.feedback_median_window <= 0:
+            raise RuntimeError('feedback_median_window must be > 0')
+        if self.feedback_median_window % 2 == 0:
+            raise RuntimeError('feedback_median_window must be odd')
+        if self.feedback_jump_limit < 0.0:
+            raise RuntimeError('feedback_jump_limit must be >= 0')
 
         self.pi = pigpio.pi()
         if not self.pi.connected:
@@ -175,6 +222,9 @@ class MotorControlNode(Node):
         self.last_cmd_time = monotonic()
         self.timed_out = False
         self.control_tick = 0
+        self.pending_target_speed = None
+        self.feedback_samples = deque(maxlen=self.feedback_median_window)
+        self.last_feedback_filtered = None
 
         period = 1.0 / self.control_hz
         self.timer = self.create_timer(period, self.control_step)
@@ -194,7 +244,29 @@ class MotorControlNode(Node):
             'z': float(msg.linear.z),
         }[self.cmd_vel_axis]
         target_speed = axis_value * self.cmd_vel_scale
-        self.drive_pid.update_target(target_speed)
+        current_target = self.drive_pid.target
+        current_sign = self._sign(current_target)
+        target_sign = self._sign(target_speed)
+        feedback_speed = self.drive_pid.filtered
+        if feedback_speed is None:
+            feedback_speed = self.drive_pid.measured
+
+        reverse_requested = (
+            target_sign != 0 and
+            current_sign != 0 and
+            target_sign != current_sign
+        )
+        moving = (
+            feedback_speed is not None and
+            abs(feedback_speed) > self.switch_dir_stop_speed_threshold
+        )
+
+        if reverse_requested and moving:
+            self.pending_target_speed = target_speed
+            self.drive_pid.update_target(0.0)
+        else:
+            self.pending_target_speed = None
+            self.drive_pid.update_target(target_speed)
 
         steer_rate_deg_s = float(msg.angular.z) * self.steer_rate_scale_deg_per_rad_s
         if self.enable_steer_cmd:
@@ -209,11 +281,34 @@ class MotorControlNode(Node):
         )
 
     def on_feedback(self, msg: Float64):
-        self.drive_pid.update_feedback(msg.data)
+        raw = float(msg.data)
+        self.feedback_samples.append(raw)
+
+        samples = sorted(self.feedback_samples)
+        median = samples[len(samples) // 2]
+
+        if self.last_feedback_filtered is not None and self.feedback_jump_limit > 0.0:
+            delta = median - self.last_feedback_filtered
+            if abs(delta) > self.feedback_jump_limit:
+                median = self.last_feedback_filtered + (self.feedback_jump_limit * self._sign(delta))
+
+        self.last_feedback_filtered = median
+        self.drive_pid.update_feedback(median)
 
     def control_step(self):
         # Timeout protection disabled: do not force target_speed to 0 on cmd_vel timeout.
         self.control_tick += 1
+
+        if self.pending_target_speed is not None:
+            feedback_speed = self.drive_pid.filtered
+            if feedback_speed is None:
+                feedback_speed = self.drive_pid.measured
+            if (
+                feedback_speed is not None and
+                abs(feedback_speed) <= self.switch_dir_stop_speed_threshold
+            ):
+                self.drive_pid.update_target(self.pending_target_speed)
+                self.pending_target_speed = None
 
         now = self.get_clock().now()
         drive_result = self.drive_pid.step(now)
@@ -221,12 +316,18 @@ class MotorControlNode(Node):
             output, error, filtered = drive_result
             target = self.drive_pid.target
 
+            # Zero-speed lock: avoid dithering around stop due to residual integral/noise.
+            if abs(target) <= self.deadband and abs(filtered) <= self.switch_dir_stop_speed_threshold:
+                output = 0.0
+                self.drive_pid.integral = 0.0
+                self.drive_pid.prev_output = 0.0
+
             # Keep low-speed command above static-friction threshold when non-zero.
-            if 0.0 < abs(output) < self.min_effective_pwm_percent:
-                if abs(target) > self.deadband:
-                    output = self.min_effective_pwm_percent if target > 0.0 else -self.min_effective_pwm_percent
-                else:
-                    output = self.min_effective_pwm_percent if output > 0.0 else -self.min_effective_pwm_percent
+            if (
+                0.0 < abs(output) < self.min_effective_pwm_percent and
+                abs(target) > self.deadband
+            ):
+                output = self.min_effective_pwm_percent if target > 0.0 else -self.min_effective_pwm_percent
 
             dir_level = 0 if output >= 0.0 else 1
             if self.invert_dir:
