@@ -35,11 +35,22 @@ class PidController:
         self.filtered = None
         self.integral = 0.0
         self.prev_output = 0.0
-        self.prev_filtered = None
+        self.prev_error = None
         self.last_time = None
 
     def update_target(self, value: float):
         self.target = value
+
+    @staticmethod
+    def _clamp(value: float, limit: float) -> float:
+        return max(-limit, min(limit, value))
+
+    def reset(self, *, clear_integral: bool = True, clear_output: bool = False):
+        if clear_integral:
+            self.integral = 0.0
+        if clear_output:
+            self.prev_output = 0.0
+        self.prev_error = None
 
     def update_feedback(self, value: float):
         self.measured = value
@@ -54,33 +65,39 @@ class PidController:
             return None
         if self.last_time is None:
             self.last_time = now
-            self.prev_filtered = self.filtered
+            self.prev_error = self.target - self.filtered
             return None
 
         dt = (now - self.last_time).nanoseconds / 1e9
         if dt <= 0.0:
             return None
 
+        # Standard positional PID:
+        # u(k) = Kp*e(k) + Ki*integral(e) + Kd*(e(k)-e(k-1))/dt
         error = self.target - self.filtered
         if abs(error) < self.deadband:
             error = 0.0
 
+        integral_candidate = self._clamp(self.integral + (error * dt), self.i_max)
+
         derivative = 0.0
-        if self.prev_filtered is not None:
-            derivative = -(self.filtered - self.prev_filtered) / dt
+        if self.prev_error is not None:
+            derivative = (error - self.prev_error) / dt
 
-        integral_candidate = self.integral + (error * dt)
-        integral_candidate = max(-self.i_max, min(self.i_max, integral_candidate))
+        raw_candidate = (self.kp * error) + (self.ki * integral_candidate) + (self.kd * derivative)
+        saturated_candidate = self._clamp(raw_candidate, self.max_pwm_percent)
 
-        raw_output = (self.kp * error) + (self.ki * integral_candidate) + (self.kd * derivative)
-        output = max(-self.max_pwm_percent, min(self.max_pwm_percent, raw_output))
-
-        if output == raw_output:
+        # Conditional integration anti-windup:
+        # keep integrating only when not saturated, or when error drives output back from saturation.
+        if (
+            raw_candidate == saturated_candidate or
+            (saturated_candidate >= self.max_pwm_percent and error < 0.0) or
+            (saturated_candidate <= -self.max_pwm_percent and error > 0.0)
+        ):
             self.integral = integral_candidate
-        else:
-            if not ((output >= self.max_pwm_percent and error > 0.0) or
-                    (output <= -self.max_pwm_percent and error < 0.0)):
-                self.integral = integral_candidate
+
+        raw_output = (self.kp * error) + (self.ki * self.integral) + (self.kd * derivative)
+        output = self._clamp(raw_output, self.max_pwm_percent)
 
         delta = output - self.prev_output
         max_step = self.max_pwm_step
@@ -89,7 +106,7 @@ class PidController:
         elif delta < -max_step:
             output = self.prev_output - max_step
         self.prev_output = output
-        self.prev_filtered = self.filtered
+        self.prev_error = error
         self.last_time = now
 
         return output, error, self.filtered
@@ -134,26 +151,26 @@ class MotorControlNode(Node):
         )
 
         # PID 比例系数
-        self.kp = self.declare_parameter('kp', 85.0).value
+        self.kp = self.declare_parameter('kp', 68.0).value
         # PID 积分系数
-        self.ki = self.declare_parameter('ki', 18.0).value
+        self.ki = self.declare_parameter('ki', 22.0).value
         # PID 微分系数
         self.kd = self.declare_parameter('kd', 0.0).value
         # 积分项绝对值上限（防积分饱和）
-        self.i_max = self.declare_parameter('i_max', 60.0).value
+        self.i_max = self.declare_parameter('i_max', 70.0).value
         # 控制循环频率（Hz）
         self.control_hz = self.declare_parameter('control_hz', 50.0).value
         # PWM 输出百分比上限（0~100）
         self.max_pwm_percent = self.declare_parameter('max_pwm_percent', 100.0).value
         # 反馈一阶低通滤波系数（0~1）
-        self.filter_alpha = self.declare_parameter('filter_alpha', 0.03).value
+        self.filter_alpha = self.declare_parameter('filter_alpha', 0.04).value
         # 误差死区（|error| 小于该值视为 0）
-        self.deadband = self.declare_parameter('deadband', 0.008).value
+        self.deadband = self.declare_parameter('deadband', 0.003).value
         # 每次控制周期允许的 PWM 最大变化量（百分比）
-        self.max_pwm_step = self.declare_parameter('max_pwm_step', 4.0).value
+        self.max_pwm_step = self.declare_parameter('max_pwm_step', 1.0).value
         # 产生有效驱动的最小 PWM 百分比
         self.min_effective_pwm_percent = float(
-            self.declare_parameter('min_effective_pwm_percent', 1.0).value
+            self.declare_parameter('min_effective_pwm_percent', 6.0).value
         )
         # 换向前判定“接近静止”的速度阈值（m/s）
         self.switch_dir_stop_speed_threshold = float(
@@ -164,7 +181,7 @@ class MotorControlNode(Node):
         # 反馈中值滤波窗口长度（奇数，>=1）
         self.feedback_median_window = int(self.declare_parameter('feedback_median_window', 5).value)
         # 单步反馈变化限幅（m/s），用于抑制偶发尖峰
-        self.feedback_jump_limit = float(self.declare_parameter('feedback_jump_limit', 0.18).value)
+        self.feedback_jump_limit = float(self.declare_parameter('feedback_jump_limit', 0.20).value)
 
         if self.control_hz <= 0.0:
             raise RuntimeError('control_hz must be > 0')
@@ -225,6 +242,7 @@ class MotorControlNode(Node):
         self.pending_target_speed = None
         self.feedback_samples = deque(maxlen=self.feedback_median_window)
         self.last_feedback_filtered = None
+        self.last_target_for_reset = 0.0
 
         period = 1.0 / self.control_hz
         self.timer = self.create_timer(period, self.control_step)
@@ -267,6 +285,11 @@ class MotorControlNode(Node):
         else:
             self.pending_target_speed = None
             self.drive_pid.update_target(target_speed)
+
+        # Large target step: clear integral memory to reduce speed-switch stutter.
+        if abs(target_speed - self.last_target_for_reset) > 0.12:
+            self.drive_pid.reset(clear_integral=True, clear_output=False)
+        self.last_target_for_reset = target_speed
 
         steer_rate_deg_s = float(msg.angular.z) * self.steer_rate_scale_deg_per_rad_s
         if self.enable_steer_cmd:
@@ -319,8 +342,7 @@ class MotorControlNode(Node):
             # Zero-speed lock: avoid dithering around stop due to residual integral/noise.
             if abs(target) <= self.deadband and abs(filtered) <= self.switch_dir_stop_speed_threshold:
                 output = 0.0
-                self.drive_pid.integral = 0.0
-                self.drive_pid.prev_output = 0.0
+                self.drive_pid.reset(clear_integral=True, clear_output=True)
 
             # Keep low-speed command above static-friction threshold when non-zero.
             if (
