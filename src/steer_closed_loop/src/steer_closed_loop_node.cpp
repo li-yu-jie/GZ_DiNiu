@@ -4,6 +4,7 @@
 #include <cerrno>
 #include <chrono>
 #include <cmath>
+#include <cstdio>
 #include <cstring>
 #include <fstream>
 #include <string>
@@ -15,21 +16,36 @@
 #include "std_msgs/msg/float64.hpp"
 
 namespace {
+// 霍尔三相有效码表（六步换相序列）。
+// 通过当前码与上一次码的相邻关系判断“正转一步/反转一步”。
 constexpr int kCodeCount = 6;
 const char *kForwardCodes[kCodeCount] = {"100", "110", "010", "011", "001", "101"};
 }  // namespace
 
-class SteerRateClosedLoopNode : public rclcpp::Node {
+class SteerPositionClosedLoopNode : public rclcpp::Node {
+  // 启动状态机：
+  // 1) 找左限位（用于建立机械零点映射）
+  // 2) 从左限位回到 0°
+  // 3) 进入正常闭环控制
+  enum class StartupState {
+    kSeekingLeftLimit,
+    kReturningToZero,
+    kDone,
+  };
+
 public:
-  SteerRateClosedLoopNode() : Node("steer_closed_loop"), running_(true) {
-    // Hardware mapping and topic names are parameterized so field tuning can be done
-    // from launch/CLI without recompiling.
+  SteerPositionClosedLoopNode() : Node("steer_closed_loop"), running_(true) {
+    // ---------------- 硬件与 IO 参数 ----------------
+    // 注意：这里的 GPIO 编号是 gpiod line offset（在树莓派场景通常可按 BCM 理解）。
     chip_path_ = declare_parameter<std::string>("chip_path", "/dev/gpiochip0");
     hu_offset_ = declare_parameter<int>("hu_gpio", 5);
     hv_offset_ = declare_parameter<int>("hv_gpio", 6);
     hw_offset_ = declare_parameter<int>("hw_gpio", 13);
 
     dir_offset_ = declare_parameter<int>("dir_gpio", 16);
+    brake_offset_ = declare_parameter<int>("brake_gpio", 12);
+    // Brake is active-low by default: output GND means braking.
+    brake_active_level_ = declare_parameter<int>("brake_active_level", 0);
     limit_left_offset_ = declare_parameter<int>("limit_left_gpio", 24);
     limit_right_offset_ = declare_parameter<int>("limit_right_gpio", 25);
     limit_active_level_ = declare_parameter<int>("limit_active_level", 1);
@@ -38,59 +54,82 @@ public:
     limit_bias_ = declare_parameter<std::string>("limit_bias", "pull_down");
     limit_startup_grace_s_ = declare_parameter<double>("limit_startup_grace_s", 0.5);
 
+    // ---------------- PWM 参数 ----------------
     pwm_chip_path_ = declare_parameter<std::string>("pwm_chip_path", "/sys/class/pwm/pwmchip0/");
     pwm_channel_ = declare_parameter<int>("pwm_channel", 1);
     pwm_period_ns_ = declare_parameter<long>("pwm_period_ns", 100000);
 
-    cmd_topic_ = declare_parameter<std::string>("cmd_topic", "steer_target_rate_deg_s");
-    feedback_topic_ = declare_parameter<std::string>("feedback_topic", "steer_rate_deg_s");
+    // ---------------- ROS 话题 ----------------
+    // cmd_topic: 目标角度（度）
+    // feedback_topic: 实际角度（度）
+    cmd_topic_ = declare_parameter<std::string>("cmd_topic", "target_steer");
+    feedback_topic_ = declare_parameter<std::string>("feedback_topic", "steer_position");
 
-    encoder_counts_per_rev_ = declare_parameter<int>("encoder_counts_per_rev", 5770);
+    // ---------------- 编码器换算参数 ----------------
+    // 标定关系：-45°..+45° 约等于 2300 counts => 一圈约 9200 counts。
+    encoder_counts_per_rev_ = declare_parameter<int>("encoder_counts_per_rev", 9200);
     invert_encoder_ = declare_parameter<bool>("invert_encoder", true);
     event_debounce_us_ = declare_parameter<int>("event_debounce_us", 100);
 
+    // ---------------- 位置环 PID 与运动约束 ----------------
     control_hz_ = declare_parameter<double>("control_hz", 50.0);
-    kp_ = declare_parameter<double>("kp", 30.0);
+    kp_ = declare_parameter<double>("kp", 9.5);
     ki_ = declare_parameter<double>("ki", 0.0);
     kd_ = declare_parameter<double>("kd", 0.0);
-    i_max_ = declare_parameter<double>("i_max", 400.0);
-    rate_deadband_deg_s_ = declare_parameter<double>("rate_deadband_deg_s", 0.2);
-    max_pwm_percent_ = declare_parameter<double>("max_pwm_percent", 100.0);
-    max_pwm_step_ = declare_parameter<double>("max_pwm_step", 2.0);
-    cmd_timeout_s_ = declare_parameter<double>("cmd_timeout_s", 0.3);
+    i_max_ = declare_parameter<double>("i_max", 50.0);
+    position_deadband_deg_ = declare_parameter<double>("position_deadband_deg", 0.5);
+    max_pwm_percent_ = declare_parameter<double>("max_pwm_percent", 90.0);
+    max_pwm_step_ = declare_parameter<double>("max_pwm_step", 12.0);
+    min_effective_pwm_percent_ = declare_parameter<double>("min_effective_pwm_percent", 18.0);
+    cmd_timeout_s_ = declare_parameter<double>("cmd_timeout_s", 0.0);
     debug_hz_ = declare_parameter<double>("debug_hz", 2.0);
 
+    // ---------------- 启动自标定参数 ----------------
+    // 节点启动后默认先找左限位，将左限位定义为 left_limit_deg，再回到 0°。
+    startup_auto_home_ = declare_parameter<bool>("startup_auto_home", true);
+    left_limit_deg_ = declare_parameter<double>("left_limit_deg", 45.0);
+    right_limit_deg_ = declare_parameter<double>("right_limit_deg", -45.0);
+    home_seek_pwm_percent_ = declare_parameter<double>("home_seek_pwm_percent", 65.0);
+    home_zero_tolerance_deg_ = declare_parameter<double>("home_zero_tolerance_deg", 1.0);
+    // 额外零点修正（度），用于机械装配误差补偿。
+    zero_offset_deg_ = declare_parameter<double>("zero_offset_deg", 0.0);
+
     validate_parameters();
+    // 编码器步数 -> 角度系数（度/步）。
     deg_per_step_ = 360.0 / static_cast<double>(encoder_counts_per_rev_);
 
+    // 初始化硬件，失败会直接抛异常并退出节点。
     open_pwm();
     open_gpio();
 
+    // 订阅目标角、发布反馈角。
     cmd_sub_ = create_subscription<std_msgs::msg::Float64>(
-      cmd_topic_, 10, std::bind(&SteerRateClosedLoopNode::on_cmd, this, std::placeholders::_1));
+      cmd_topic_, 10, std::bind(&SteerPositionClosedLoopNode::on_cmd, this, std::placeholders::_1));
     feedback_pub_ = create_publisher<std_msgs::msg::Float64>(feedback_topic_, 10);
 
+    // 编码器事件线程：独立于控制线程，避免阻塞控制周期。
     encoder_thread_ = std::thread([this]() { this->encoder_loop(); });
 
+    // 固定周期位置环控制。
     const auto period = std::chrono::duration<double>(1.0 / control_hz_);
     timer_ = create_wall_timer(
       std::chrono::duration_cast<std::chrono::nanoseconds>(period),
-      std::bind(&SteerRateClosedLoopNode::control_step, this));
+      std::bind(&SteerPositionClosedLoopNode::control_step, this));
 
     last_control_time_ = now();
-    last_rate_time_ = last_control_time_;
-    last_rate_step_ = read_signed_steps();
     last_cmd_time_ = std::chrono::steady_clock::now();
     startup_time_ = std::chrono::steady_clock::now();
     next_debug_time_ = std::chrono::steady_clock::now();
+    startup_state_ = startup_auto_home_ ? StartupState::kSeekingLeftLimit : StartupState::kDone;
 
     RCLCPP_INFO(
       get_logger(),
-      "steer_closed_loop(rate) started. cmd_topic=%s feedback_topic=%s",
+      "steer_closed_loop(position) started. cmd_topic=%s feedback_topic=%s",
       cmd_topic_.c_str(), feedback_topic_.c_str());
   }
 
-  ~SteerRateClosedLoopNode() override {
+  ~SteerPositionClosedLoopNode() override {
+    // 析构顺序：停线程 -> 停电机 -> 释放 GPIO/PWM
     running_.store(false, std::memory_order_relaxed);
     if (encoder_thread_.joinable()) {
       encoder_thread_.join();
@@ -102,6 +141,7 @@ public:
 
 private:
   void validate_parameters() {
+    // 参数合法性检查：将配置错误尽早在启动阶段暴露。
     if (encoder_counts_per_rev_ <= 0) {
       throw std::runtime_error("encoder_counts_per_rev must be > 0");
     }
@@ -114,11 +154,29 @@ private:
     if (max_pwm_step_ <= 0.0) {
       throw std::runtime_error("max_pwm_step must be > 0");
     }
+    if (min_effective_pwm_percent_ < 0.0 || min_effective_pwm_percent_ > max_pwm_percent_) {
+      throw std::runtime_error("min_effective_pwm_percent must be in [0, max_pwm_percent]");
+    }
+    if (brake_active_level_ != 0 && brake_active_level_ != 1) {
+      throw std::runtime_error("brake_active_level must be 0 or 1");
+    }
+    if (position_deadband_deg_ < 0.0) {
+      throw std::runtime_error("position_deadband_deg must be >= 0");
+    }
     if (cmd_timeout_s_ < 0.0) {
       throw std::runtime_error("cmd_timeout_s must be >= 0");
     }
     if (pwm_period_ns_ <= 0) {
       throw std::runtime_error("pwm_period_ns must be > 0");
+    }
+    if (left_limit_deg_ <= right_limit_deg_) {
+      throw std::runtime_error("left_limit_deg must be > right_limit_deg");
+    }
+    if (home_seek_pwm_percent_ <= 0.0 || home_seek_pwm_percent_ > max_pwm_percent_) {
+      throw std::runtime_error("home_seek_pwm_percent must be in (0, max_pwm_percent]");
+    }
+    if (home_zero_tolerance_deg_ < 0.0) {
+      throw std::runtime_error("home_zero_tolerance_deg must be >= 0");
     }
   }
 
@@ -133,6 +191,7 @@ private:
   }
 
   static int code_index(const char *code) {
+    // 将三相霍尔码映射到序号，用于判断旋转方向与步进增减。
     for (int i = 0; i < kCodeCount; ++i) {
       if (std::strcmp(code, kForwardCodes[i]) == 0) {
         return i;
@@ -142,12 +201,21 @@ private:
   }
 
   void on_cmd(const std_msgs::msg::Float64::SharedPtr msg) {
-    target_rate_deg_s_.store(msg->data, std::memory_order_relaxed);
+    // 按需求：回零完成前忽略外部角度命令，避免启动自标定被打断。
+    if (startup_state_ != StartupState::kDone) {
+      return;
+    }
+    target_position_deg_.store(
+      clamp(msg->data, right_limit_deg_, left_limit_deg_),
+      std::memory_order_relaxed);
     last_cmd_time_ = std::chrono::steady_clock::now();
   }
 
   void control_step() {
-    // Main velocity loop: estimate rate -> PID -> direction + PWM.
+    // 控制主循环：
+    // 1) 发布当前反馈角
+    // 2) 执行启动状态机（找左限位/回零）
+    // 3) 正常状态执行位置 PID
     const auto tnow = now();
     const double dt = (tnow - last_control_time_).seconds();
     if (dt <= 0.0) {
@@ -155,30 +223,119 @@ private:
     }
     last_control_time_ = tnow;
 
-    const double measured_rate = compute_rate_deg_s(tnow);
-    publish_rate(measured_rate);
+    const double measured_position = compute_position_deg();
+    publish_position(measured_position);
 
-    double target_rate = target_rate_deg_s_.load(std::memory_order_relaxed);
-    // Failsafe: if commands stop arriving, automatically decay target to zero.
-    if (cmd_timeout_s_ > 0.0) {
-      const auto age = std::chrono::duration<double>(std::chrono::steady_clock::now() - last_cmd_time_).count();
-      if (age > cmd_timeout_s_) {
-        target_rate = 0.0;
+    if (startup_state_ == StartupState::kSeekingLeftLimit) {
+      // 阶段A：寻找左限位
+      if (limit_left_active()) {
+        // 触发左限位后，建立“编码器原始角 -> 物理角度”映射：
+        // 使当前 raw_position 对应 left_limit_deg（默认 +45°）
+        const double raw_position = compute_raw_position_deg();
+        zero_offset_deg_ = left_limit_deg_ - raw_position;
+        integral_ = 0.0;
+        prev_error_ = 0.0;
+        prev_output_ = 0.0;
+        stop_motor();
+        target_position_deg_.store(0.0, std::memory_order_relaxed);
+        startup_state_ = StartupState::kReturningToZero;
+        last_cmd_time_ = std::chrono::steady_clock::now();
+        RCLCPP_INFO(
+          get_logger(),
+          "left limit latched, calibrated: left=%.2f deg zero_offset=%.3f, returning to 0 deg",
+          left_limit_deg_, zero_offset_deg_);
+      } else {
+        // 以固定 PWM 往“左限位方向”运动，直到触发限位。
+        double seek_out = positive_dir_hits_left_limit_ ? home_seek_pwm_percent_ : -home_seek_pwm_percent_;
+        if ((seek_out > 0.0 && positive_limit_active()) || (seek_out < 0.0 && negative_limit_active())) {
+          seek_out = 0.0;
+        }
+        set_brake(std::abs(seek_out) < 1e-6);
+        if (std::abs(seek_out) >= 1e-6) {
+          set_direction(seek_out >= 0.0);
+        }
+        set_pwm(std::abs(seek_out));
+        log_debug(measured_position, left_limit_deg_, left_limit_deg_ - measured_position, seek_out);
       }
+      return;
     }
 
-    double error = target_rate - measured_rate;
-    if (std::abs(error) < rate_deadband_deg_s_) {
+    double target_position = 0.0;
+    if (startup_state_ == StartupState::kReturningToZero) {
+      // 阶段B：从左限位回到 0°
+      target_position = 0.0;
+    } else {
+      target_position = target_position_deg_.load(std::memory_order_relaxed);
+      // 可选超时回中：当外部命令停止太久，目标回 0°。
+      if (cmd_timeout_s_ > 0.0) {
+        const auto age =
+          std::chrono::duration<double>(std::chrono::steady_clock::now() - last_cmd_time_).count();
+        if (age > cmd_timeout_s_) {
+          target_position = 0.0;
+        }
+      }
+    }
+    target_position = clamp(target_position, right_limit_deg_, left_limit_deg_);
+    run_position_pid(target_position, measured_position, dt);
+
+    if (startup_state_ == StartupState::kReturningToZero) {
+      // 回零判定：误差进入容差后，切换为正常运行态。
+      const double home_error = target_position - measured_position;
+      if (std::abs(home_error) <= home_zero_tolerance_deg_) {
+        startup_state_ = StartupState::kDone;
+        integral_ = 0.0;
+        prev_error_ = 0.0;
+        prev_output_ = 0.0;
+        stop_motor();
+        RCLCPP_INFO(get_logger(), "startup homing done: reached 0 deg");
+      }
+    }
+  }
+
+  double compute_position_deg() const {
+    // 实际反馈角 = 编码器原始角 + 零点偏置
+    return compute_raw_position_deg() + zero_offset_deg_;
+  }
+
+  double compute_raw_position_deg() const {
+    const long step = read_signed_steps();
+    return static_cast<double>(step) * deg_per_step_;
+  }
+
+  void publish_position(double position_deg) {
+    std_msgs::msg::Float64 msg;
+    msg.data = position_deg;
+    feedback_pub_->publish(msg);
+  }
+
+  double run_position_pid(double target_position, double measured_position, double dt) {
+    // 标准位置式 PID：
+    // error = target - measured
+    // out = kp*e + ki*∫e + kd*de/dt
+    double error = target_position - measured_position;
+    if (std::abs(error) < position_deadband_deg_) {
       error = 0.0;
     }
 
-    integral_ = clamp(integral_ + error * dt, -i_max_, i_max_);
+    // 先计算候选积分并限幅（防止积分无限增长）。
+    const double integral_candidate = clamp(integral_ + error * dt, -i_max_, i_max_);
     const double derivative = (error - prev_error_) / dt;
-    prev_error_ = error;
 
-    const double raw = kp_ * error + ki_ * integral_ + kd_ * derivative;
-    double out = clamp(raw, -max_pwm_percent_, max_pwm_percent_);
+    const double raw_candidate = kp_ * error + ki_ * integral_candidate + kd_ * derivative;
+    const double saturated_candidate = clamp(raw_candidate, -max_pwm_percent_, max_pwm_percent_);
 
+    // 条件积分抗饱和：只有在未饱和或“有助于脱离饱和”时才更新积分。
+    if (
+      raw_candidate == saturated_candidate ||
+      (saturated_candidate >= max_pwm_percent_ && error < 0.0) ||
+      (saturated_candidate <= -max_pwm_percent_ && error > 0.0)) {
+      integral_ = integral_candidate;
+    }
+
+    const double raw_output = kp_ * error + ki_ * integral_ + kd_ * derivative;
+    double out = clamp(raw_output, -max_pwm_percent_, max_pwm_percent_);
+
+    // 输出斜率限制：抑制突变，减少机械冲击与电流尖峰。
     const double delta = out - prev_output_;
     if (delta > max_pwm_step_) {
       out = prev_output_ + max_pwm_step_;
@@ -186,8 +343,9 @@ private:
       out = prev_output_ - max_pwm_step_;
     }
     prev_output_ = out;
+    prev_error_ = error;
 
-    // Limit safety: prevent driving deeper into an active end-stop.
+    // 限位保护：若继续朝触发方向运动，强制输出归零并清积分。
     if (out > 0.0 && positive_limit_active()) {
       out = 0.0;
       integral_ = 0.0;
@@ -197,37 +355,45 @@ private:
       integral_ = 0.0;
     }
 
-    set_direction(out >= 0.0);
-    set_pwm(std::abs(out));
+    // 最小有效 PWM：避免因静摩擦导致“有误差但不动”。
+    if (std::abs(out) > 1e-6 && std::abs(out) < min_effective_pwm_percent_ && std::abs(error) > position_deadband_deg_) {
+      out = (out > 0.0) ? min_effective_pwm_percent_ : -min_effective_pwm_percent_;
+    }
 
+    // 输出为零时抱闸；非零时松闸并按方向输出 PWM。
+    set_brake(std::abs(out) < 1e-6);
+    if (std::abs(out) >= 1e-6) {
+      set_direction(out >= 0.0);
+    }
+    set_pwm(std::abs(out));
+    log_debug(measured_position, target_position, error, out);
+    return out;
+  }
+
+  void log_debug(double measured_position, double target_position, double error, double out) {
     if (std::chrono::steady_clock::now() >= next_debug_time_) {
       RCLCPP_INFO(
         get_logger(),
-        "rate=%.2f target=%.2f err=%.2f out%%=%.2f L=%d R=%d",
-        measured_rate, target_rate, error, out,
-        static_cast<int>(limit_left_active()), static_cast<int>(limit_right_active()));
+        "state=%s pos=%.2f target=%.2f err=%.2f out%%=%.2f L=%d R=%d B=%d",
+        startup_state_name(), measured_position, target_position, error, out,
+        static_cast<int>(limit_left_active()), static_cast<int>(limit_right_active()),
+        static_cast<int>(brake_engaged_));
       const auto period = std::chrono::duration<double>(1.0 / debug_hz_);
       next_debug_time_ += std::chrono::duration_cast<std::chrono::steady_clock::duration>(period);
     }
   }
 
-  double compute_rate_deg_s(const rclcpp::Time &tnow) {
-    // Rate is derived from hall-step delta over dt.
-    const long current_step = read_signed_steps();
-    const double dt = (tnow - last_rate_time_).seconds();
-    if (dt <= 0.0) {
-      return 0.0;
+  const char *startup_state_name() const {
+    switch (startup_state_) {
+      case StartupState::kSeekingLeftLimit:
+        return "seeking_left";
+      case StartupState::kReturningToZero:
+        return "returning_zero";
+      case StartupState::kDone:
+        return "ready";
+      default:
+        return "unknown";
     }
-    const long delta = current_step - last_rate_step_;
-    last_rate_step_ = current_step;
-    last_rate_time_ = tnow;
-    return (static_cast<double>(delta) * deg_per_step_) / dt;
-  }
-
-  void publish_rate(double rate_deg_s) {
-    std_msgs::msg::Float64 msg;
-    msg.data = rate_deg_s;
-    feedback_pub_->publish(msg);
   }
 
   long read_signed_steps() const {
@@ -266,16 +432,17 @@ private:
   }
 
   bool in_limit_startup_grace() const {
-    // Ignore limit switches briefly after startup to avoid power-on glitches.
+    // 启动初期限位毛刺屏蔽，防止上电瞬态误触发。
     if (limit_startup_grace_s_ <= 0.0) {
       return false;
     }
-    const auto age = std::chrono::duration<double>(std::chrono::steady_clock::now() - startup_time_).count();
+    const auto age =
+      std::chrono::duration<double>(std::chrono::steady_clock::now() - startup_time_).count();
     return age < limit_startup_grace_s_;
   }
 
   void encoder_loop() {
-    // Dedicated thread for hall event polling to keep control loop timing stable.
+    // 事件线程：监听霍尔边沿并更新步数累计。
     pollfd fds[3];
     fds[0].fd = gpiod_line_event_get_fd(hu_line_);
     fds[1].fd = gpiod_line_event_get_fd(hv_line_);
@@ -327,7 +494,7 @@ private:
     const auto now_us = static_cast<unsigned long long>(
       std::chrono::duration_cast<std::chrono::microseconds>(
         std::chrono::steady_clock::now().time_since_epoch()).count());
-    // Simple software debounce on each hall channel.
+    // 每通道软件去抖。
     if (last_evt_us != 0 && now_us - last_evt_us < static_cast<unsigned long long>(event_debounce_us_)) {
       return;
     }
@@ -353,7 +520,7 @@ private:
       return;
     }
 
-    // Valid 6-step commutation sequence only; jump codes are ignored.
+    // 只接受“相邻一步”的合法序列，跳码直接忽略（抗干扰）。
     if ((last_code_idx_ + 1) % kCodeCount == curr) {
       total_step_.fetch_add(1, std::memory_order_relaxed);
     } else if ((last_code_idx_ - 1 + kCodeCount) % kCodeCount == curr) {
@@ -373,7 +540,7 @@ private:
   }
 
   void open_pwm() {
-    // sysfs PWM setup: export -> period -> duty=0 -> enable.
+    // sysfs PWM 初始化：export -> period -> duty=0 -> enable
     (void)write_file(pwm_chip_path_ + "export", std::to_string(pwm_channel_));
     if (!write_file(
         pwm_chip_path_ + "pwm" + std::to_string(pwm_channel_) + "/period",
@@ -406,34 +573,42 @@ private:
 
   void stop_motor() {
     set_pwm(0.0);
+    set_brake(true);
   }
 
   void open_gpio() {
+    // 打开 GPIO 芯片并申请方向、刹车、霍尔、限位引脚。
     chip_ = gpiod_chip_open(chip_path_.c_str());
     if (!chip_) {
       throw std::runtime_error("open gpio chip failed: " + chip_path_);
     }
 
     dir_line_ = gpiod_chip_get_line(chip_, dir_offset_);
+    brake_line_ = gpiod_chip_get_line(chip_, brake_offset_);
     hu_line_ = gpiod_chip_get_line(chip_, hu_offset_);
     hv_line_ = gpiod_chip_get_line(chip_, hv_offset_);
     hw_line_ = gpiod_chip_get_line(chip_, hw_offset_);
     limit_left_line_ = gpiod_chip_get_line(chip_, limit_left_offset_);
     limit_right_line_ = gpiod_chip_get_line(chip_, limit_right_offset_);
-    if (!dir_line_ || !hu_line_ || !hv_line_ || !hw_line_ || !limit_left_line_ || !limit_right_line_) {
+    if (!dir_line_ || !brake_line_ || !hu_line_ || !hv_line_ || !hw_line_ || !limit_left_line_ || !limit_right_line_) {
       throw std::runtime_error("get gpio line failed");
     }
 
     if (gpiod_line_request_output(dir_line_, "steer-dir", 0) != 0) {
       throw std::runtime_error("request dir output failed");
     }
+    // 刹车默认上电即抱闸（active level）。
+    if (gpiod_line_request_output(brake_line_, "steer-brake", brake_active_level_) != 0) {
+      throw std::runtime_error("request brake output failed");
+    }
+    brake_engaged_ = true;
     if (gpiod_line_request_both_edges_events(hu_line_, "steer-hu") != 0 ||
         gpiod_line_request_both_edges_events(hv_line_, "steer-hv") != 0 ||
         gpiod_line_request_both_edges_events(hw_line_, "steer-hw") != 0) {
       throw std::runtime_error("request hall events failed");
     }
 #ifdef GPIOD_LINE_REQUEST_FLAG_BIAS_PULL_UP
-    // Prefer explicit pull bias on limit inputs to avoid floating states.
+    // 若库支持，优先使用硬件上下拉以降低输入漂移风险。
     if (limit_use_bias_) {
       gpiod_line_request_config cfg_l = {};
       gpiod_line_request_config cfg_r = {};
@@ -481,6 +656,10 @@ private:
       gpiod_line_release(dir_line_);
       dir_line_ = nullptr;
     }
+    if (brake_line_) {
+      gpiod_line_release(brake_line_);
+      brake_line_ = nullptr;
+    }
     if (hu_line_) {
       gpiod_line_release(hu_line_);
       hu_line_ = nullptr;
@@ -514,6 +693,16 @@ private:
     (void)gpiod_line_set_value(dir_line_, forward ? 1 : 0);
   }
 
+  void set_brake(bool engaged) {
+    // 根据 brake_active_level_ 适配高有效/低有效刹车电路。
+    if (!brake_line_) {
+      return;
+    }
+    brake_engaged_ = engaged;
+    const int level = engaged ? brake_active_level_ : (1 - brake_active_level_);
+    (void)gpiod_line_set_value(brake_line_, level);
+  }
+
 private:
   std::string chip_path_;
   std::string pwm_chip_path_;
@@ -524,6 +713,8 @@ private:
   int hv_offset_{};
   int hw_offset_{};
   int dir_offset_{};
+  int brake_offset_{};
+  int brake_active_level_{0};
   int limit_left_offset_{};
   int limit_right_offset_{};
   int limit_active_level_{};
@@ -544,11 +735,18 @@ private:
   double ki_{};
   double kd_{};
   double i_max_{};
-  double rate_deadband_deg_s_{};
+  double position_deadband_deg_{};
   double max_pwm_percent_{};
   double max_pwm_step_{};
+  double min_effective_pwm_percent_{};
   double cmd_timeout_s_{};
   double debug_hz_{};
+  bool startup_auto_home_{true};
+  double left_limit_deg_{45.0};
+  double right_limit_deg_{-45.0};
+  double home_seek_pwm_percent_{35.0};
+  double home_zero_tolerance_deg_{1.0};
+  double zero_offset_deg_{};
 
   double deg_per_step_{};
   double integral_{0.0};
@@ -556,14 +754,13 @@ private:
   double prev_output_{0.0};
 
   rclcpp::Time last_control_time_;
-  rclcpp::Time last_rate_time_;
-  long last_rate_step_{0};
   std::chrono::steady_clock::time_point last_cmd_time_;
   std::chrono::steady_clock::time_point startup_time_;
   std::chrono::steady_clock::time_point next_debug_time_;
+  StartupState startup_state_{StartupState::kDone};
 
   std::atomic<bool> running_;
-  std::atomic<double> target_rate_deg_s_{0.0};
+  std::atomic<double> target_position_deg_{0.0};
   std::atomic<long> total_step_{0};
 
   int hu_level_{0};
@@ -576,11 +773,13 @@ private:
 
   gpiod_chip *chip_{nullptr};
   gpiod_line *dir_line_{nullptr};
+  gpiod_line *brake_line_{nullptr};
   gpiod_line *hu_line_{nullptr};
   gpiod_line *hv_line_{nullptr};
   gpiod_line *hw_line_{nullptr};
   gpiod_line *limit_left_line_{nullptr};
   gpiod_line *limit_right_line_{nullptr};
+  bool brake_engaged_{true};
 
   std::thread encoder_thread_;
 
@@ -592,7 +791,7 @@ private:
 int main(int argc, char **argv) {
   rclcpp::init(argc, argv);
   try {
-    auto node = std::make_shared<SteerRateClosedLoopNode>();
+    auto node = std::make_shared<SteerPositionClosedLoopNode>();
     rclcpp::spin(node);
   } catch (const std::exception &e) {
     std::fprintf(stderr, "steer_closed_loop startup error: %s\n", e.what());

@@ -1,0 +1,4 @@
+/root/GZ_DiNiu/src/steer_closed_loop/src/steer_closed_loop_node.cpp: In member function ‘void SteerPositionClosedLoopNode::control_step()’:
+/root/GZ_DiNiu/src/steer_closed_loop/src/steer_closed_loop_node.cpp:225:18: warning: unused variable ‘out’ [-Wunused-variable]
+  225 |     const double out = run_position_pid(target_position, measured_position, dt);
+      |                  ^~~
