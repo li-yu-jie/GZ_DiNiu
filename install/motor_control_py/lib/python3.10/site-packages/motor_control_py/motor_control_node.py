@@ -300,13 +300,10 @@ class MotorControlNode(Node):
         else:
             effective_speed = target_speed
             if abs(effective_speed) < self.ackermann_min_speed_m_s:
-                if abs(yaw_rate_rad_s) > 1e-6:
-                    speed_sign = 1.0 if yaw_rate_rad_s >= 0.0 else -1.0
-                elif effective_speed >= 0.0:
-                    speed_sign = 1.0
-                else:
-                    speed_sign = -1.0
-                effective_speed = speed_sign * self.ackermann_min_speed_m_s
+                # At very low speed, use a fixed positive equivalent speed.
+                # This keeps steer sign determined by angular.z, so keyboard j/l
+                # map to opposite steering directions as expected.
+                effective_speed = self.ackermann_min_speed_m_s
             target_steer_rad = math.atan(
                 (self.ackermann_wheelbase_m * yaw_rate_rad_s) / effective_speed
             )

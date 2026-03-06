@@ -1,5 +1,7 @@
 # /cmd_vel 控制说明
 
+详细文档：[`steer_closed_loop_node 使用说明`](docs/steer_closed_loop_node.md)
+
 ## 目标
 使用 ROS2 标准话题 `/cmd_vel` 控制本项目：
 - `linear.x`：驱动轮速度目标
