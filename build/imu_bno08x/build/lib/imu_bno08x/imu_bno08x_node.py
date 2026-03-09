@@ -1,3 +1,6 @@
+"""
+BNO08x IMU 节点：通过 I2C 读取姿态/加速度/陀螺/磁力，并发布标准 ROS2 话题。
+"""
 import time
 
 import board
@@ -32,16 +35,19 @@ class Bno08xNode(Node):
         if self.mag_rate_hz <= 0.0:
             raise RuntimeError('mag_rate_hz must be > 0')
 
+        # 初始化 I2C 与传感器对象
         i2c = busio.I2C(board.SCL, board.SDA)
         self.bno = BNO08X_I2C(i2c, address=int(self.i2c_addr))
 
         if self.use_reset:
             try:
+                # 软复位以清理异常状态
                 self.bno.soft_reset()
                 time.sleep(0.5)
             except Exception:
                 self.get_logger().warn('BNO08x soft reset failed')
 
+        # 启用各传感器输出，周期单位为微秒
         self.bno.enable_feature(BNO_REPORT_ROTATION_VECTOR, int(1e6 / self.rate_hz))
         self.bno.enable_feature(BNO_REPORT_ACCELEROMETER, int(1e6 / self.rate_hz))
         self.bno.enable_feature(BNO_REPORT_GYROSCOPE, int(1e6 / self.rate_hz))
@@ -53,6 +59,7 @@ class Bno08xNode(Node):
         self.timer = self.create_timer(1.0 / self.rate_hz, self.poll)
 
     def poll(self):
+        # 轮询读取传感器数据并发布 IMU 与磁力计消息
         quat = self.bno.quaternion
         accel = self.bno.acceleration
         gyro = self.bno.gyro

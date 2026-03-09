@@ -1,3 +1,4 @@
+// 编码器速度节点：基于 A/B 相中断统计脉冲，并换算为线速度发布。
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/float64.hpp>
 
@@ -12,6 +13,7 @@
 
 class EncoderVelNode : public rclcpp::Node {
 public:
+  // 初始化：加载参数、打开 GPIO、启动事件线程与定时发布器
   EncoderVelNode()
   : Node("encoder_vel_node"), running_(true), count_(0) {
     chip_name_ = this->declare_parameter<std::string>("chip", "/dev/gpiochip0");
@@ -56,6 +58,7 @@ public:
   }
 
 private:
+  // 打开 GPIO 设备与 A/B 相输入，A 相使用上升沿事件，B 相用于方向判定
   void open_gpio() {
     chip_ = gpiod_chip_open(chip_name_.c_str());
     if (!chip_) {
@@ -80,6 +83,7 @@ private:
     }
   }
 
+  // GPIO 资源释放
   void close_gpio() {
     if (line_a_) {
       gpiod_line_release(line_a_);
@@ -95,6 +99,7 @@ private:
     }
   }
 
+  // 编码器事件线程：等待 A 相上升沿，根据 B 相电平判定方向并累计计数
   void event_loop() {
     while (running_.load()) {
       timespec timeout{};
@@ -129,6 +134,7 @@ private:
     }
   }
 
+  // 定时发布线速度：Δ计数 -> 转速 -> 线速度
   void publish_velocity() {
     auto now = this->get_clock()->now();
     double dt = (now - last_time_).seconds();

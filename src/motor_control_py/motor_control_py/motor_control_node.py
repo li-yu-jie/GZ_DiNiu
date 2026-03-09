@@ -1,3 +1,11 @@
+"""
+电机与转向控制主节点。
+
+职责：
+- 订阅 /cmd_vel（Nav2 默认输出的 Twist）
+- 计算目标车速与 Ackermann 前轮转角
+- 用 PID 控制驱动 PWM
+"""
 from collections import deque
 import math
 import pigpio
@@ -9,6 +17,7 @@ from std_msgs.msg import Float64
 
 
 class PidController:
+    """简化的位置式 PID，带低通滤波、死区、限幅与积分抗饱和。"""
     def __init__(
         self,
         name: str,
@@ -54,6 +63,7 @@ class PidController:
         self.prev_error = None
 
     def update_feedback(self, value: float):
+        # 将测量值写入，同时进行一阶低通滤波，抑制速度测量噪声
         self.measured = value
         if self.filtered is None:
             self.filtered = value
@@ -62,6 +72,7 @@ class PidController:
             self.filtered = (a * value) + ((1.0 - a) * self.filtered)
 
     def step(self, now):
+        # 单步 PID 计算：使用当前目标与过滤后的速度反馈生成 PWM 输出
         if self.measured is None or self.filtered is None:
             return None
         if self.last_time is None:
@@ -73,8 +84,8 @@ class PidController:
         if dt <= 0.0:
             return None
 
-        # Standard positional PID:
-        # u(k) = Kp*e(k) + Ki*integral(e) + Kd*(e(k)-e(k-1))/dt
+        # 位置式 PID：
+        # u(k) = Kp*e(k) + Ki*∫e(k) + Kd*(e(k)-e(k-1))/dt
         error = self.target - self.filtered
         if abs(error) < self.deadband:
             error = 0.0
@@ -88,8 +99,8 @@ class PidController:
         raw_candidate = (self.kp * error) + (self.ki * integral_candidate) + (self.kd * derivative)
         saturated_candidate = self._clamp(raw_candidate, self.max_pwm_percent)
 
-        # Conditional integration anti-windup:
-        # keep integrating only when not saturated, or when error drives output back from saturation.
+        # 条件积分抗饱和：
+        # 仅在未饱和或误差能推动输出离开饱和时，才更新积分项。
         if (
             raw_candidate == saturated_candidate or
             (saturated_candidate >= self.max_pwm_percent and error < 0.0) or
@@ -100,6 +111,7 @@ class PidController:
         raw_output = (self.kp * error) + (self.ki * self.integral) + (self.kd * derivative)
         output = self._clamp(raw_output, self.max_pwm_percent)
 
+        # 输出斜率限制：限制单周期 PWM 变化量，避免突变导致抖动
         delta = output - self.prev_output
         max_step = self.max_pwm_step
         if delta > max_step:
@@ -114,6 +126,7 @@ class PidController:
 
 
 class MotorControlNode(Node):
+    """驱动与转向控制节点：/cmd_vel -> 目标速度与转向角 -> PWM 与转向话题。"""
     @staticmethod
     def _sign(value: float) -> int:
         if value > 0.0:
@@ -132,11 +145,16 @@ class MotorControlNode(Node):
         self.pwm_freq = self.declare_parameter('pwm_freq_hz', 100000).value
         # 是否反转方向引脚逻辑
         self.invert_dir = self.declare_parameter('invert_dir', True).value
-        # 速度指令订阅话题（Twist）
+        # 速度指令订阅话题（Twist，Nav2 默认输出 /cmd_vel）
         self.cmd_topic = self.declare_parameter('cmd_topic', '/cmd_vel').value
-        # cmd_vel 使用的线速度轴：x / y / z
-        self.cmd_vel_axis = str(self.declare_parameter('cmd_vel_axis', 'x').value).lower()
-        # cmd_vel 线速度缩放系数
+        # Ackermann 固定使用 linear.x 作为前进速度 vx。
+        requested_axis = str(self.declare_parameter('cmd_vel_axis', 'x').value).lower()
+        if requested_axis != 'x':
+            self.get_logger().warn(
+                f"cmd_vel_axis={requested_axis} is not supported in Ackermann mode, forcing to 'x'"
+            )
+        self.cmd_vel_axis = 'x'
+        # cmd_vel 线速度缩放系数（用于单位或标定修正）
         self.cmd_vel_scale = float(self.declare_parameter('cmd_vel_scale', 1.0).value)
         # 指令超时阈值（秒）
         self.cmd_timeout_s = float(self.declare_parameter('cmd_timeout_s', 0.0).value)
@@ -144,25 +162,27 @@ class MotorControlNode(Node):
         self.feedback_topic = self.declare_parameter('feedback_topic', 'linear_velocity').value
         # 是否发布转向控制指令
         self.enable_steer_cmd = bool(self.declare_parameter('enable_steer_cmd', True).value)
-        # 转向目标角度发布话题（Float64，单位 deg）
+        # 转向目标角度发布话题（Float64，单位 rad）
         self.steer_topic = self.declare_parameter('steer_topic', 'target_steer').value
-        # 转向指令模式：yaw_rate_scale / ackermann
-        self.steer_mode = str(self.declare_parameter('steer_mode', 'ackermann').value).lower()
-        # 将 angular.z（rad/s）换算为转向角速度（deg/s）的比例
-        self.steer_rate_scale_deg_per_rad_s = float(
-            self.declare_parameter('steer_rate_scale_deg_per_rad_s', 45.0).value
-        )
-        # Ackermann: 轴距（m）
+        # 底盘运动学固定为 Ackermann。
+        requested_mode = str(self.declare_parameter('steer_mode', 'ackermann').value).lower()
+        if requested_mode != 'ackermann':
+            self.get_logger().warn(
+                f"steer_mode={requested_mode} is not supported, forcing to 'ackermann'"
+            )
+        self.steer_mode = 'ackermann'
+        # Ackermann: 轴距（m），L = 前后轴距离
         self.ackermann_wheelbase_m = float(
-            self.declare_parameter('ackermann_wheelbase_m', 1.18).value
+            self.declare_parameter('ackermann_wheelbase_m', 1.38).value
         )
-        # Ackermann: 最小等效速度阈值（m/s），用于低速/静止时防止除零
+        # Ackermann: 最小等效速度阈值（m/s）
+        # vx 很小时 atan(ω*L/vx) 会发散，使用 v_eff = sign(vx)*max(|vx|, v_min) 保护
         self.ackermann_min_speed_m_s = float(
-            self.declare_parameter('ackermann_min_speed_m_s', 0.05).value
+            self.declare_parameter('ackermann_min_speed_m_s', 0.12).value
         )
-        # Ackermann: 前轮目标转角限幅（deg）
-        self.ackermann_max_steer_angle_deg = float(
-            self.declare_parameter('ackermann_max_steer_angle_deg', 45.0).value
+        # Ackermann: 前轮目标转角限幅（rad），保护机械极限
+        self.ackermann_max_steer_angle_rad = float(
+            self.declare_parameter('ackermann_max_steer_angle_rad', math.pi / 4.0).value
         )
         # 转向命令超时自动回零（秒），0 表示关闭
         self.steer_cmd_timeout_s = float(
@@ -218,16 +238,16 @@ class MotorControlNode(Node):
             raise RuntimeError('min_effective_pwm_percent must be <= max_pwm_percent')
         if self.switch_dir_stop_speed_threshold < 0.0:
             raise RuntimeError('switch_dir_stop_speed_threshold must be >= 0')
-        if self.cmd_vel_axis not in ('x', 'y', 'z'):
-            raise RuntimeError("cmd_vel_axis must be one of: 'x', 'y', 'z'")
-        if self.steer_mode not in ('yaw_rate_scale', 'ackermann'):
-            raise RuntimeError("steer_mode must be one of: 'yaw_rate_scale', 'ackermann'")
+        if self.cmd_vel_axis != 'x':
+            raise RuntimeError("Ackermann mode requires cmd_vel_axis to be 'x'")
+        if self.steer_mode != 'ackermann':
+            raise RuntimeError("steer_mode must be 'ackermann'")
         if self.ackermann_wheelbase_m <= 0.0:
             raise RuntimeError('ackermann_wheelbase_m must be > 0')
         if self.ackermann_min_speed_m_s < 0.0:
             raise RuntimeError('ackermann_min_speed_m_s must be >= 0')
-        if self.ackermann_max_steer_angle_deg <= 0.0:
-            raise RuntimeError('ackermann_max_steer_angle_deg must be > 0')
+        if self.ackermann_max_steer_angle_rad <= 0.0:
+            raise RuntimeError('ackermann_max_steer_angle_rad must be > 0')
         if self.steer_cmd_timeout_s < 0.0:
             raise RuntimeError('steer_cmd_timeout_s must be >= 0')
         if self.cmd_timeout_s < 0.0:
@@ -262,6 +282,7 @@ class MotorControlNode(Node):
             filter_alpha=self.filter_alpha,
         )
 
+        # ROS2 订阅与发布
         self.sub_cmd = self.create_subscription(Twist, self.cmd_topic, self.on_cmd_vel, 10)
         self.sub_fb = self.create_subscription(Float64, self.feedback_topic, self.on_feedback, 10)
         self.steer_pub = self.create_publisher(Float64, self.steer_topic, 10)
@@ -272,8 +293,7 @@ class MotorControlNode(Node):
         self.feedback_samples = deque(maxlen=self.feedback_median_window)
         self.last_feedback_filtered = None
         self.last_target_for_reset = 0.0
-        self.steer_target_deg = 0.0
-        self.last_steer_cmd_time = monotonic()
+        self.steer_target_rad = 0.0
 
         period = 1.0 / self.control_hz
         self.timer = self.create_timer(period, self.control_step)
@@ -287,42 +307,33 @@ class MotorControlNode(Node):
     def _clamp_abs(value: float, limit: float) -> float:
         return max(-limit, min(limit, value))
 
-    def _compute_steer_target_deg(self, target_speed: float, yaw_rate_rad_s: float):
-        now = monotonic()
-        dt = now - self.last_steer_cmd_time
-        self.last_steer_cmd_time = now
-        if dt <= 0.0:
-            dt = 1e-3
+    def _compute_steer_target_rad(self, target_speed: float, yaw_rate_rad_s: float):
+        # Ackermann：
+        # 输入：vx=target_speed（m/s），ω=yaw_rate_rad_s（rad/s）
+        # 前轮转角（rad）：α = atan(ω * L / v_eff)
+        # 其中 L 为轴距，v_eff 为低速保护后的等效速度
+        effective_speed = target_speed
+        if abs(effective_speed) < self.ackermann_min_speed_m_s:
+            # 低速保护：避免除零和过大转角，同时保持转向方向由 angular.z 决定
+            effective_speed = self.ackermann_min_speed_m_s
+        target_steer_rad = math.atan(
+            (self.ackermann_wheelbase_m * yaw_rate_rad_s) / effective_speed
+        )
+        target_steer_rad = float(target_steer_rad)
 
-        if self.steer_mode == 'yaw_rate_scale':
-            self.steer_target_deg += (yaw_rate_rad_s * self.steer_rate_scale_deg_per_rad_s) * dt
-            target_steer_deg = self.steer_target_deg
-        else:
-            effective_speed = target_speed
-            if abs(effective_speed) < self.ackermann_min_speed_m_s:
-                # At very low speed, use a fixed positive equivalent speed.
-                # This keeps steer sign determined by angular.z, so keyboard j/l
-                # map to opposite steering directions as expected.
-                effective_speed = self.ackermann_min_speed_m_s
-            target_steer_rad = math.atan(
-                (self.ackermann_wheelbase_m * yaw_rate_rad_s) / effective_speed
-            )
-            target_steer_deg = math.degrees(target_steer_rad)
-
-        target_steer_deg = self._clamp_abs(target_steer_deg, self.ackermann_max_steer_angle_deg)
-        self.steer_target_deg = target_steer_deg
-        return target_steer_deg
+        # 限制目标转角，保护机械极限
+        target_steer_rad = self._clamp_abs(target_steer_rad, self.ackermann_max_steer_angle_rad)
+        self.steer_target_rad = target_steer_rad
+        return target_steer_rad
 
     def on_cmd_vel(self, msg: Twist):
+        # /cmd_vel: linear.* + angular.z
+        # 本项目默认使用 linear.x 作为 vx，angular.z 作为 ω
         self.last_cmd_time = monotonic()
         self.timed_out = False
 
-        axis_value = {
-            'x': float(msg.linear.x),
-            'y': float(msg.linear.y),
-            'z': float(msg.linear.z),
-        }[self.cmd_vel_axis]
-        target_speed = axis_value * self.cmd_vel_scale
+        # Ackermann 固定取 linear.x 作为线速度目标（m/s）
+        target_speed = float(msg.linear.x) * self.cmd_vel_scale
         current_target = self.drive_pid.target
         current_sign = self._sign(current_target)
         target_sign = self._sign(target_speed)
@@ -330,6 +341,7 @@ class MotorControlNode(Node):
         if feedback_speed is None:
             feedback_speed = self.drive_pid.measured
 
+        # 处理换向：若当前在运动且方向将反转，则先置零再切换目标
         reverse_requested = (
             target_sign != 0 and
             current_sign != 0 and
@@ -352,20 +364,21 @@ class MotorControlNode(Node):
             self.drive_pid.reset(clear_integral=True, clear_output=False)
         self.last_target_for_reset = target_speed
 
-        target_steer_deg = self._compute_steer_target_deg(
+        # 由 vx 与 ω 计算转向目标角（rad），并发布到目标话题
+        target_steer_rad = self._compute_steer_target_rad(
             target_speed=target_speed,
             yaw_rate_rad_s=float(msg.angular.z),
         )
         if self.enable_steer_cmd:
             steer_msg = Float64()
-            steer_msg.data = target_steer_deg
+            steer_msg.data = target_steer_rad
             self.steer_pub.publish(steer_msg)
 
         self.get_logger().info(
             f'cmd_vel linear=({msg.linear.x:.3f},{msg.linear.y:.3f},{msg.linear.z:.3f}) '
             f'axis={self.cmd_vel_axis} target_speed={target_speed:.3f} m/s '
             f'angular.z={msg.angular.z:.3f} mode={self.steer_mode} '
-            f'steer_target_deg={target_steer_deg:.2f}'
+            f'steer_target_rad={target_steer_rad:.3f}'
         )
 
     def on_feedback(self, msg: Float64):
@@ -389,14 +402,14 @@ class MotorControlNode(Node):
         if self.enable_steer_cmd and self.steer_cmd_timeout_s > 0.0:
             cmd_age_s = monotonic() - self.last_cmd_time
             if cmd_age_s >= self.steer_cmd_timeout_s:
-                self.steer_target_deg = 0.0
+                self.steer_target_rad = 0.0
                 steer_msg = Float64()
-                steer_msg.data = self.steer_target_deg
+                steer_msg.data = self.steer_target_rad
                 self.steer_pub.publish(steer_msg)
                 if (self.control_tick % self.drive_log_every_n) == 0:
                     self.get_logger().info(
                         f'steer timeout active age={cmd_age_s:.2f}s mode={self.steer_mode} '
-                        f'cmd_target_deg={self.steer_target_deg:.2f}'
+                        f'cmd_target_rad={self.steer_target_rad:.3f}'
                     )
 
         if self.pending_target_speed is not None:

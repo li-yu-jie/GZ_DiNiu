@@ -1,3 +1,4 @@
+// 转向闭环控制节点：霍尔编码器测角 + 位置环 PID + 启动回零/限位保护。
 #include <gpiod.h>
 
 #include <atomic>
@@ -61,8 +62,8 @@ public:
     pwm_period_ns_ = declare_parameter<long>("pwm_period_ns", 100000);
 
     // ---------------- ROS 话题 ----------------
-    // cmd_topic: 目标角度（度）
-    // feedback_topic: 实际角度（度）
+    // cmd_topic: 目标转向角（rad）
+    // feedback_topic: 实际转向角（rad）
     cmd_topic_ = declare_parameter<std::string>("cmd_topic", "target_steer");
     feedback_topic_ = declare_parameter<std::string>("feedback_topic", "steer_position");
 
@@ -206,8 +207,9 @@ private:
     if (startup_state_ != StartupState::kDone) {
       return;
     }
+    const double target_position_deg = msg->data * 180.0 / M_PI;
     target_position_deg_.store(
-      clamp(msg->data, right_limit_deg_, left_limit_deg_),
+      clamp(target_position_deg, right_limit_deg_, left_limit_deg_),
       std::memory_order_relaxed);
     last_cmd_time_ = std::chrono::steady_clock::now();
   }
@@ -305,7 +307,7 @@ private:
 
   void publish_position(double position_deg) {
     std_msgs::msg::Float64 msg;
-    msg.data = position_deg;
+    msg.data = position_deg * M_PI / 180.0;
     feedback_pub_->publish(msg);
   }
 

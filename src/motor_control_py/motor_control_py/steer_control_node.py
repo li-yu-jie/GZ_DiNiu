@@ -1,3 +1,6 @@
+"""
+转向控制节点：订阅目标转角与反馈角度，使用 PID 生成 PWM 控制方向电机。
+"""
 import pigpio
 import rclpy
 from rclpy.node import Node
@@ -5,6 +8,7 @@ from std_msgs.msg import Float64
 
 
 class PidController:
+    """简化位置式 PID（含低通滤波、死区、限幅与斜率限制）。"""
     def __init__(
         self,
         name: str,
@@ -39,6 +43,7 @@ class PidController:
         self.target = value
 
     def update_feedback(self, value: float):
+        # 写入反馈并进行一阶低通滤波，抑制噪声
         self.measured = value
         if self.filtered is None:
             self.filtered = value
@@ -47,6 +52,7 @@ class PidController:
             self.filtered = (a * value) + ((1.0 - a) * self.filtered)
 
     def step(self, now):
+        # 执行一次 PID 计算，输出 PWM 百分比
         if self.measured is None or self.filtered is None:
             return None
         if self.last_time is None:
@@ -58,6 +64,7 @@ class PidController:
         if dt <= 0.0:
             return None
 
+        # 误差与死区处理
         error = self.target - self.filtered
         if abs(error) < self.deadband:
             error = 0.0
@@ -69,6 +76,7 @@ class PidController:
         integral_candidate = self.integral + (error * dt)
         integral_candidate = max(-self.i_max, min(self.i_max, integral_candidate))
 
+        # 位置式 PID 输出并限幅
         raw_output = (self.kp * error) + (self.ki * integral_candidate) + (self.kd * derivative)
         output = max(-self.max_pwm_percent, min(self.max_pwm_percent, raw_output))
 
@@ -79,6 +87,7 @@ class PidController:
                     (output <= -self.max_pwm_percent and error < 0.0)):
                 self.integral = integral_candidate
 
+        # 限制单周期 PWM 变化量，避免突变
         delta = output - self.prev_output
         max_step = self.max_pwm_step
         if delta > max_step:
@@ -93,6 +102,7 @@ class PidController:
 
 
 class SteerControlNode(Node):
+    """方向电机控制节点：/target_steer + /steer_position -> PWM + DIR。"""
     def __init__(self):
         super().__init__('steer_control_node')
 
@@ -102,7 +112,7 @@ class SteerControlNode(Node):
         self.invert_dir = self.declare_parameter('invert_dir', True).value
         self.cmd_topic = self.declare_parameter('cmd_topic', 'target_steer').value
         self.feedback_topic = self.declare_parameter('feedback_topic', 'steer_position').value
-        #方向电机
+        # 方向电机 PID 参数
         self.kp = self.declare_parameter('kp',18000.0).value
         self.ki = self.declare_parameter('ki', 1000.0).value
         self.kd = self.declare_parameter('kd', 0.0).value
@@ -143,6 +153,7 @@ class SteerControlNode(Node):
             filter_alpha=self.filter_alpha,
         )
 
+        # 订阅目标角与反馈角
         self.sub_cmd = self.create_subscription(Float64, self.cmd_topic, self.on_cmd, 10)
         self.sub_fb = self.create_subscription(Float64, self.feedback_topic, self.on_feedback, 10)
 
@@ -162,6 +173,7 @@ class SteerControlNode(Node):
         self.pid.update_feedback(msg.data)
 
     def control_step(self):
+        # 定时控制：PID 计算 -> DIR/PWM 输出
         now = self.get_clock().now()
         result = self.pid.step(now)
         if result is None:

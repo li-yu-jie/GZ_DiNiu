@@ -1,3 +1,6 @@
+"""
+速度可视化 Web 节点：订阅 /cmd_vel 与速度反馈，并通过 SSE 推送到网页。
+"""
 import json
 import threading
 import time
@@ -10,6 +13,7 @@ from rclpy.node import Node
 from std_msgs.msg import Float64
 
 
+# 前端页面：Canvas 绘制目标/反馈速度曲线
 INDEX_HTML = """<!doctype html>
 <html lang="zh-CN">
 <head>
@@ -215,22 +219,26 @@ requestAnimationFrame(draw);
 
 
 class SpeedState:
+    """线程安全的速度采样缓存，用于 HTTP 线程读取。"""
     def __init__(self):
         self.lock = threading.Lock()
         self.latest = {'t': time.time(), 'target': 0.0, 'feedback': 0.0}
         self.version = 0
 
     def update(self, target: float, feedback: float):
+        # 写入最新目标与反馈
         with self.lock:
             self.latest = {'t': time.time(), 'target': target, 'feedback': feedback}
             self.version += 1
 
     def snapshot(self):
+        # 原子快照，避免读取撕裂
         with self.lock:
             return self.latest.copy(), self.version
 
 
 class SpeedWebNode(Node):
+    """ROS2 订阅节点：读取目标/反馈速度，定时采样共享给 Web 端。"""
     def __init__(self, state: SpeedState):
         super().__init__('speed_web_node')
         self.state = state
@@ -255,6 +263,7 @@ class SpeedWebNode(Node):
         self.create_timer(1.0 / self.sample_hz, self.on_sample_timer)
 
     def on_cmd(self, msg: Twist):
+        # /cmd_vel 线速度目标（默认 linear.x）
         axis_value = {
             'x': float(msg.linear.x),
             'y': float(msg.linear.y),
@@ -263,13 +272,16 @@ class SpeedWebNode(Node):
         self.current_target = axis_value * self.cmd_vel_scale
 
     def on_feedback(self, msg: Float64):
+        # 速度反馈（m/s）
         self.current_feedback = float(msg.data)
 
     def on_sample_timer(self):
+        # 定时采样并更新共享状态
         self.state.update(self.current_target, self.current_feedback)
 
 
 def make_handler(state: SpeedState):
+    # 生成 HTTP 处理器：首页 + SSE 数据流
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):
             if self.path == '/':
@@ -282,6 +294,7 @@ def make_handler(state: SpeedState):
                 return
 
             if self.path == '/stream':
+                # Server-Sent Events：持续推送速度数据给前端
                 self.send_response(HTTPStatus.OK)
                 self.send_header('Content-Type', 'text/event-stream')
                 self.send_header('Cache-Control', 'no-cache')

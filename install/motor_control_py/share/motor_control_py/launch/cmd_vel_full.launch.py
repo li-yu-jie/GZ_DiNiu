@@ -1,3 +1,6 @@
+"""
+/cmd_vel 驱动完整链路：编码器、驱动控制、转向闭环、IMU。
+"""
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, ExecuteProcess, GroupAction
 from launch.conditions import IfCondition, UnlessCondition
@@ -59,6 +62,15 @@ def generate_launch_description() -> LaunchDescription:
                 executable="motor_control_node",
                 name="motor_control_node",
                 output="screen",
+                parameters=[
+                    {
+                        "steer_mode": "ackermann",
+                        "cmd_vel_axis": "x",
+                        "ackermann_wheelbase_m": 1.38,
+                        "ackermann_min_speed_m_s": 0.12,
+                        "ackermann_max_steer_angle_rad": 0.7853981633974483,
+                    }
+                ],
             ),
             Node(
                 package="steer_closed_loop",

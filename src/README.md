@@ -45,8 +45,9 @@ ros2 launch motor_control_py cmd_vel_full.launch.py enable_steer:=false
 # 启用 Ackermann 转向换算（示例参数）
 ros2 run motor_control_py motor_control_node --ros-args \
   -p steer_mode:=ackermann \
-  -p ackermann_wheelbase_m:=1.18 \
-  -p ackermann_max_steer_angle_deg:=45.0
+  -p ackermann_wheelbase_m:=1.38 \
+  -p ackermann_min_speed_m_s:=0.12 \
+  -p ackermann_max_steer_angle_rad:=0.7853981634
 ```
 
 ## 4. 发布 /cmd_vel
@@ -83,11 +84,13 @@ ros2 run motor_control_py speed_web_node --ros-args \
 ```bash
 ros2 topic echo /steer_position
 ```
+> 单位：rad
 
 转向指令（由 `motor_control_node` 发布）：
 ```bash
 ros2 topic echo /target_steer
 ```
+> 单位：rad
 
 ## 6. 停车/停转向
 ```bash
@@ -99,17 +102,16 @@ ros2 topic pub -1 /cmd_vel geometry_msgs/msg/Twist \
 `motor_control_node`：
 - `cmd_vel_scale`：`linear` 到驱动速度的缩放，设为 `0.0` 可仅测转向
 - `cmd_timeout_s`：直线速度命令超时（秒），默认 `0.3`；设为 `0.0` 关闭超时
-- `steer_mode`：`ackermann`（默认）或 `yaw_rate_scale`
-- `steer_rate_scale_deg_per_rad_s`：`yaw_rate_scale` 模式下，`angular.z` 转角度目标的缩放
+- `steer_mode`：固定为 `ackermann`（阿克曼运动学）
 - `steer_topic`：默认 `target_steer`
-- `ackermann_wheelbase_m`：Ackermann 轴距（m）
-- `ackermann_min_speed_m_s`：最小等效速度阈值，用于低速/静止时防止 `omega/v` 发散
-- `ackermann_max_steer_angle_deg`：目标前轮转角限幅（deg）
+- `ackermann_wheelbase_m`：Ackermann 轴距（m），默认 `1.38`
+- `ackermann_min_speed_m_s`：最小等效速度阈值，用于低速/静止时防止 `omega/v` 发散，默认 `0.12`
+- `ackermann_max_steer_angle_rad`：目标前轮转角限幅（rad），默认 `0.785398`（45°）
 - `steer_cmd_timeout_s`：转向命令超时回零（秒），默认 `0.0`（关闭）
 
 `steer_closed_loop_node`：
-- `cmd_topic`：默认 `target_steer`
-- `feedback_topic`：默认 `steer_position`
+- `cmd_topic`：默认 `target_steer`（rad）
+- `feedback_topic`：默认 `steer_position`（rad）
 - `kp` `ki` `kd` `i_max`：位置环 PID 参数
 - `min_effective_pwm_percent`：最小有效 PWM，占空比低于该值时按该值输出（提升起步速度）
 - `brake_gpio`：刹车控制引脚，默认 `12`（BCM 编码）
