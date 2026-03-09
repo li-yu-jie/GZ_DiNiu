@@ -98,6 +98,7 @@ ros2 topic pub -1 /cmd_vel geometry_msgs/msg/Twist \
 - `feedback_topic`：默认 `steer_position`
 - `kp` `ki` `kd` `i_max`：位置环 PID 参数
 - `min_effective_pwm_percent`：最小有效 PWM，占空比低于该值时按该值输出（提升起步速度）
+- `invert_dir`：方向引脚逻辑是否反转，默认 `true`
 - `brake_gpio`：刹车控制引脚，默认 `12`（BCM 编码）
 - `brake_active_level`：刹车有效电平，默认 `0`（输出 GND = 刹车）
 - `startup_auto_home`：默认 `true`，启动自动找左限位并回 0°

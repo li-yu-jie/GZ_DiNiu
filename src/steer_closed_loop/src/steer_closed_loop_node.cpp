@@ -43,6 +43,7 @@ public:
     hw_offset_ = declare_parameter<int>("hw_gpio", 13);
 
     dir_offset_ = declare_parameter<int>("dir_gpio", 16);
+    invert_dir_ = declare_parameter<bool>("invert_dir", true);
     brake_offset_ = declare_parameter<int>("brake_gpio", 12);
     // Brake is active-low by default: output GND means braking.
     brake_active_level_ = declare_parameter<int>("brake_active_level", 0);
@@ -124,8 +125,8 @@ public:
 
     RCLCPP_INFO(
       get_logger(),
-      "steer_closed_loop(position) started. cmd_topic=%s feedback_topic=%s",
-      cmd_topic_.c_str(), feedback_topic_.c_str());
+      "steer_closed_loop(position) started. cmd_topic=%s feedback_topic=%s invert_dir=%d",
+      cmd_topic_.c_str(), feedback_topic_.c_str(), static_cast<int>(invert_dir_));
   }
 
   ~SteerPositionClosedLoopNode() override {
@@ -690,7 +691,11 @@ private:
     if (!dir_line_) {
       return;
     }
-    (void)gpiod_line_set_value(dir_line_, forward ? 1 : 0);
+    int level = forward ? 1 : 0;
+    if (invert_dir_) {
+      level = 1 - level;
+    }
+    (void)gpiod_line_set_value(dir_line_, level);
   }
 
   void set_brake(bool engaged) {
@@ -713,6 +718,7 @@ private:
   int hv_offset_{};
   int hw_offset_{};
   int dir_offset_{};
+  bool invert_dir_{true};
   int brake_offset_{};
   int brake_active_level_{0};
   int limit_left_offset_{};

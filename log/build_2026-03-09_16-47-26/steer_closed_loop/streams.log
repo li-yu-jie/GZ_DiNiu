@@ -1,0 +1,25 @@
+[0.071s] Invoking command in '/root/GZ_DiNiu/build/steer_closed_loop': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --build /root/GZ_DiNiu/build/steer_closed_loop -- -j4 -l4
+[0.760s] [ 50%] Building CXX object CMakeFiles/steer_closed_loop_node.dir/src/steer_closed_loop_node.cpp.o
+[38.394s] [100%] Linking CXX executable steer_closed_loop_node
+[40.566s] [100%] Built target steer_closed_loop_node
+[40.609s] Invoked command in '/root/GZ_DiNiu/build/steer_closed_loop' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --build /root/GZ_DiNiu/build/steer_closed_loop -- -j4 -l4
+[40.664s] Invoking command in '/root/GZ_DiNiu/build/steer_closed_loop': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --install /root/GZ_DiNiu/build/steer_closed_loop
+[40.720s] -- Install configuration: ""
+[40.730s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/lib/steer_closed_loop/steer_closed_loop_node
+[40.771s] -- Set runtime path of "/root/GZ_DiNiu/install/steer_closed_loop/lib/steer_closed_loop/steer_closed_loop_node" to ""
+[40.775s] -- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/ament_index/resource_index/package_run_dependencies/steer_closed_loop
+[40.778s] -- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/ament_index/resource_index/parent_prefix_path/steer_closed_loop
+[40.779s] -- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/ament_prefix_path.sh
+[40.780s] -- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/ament_prefix_path.dsv
+[40.781s] -- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/path.sh
+[40.782s] -- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/environment/path.dsv
+[40.783s] -- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.bash
+[40.783s] -- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.sh
+[40.784s] -- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.zsh
+[40.785s] -- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/local_setup.dsv
+[40.791s] -- Installing: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.dsv
+[40.799s] -- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/ament_index/resource_index/packages/steer_closed_loop
+[40.802s] -- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/cmake/steer_closed_loopConfig.cmake
+[40.803s] -- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/cmake/steer_closed_loopConfig-version.cmake
+[40.805s] -- Up-to-date: /root/GZ_DiNiu/install/steer_closed_loop/share/steer_closed_loop/package.xml
+[40.807s] Invoked command in '/root/GZ_DiNiu/build/steer_closed_loop' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --install /root/GZ_DiNiu/build/steer_closed_loop

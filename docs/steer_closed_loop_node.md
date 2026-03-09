@@ -54,6 +54,7 @@ ros2 topic echo /steer_position
 - `hv_gpio=6`
 - `hw_gpio=13`
 - `dir_gpio=16`
+- `invert_dir=true`（方向引脚逻辑反转；若方向正常可设为 `false`）
 - `brake_gpio=12`
 - `brake_active_level=0`（低电平有效，输出 GND=刹车）
 - `limit_left_gpio=24`
@@ -126,4 +127,3 @@ ros2 run steer_closed_loop steer_closed_loop_node
 
 - 比例误差：优先校准 `encoder_counts_per_rev`
 - 零点偏差：调 `zero_offset_deg`
-
