@@ -13,6 +13,8 @@ def generate_launch_description() -> LaunchDescription:
     pigpiod_use_sudo = LaunchConfiguration("pigpiod_use_sudo")
     enable_steer = LaunchConfiguration("enable_steer")
     enable_imu = LaunchConfiguration("enable_imu")
+    enable_odom = LaunchConfiguration("enable_odom")
+    enable_io_control = LaunchConfiguration("enable_io_control")
 
     return LaunchDescription(
         [
@@ -36,6 +38,16 @@ def generate_launch_description() -> LaunchDescription:
                 default_value="false",
                 description="Launch IMU node.",
             ),
+            DeclareLaunchArgument(
+                "enable_odom",
+                default_value="true",
+                description="Launch the Ackermann odometry node.",
+            ),
+            DeclareLaunchArgument(
+                "enable_io_control",
+                default_value="true",
+                description="Launch the GPIO IO control node.",
+            ),
             GroupAction(
                 actions=[
                     ExecuteProcess(
@@ -58,13 +70,20 @@ def generate_launch_description() -> LaunchDescription:
                 output="screen",
             ),
             Node(
+                package="ackermann_odom",
+                executable="ackermann_odom_node",
+                name="ackermann_odom_node",
+                output="screen",
+                condition=IfCondition(enable_odom),
+            ),
+            Node(
                 package="motor_control_py",
                 executable="motor_control_node",
                 name="motor_control_node",
                 output="screen",
                 parameters=[
                     {
-                        "steer_mode": "ackermann",
+                        "steer_mode": "direct",
                         "cmd_vel_axis": "x",
                         "ackermann_wheelbase_m": 1.38,
                         "ackermann_min_speed_m_s": 0.12,
@@ -85,6 +104,13 @@ def generate_launch_description() -> LaunchDescription:
                 name="imu_bno08x_node",
                 output="screen",
                 condition=IfCondition(enable_imu),
+            ),
+            Node(
+                package="io_control_py",
+                executable="io_control_node",
+                name="io_control_node",
+                output="screen",
+                condition=IfCondition(enable_io_control),
             ),
         ]
     )

@@ -1,0 +1,3 @@
+[console_scripts]
+io_control_node = io_control_py.io_control_node:main
+

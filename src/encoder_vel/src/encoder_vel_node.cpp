@@ -1,6 +1,7 @@
 // 编码器速度节点：基于 A/B 相中断统计脉冲，并换算为线速度发布。
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/float64.hpp>
+#include <std_msgs/msg/int64.hpp>
 
 #include <gpiod.h>
 #include <atomic>
@@ -23,6 +24,7 @@ public:
     wheel_radius_m_ = this->declare_parameter<double>("wheel_radius_m", 0.165);
     publish_hz_ = this->declare_parameter<double>("publish_hz", 50.0);
     topic_ = this->declare_parameter<std::string>("topic", "linear_velocity");
+    count_topic_ = this->declare_parameter<std::string>("count_topic", "wheel_encoder_count");
 
     if (counts_per_rev_ <= 0) {
       throw std::runtime_error("counts_per_rev must be > 0");
@@ -35,6 +37,7 @@ public:
     }
 
     publisher_ = this->create_publisher<std_msgs::msg::Float64>(topic_, 10);
+    count_publisher_ = this->create_publisher<std_msgs::msg::Int64>(count_topic_, 10);
 
     open_gpio();
 
@@ -134,7 +137,7 @@ private:
     }
   }
 
-  // 定时发布线速度：Δ计数 -> 转速 -> 线速度
+  // 定时发布线速度与原始编码器计数。
   void publish_velocity() {
     auto now = this->get_clock()->now();
     double dt = (now - last_time_).seconds();
@@ -153,6 +156,10 @@ private:
     msg.data = velocity;
     publisher_->publish(msg);
 
+    std_msgs::msg::Int64 count_msg;
+    count_msg.data = current_count;
+    count_publisher_->publish(count_msg);
+
     last_time_ = now;
     last_count_ = current_count;
   }
@@ -164,6 +171,7 @@ private:
   double wheel_radius_m_{};
   double publish_hz_{};
   std::string topic_;
+  std::string count_topic_;
 
   gpiod_chip* chip_ = nullptr;
   gpiod_line* line_a_ = nullptr;
@@ -174,6 +182,7 @@ private:
   std::thread event_thread_;
 
   rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr publisher_;
+  rclcpp::Publisher<std_msgs::msg::Int64>::SharedPtr count_publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
 
   rclcpp::Time last_time_;

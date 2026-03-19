@@ -1,0 +1,37 @@
+# ackermann_odom_node 使用说明
+
+`ackermann_odom_node` 订阅驱动轮线速度和转向角，按 Ackermann/Bicycle 模型积分发布 `/odom`。
+
+## 输入话题
+
+- `/linear_velocity`：`std_msgs/msg/Float64`，单位 `m/s`
+- `/steer_angle`：`std_msgs/msg/Float64`，单位 `rad`
+
+## 输出话题
+
+- `/odom`：`nav_msgs/msg/Odometry`
+
+## 默认参数
+
+- `speed_topic=linear_velocity`
+- `steer_topic=steer_angle`
+- `odom_topic=odom`
+- `odom_frame_id=odom`
+- `base_frame_id=base_link`
+- `wheelbase_m=1.38`
+- `publish_hz=50.0`
+
+## 启动
+
+```bash
+cd /root/GZ_DiNiu
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+ros2 run ackermann_odom ackermann_odom_node
+```
+
+## 查看
+
+```bash
+ros2 topic echo /odom
+```

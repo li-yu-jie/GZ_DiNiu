@@ -6,11 +6,13 @@
 
 `steer_closed_loop_node` 负责：
 
-- 订阅目标转向角：`/target_steer`（`std_msgs/msg/Float64`，单位：度）
+- 订阅目标转向角：`/target_steer`（`std_msgs/msg/Float64`，单位：rad）
 - 读取霍尔编码器并估算当前转向角
 - 运行位置环 PID，输出方向 GPIO + PWM
 - 控制刹车 GPIO（当前默认：输出 GND 为抱闸）
-- 发布转向角反馈：`/steer_position`（`std_msgs/msg/Float64`，单位：度）
+- 发布兼容反馈角：`/steer_position`（`std_msgs/msg/Float64`，单位：rad）
+- 发布转向角话题：`/steer_angle`（`std_msgs/msg/Float64`，单位：rad）
+- 发布编码器计数：`/steer_encoder_count`（`std_msgs/msg/Int64`，单位：count）
 
 ## 2. 启动状态机
 
@@ -28,14 +30,16 @@
 
 ## 3. 话题
 
-- 输入命令：`/target_steer`（Float64，单位 deg）
-- 输出反馈：`/steer_position`（Float64，单位 deg）
+- 输入命令：`/target_steer`（Float64，单位 rad）
+- 输出反馈：`/steer_position`（Float64，单位 rad，兼容旧接口）
+- 输出转向角：`/steer_angle`（Float64，单位 rad）
+- 输出编码器计数：`/steer_encoder_count`（Int64，单位 count）
 
-发送角度示例：
+发送角度示例（约 20°、-30°、0°）：
 
 ```bash
-ros2 topic pub -1 /target_steer std_msgs/msg/Float64 "{data: 20.0}"
-ros2 topic pub -1 /target_steer std_msgs/msg/Float64 "{data: -30.0}"
+ros2 topic pub -1 /target_steer std_msgs/msg/Float64 "{data: 0.349066}"
+ros2 topic pub -1 /target_steer std_msgs/msg/Float64 "{data: -0.523599}"
 ros2 topic pub -1 /target_steer std_msgs/msg/Float64 "{data: 0.0}"
 ```
 
@@ -43,6 +47,8 @@ ros2 topic pub -1 /target_steer std_msgs/msg/Float64 "{data: 0.0}"
 
 ```bash
 ros2 topic echo /steer_position
+ros2 topic echo /steer_angle
+ros2 topic echo /steer_encoder_count
 ```
 
 ## 4. 关键参数（当前默认值）
@@ -67,6 +73,8 @@ ros2 topic echo /steer_position
 - `pwm_chip_path=/sys/class/pwm/pwmchip0/`
 - `pwm_channel=1`
 - `pwm_period_ns=100000`
+- `steer_angle_topic=steer_angle`
+- `encoder_count_topic=steer_encoder_count`
 - `encoder_counts_per_rev=9200`
 - `invert_encoder=true`
 - `event_debounce_us=100`
@@ -82,7 +90,6 @@ ros2 topic echo /steer_position
 - `max_pwm_percent=90.0`
 - `max_pwm_step=12.0`
 - `min_effective_pwm_percent=18.0`
-- `cmd_timeout_s=0.0`（关闭超时回中）
 - `debug_hz=2.0`
 
 ### 4.4 启动回零

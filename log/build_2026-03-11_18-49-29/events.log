@@ -1,0 +1,947 @@
+[0.000000] (-) TimerEvent: {}
+[0.011701] (-) JobUnselected: {'identifier': 'encoder_vel'}
+[0.013823] (-) JobUnselected: {'identifier': 'imu_bno08x'}
+[0.014040] (-) JobUnselected: {'identifier': 'steer_closed_loop'}
+[0.014156] (ackermann_odom) JobQueued: {'identifier': 'ackermann_odom', 'dependencies': OrderedDict()}
+[0.014252] (motor_control_py) JobQueued: {'identifier': 'motor_control_py', 'dependencies': OrderedDict()}
+[0.014343] (ackermann_odom) JobStarted: {'identifier': 'ackermann_odom'}
+[0.083202] (motor_control_py) JobStarted: {'identifier': 'motor_control_py'}
+[0.100001] (-) TimerEvent: {}
+[0.145691] (ackermann_odom) JobProgress: {'identifier': 'ackermann_odom', 'progress': 'cmake'}
+[0.150178] (ackermann_odom) Command: {'cmd': ['/usr/bin/cmake', '/root/GZ_DiNiu/src/ackermann_odom', '-DCMAKE_INSTALL_PREFIX=/root/GZ_DiNiu/install/ackermann_odom'], 'cwd': '/root/GZ_DiNiu/build/ackermann_odom', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('VSCODE_CWD', '/root'), ('VSCODE_ESM_ENTRYPOINT', 'vs/workbench/api/node/extensionHostProcess'), ('CODEX_CI', '1'), ('LANGUAGE', 'zh_CN:zh'), ('USER', 'root'), ('SSH_CLIENT', '172.21.21.110 61455 22'), ('CODEX_INTERNAL_ORIGINATOR_OVERRIDE', 'codex_vscode'), ('VSCODE_NLS_CONFIG', '{"userLocale":"zh-cn","osLocale":"zh-cn","resolvedLanguage":"zh-cn","defaultMessagesFile":"/root/.vscode-server/cli/servers/Stable-ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/server/out/nls.messages.json","languagePack":{"translationsConfigFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/tcf.json","messagesFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/nls.messages.json","corruptMarkerFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/corrupted.info"},"locale":"zh-cn","availableLanguages":{"*":"zh-cn"},"_languagePackId":"9ab4607bfaf603948e938b1d93cb1640.zh-cn","_languagePackSupport":true,"_translationsConfigFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/tcf.json","_cacheRoot":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn","_resolvedLanguagePackCoreLocation":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb","_corruptedFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/corrupted.info"}'), ('VSCODE_HANDLES_UNCAUGHT_ERRORS', 'true'), ('XDG_SESSION_TYPE', 'tty'), ('DEBUG', 'release'), ('SHLVL', '0'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('BROWSER', '/root/.vscode-server/cli/servers/Stable-ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/server/bin/helpers/browser.sh'), ('MOTD_SHOWN', 'pam'), ('HOME', '/root'), ('VSCODE_RECONNECTION_GRACE_TIME', '10800000'), ('VSCODE_IPC_HOOK_CLI', '/run/user/0/vscode-ipc-d4e1ff73-5b1a-41ae-bbff-94f628659a15.sock'), ('ROS_PYTHON_VERSION', '3'), ('PAGER', 'cat'), ('LC_CTYPE', 'C.UTF-8'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/0/bus'), ('COLORTERM', ''), ('DEBUGINFOD_URLS', ''), ('COLCON_PREFIX_PATH', '/root/GZ_DiNiu/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'root'), ('VSCODE_HANDLES_SIGPIPE', 'true'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('RUST_LOG', 'warn'), ('TERM', 'dumb'), ('XDG_SESSION_ID', '5'), ('VSCODE_CLI_REQUIRE_TOKEN', '295e7750-056c-43d4-bba5-88b1de34dfc0'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/root/.codex/tmp/arg0/codex-arg0grC3HR:/root/.vscode-server/cli/servers/Stable-ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/server/bin/remote-cli:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/root/.vscode-server/extensions/openai.chatgpt-26.304.20706-linux-arm64/bin/linux-aarch64'), ('VSCODE_AGENT_FOLDER', '/root/.vscode-server'), ('XDG_RUNTIME_DIR', '/run/user/0'), ('LANG', 'zh_CN.UTF-8'), ('GH_PAGER', 'cat'), ('LS_COLORS', ''), ('AMENT_PREFIX_PATH', '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/root/GZ_DiNiu/install/encoder_vel:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('ELECTRON_RUN_AS_NODE', '1'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019cdc4d-010c-7b53-874e-308da2f22551'), ('GIT_PAGER', 'cat'), ('PWD', '/root/GZ_DiNiu/build/ackermann_odom'), ('LC_ALL', 'C.UTF-8'), ('SSH_CONNECTION', '172.21.21.110 61455 172.21.21.50 22'), ('XDG_DATA_DIRS', '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/encoder_vel:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble')]), 'shell': False}
+[0.200848] (-) TimerEvent: {}
+[0.301395] (-) TimerEvent: {}
+[0.401890] (-) TimerEvent: {}
+[0.504501] (-) TimerEvent: {}
+[0.604979] (-) TimerEvent: {}
+[0.706274] (-) TimerEvent: {}
+[0.806722] (-) TimerEvent: {}
+[0.907146] (-) TimerEvent: {}
+[1.007996] (-) TimerEvent: {}
+[1.109151] (-) TimerEvent: {}
+[1.209859] (-) TimerEvent: {}
+[1.310360] (-) TimerEvent: {}
+[1.410858] (-) TimerEvent: {}
+[1.511338] (-) TimerEvent: {}
+[1.613697] (-) TimerEvent: {}
+[1.714173] (-) TimerEvent: {}
+[1.814684] (-) TimerEvent: {}
+[1.915728] (-) TimerEvent: {}
+[2.016340] (-) TimerEvent: {}
+[2.116883] (-) TimerEvent: {}
+[2.217645] (-) TimerEvent: {}
+[2.319377] (-) TimerEvent: {}
+[2.420523] (-) TimerEvent: {}
+[2.521967] (-) TimerEvent: {}
+[2.622608] (-) TimerEvent: {}
+[2.723068] (-) TimerEvent: {}
+[2.823592] (-) TimerEvent: {}
+[2.925839] (-) TimerEvent: {}
+[3.026345] (-) TimerEvent: {}
+[3.130029] (-) TimerEvent: {}
+[3.230810] (-) TimerEvent: {}
+[3.331272] (-) TimerEvent: {}
+[3.432426] (-) TimerEvent: {}
+[3.532959] (-) TimerEvent: {}
+[3.634464] (-) TimerEvent: {}
+[3.736991] (-) TimerEvent: {}
+[3.839464] (-) TimerEvent: {}
+[3.866369] (ackermann_odom) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[3.871371] (ackermann_odom) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[3.878386] (ackermann_odom) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[3.883634] (ackermann_odom) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[3.888443] (ackermann_odom) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[3.889094] (ackermann_odom) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[3.889634] (ackermann_odom) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[3.890068] (ackermann_odom) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[3.939666] (-) TimerEvent: {}
+[4.041885] (-) TimerEvent: {}
+[4.143951] (-) TimerEvent: {}
+[4.247173] (-) TimerEvent: {}
+[4.347982] (-) TimerEvent: {}
+[4.424995] (ackermann_odom) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[4.448242] (-) TimerEvent: {}
+[4.548880] (-) TimerEvent: {}
+[4.602077] (ackermann_odom) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[4.602839] (ackermann_odom) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[4.607958] (ackermann_odom) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[4.649042] (-) TimerEvent: {}
+[4.738317] (ackermann_odom) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[4.749225] (-) TimerEvent: {}
+[4.849716] (-) TimerEvent: {}
+[4.950825] (-) TimerEvent: {}
+[5.051246] (-) TimerEvent: {}
+[5.151653] (-) TimerEvent: {}
+[5.256206] (-) TimerEvent: {}
+[5.358143] (-) TimerEvent: {}
+[5.458608] (-) TimerEvent: {}
+[5.560684] (-) TimerEvent: {}
+[5.664597] (-) TimerEvent: {}
+[5.765133] (-) TimerEvent: {}
+[5.865581] (-) TimerEvent: {}
+[5.970470] (-) TimerEvent: {}
+[6.070944] (-) TimerEvent: {}
+[6.171550] (-) TimerEvent: {}
+[6.272057] (-) TimerEvent: {}
+[6.376604] (-) TimerEvent: {}
+[6.480534] (-) TimerEvent: {}
+[6.580964] (-) TimerEvent: {}
+[6.682892] (-) TimerEvent: {}
+[6.696489] (ackermann_odom) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[6.783055] (-) TimerEvent: {}
+[6.883477] (-) TimerEvent: {}
+[6.983932] (-) TimerEvent: {}
+[7.084342] (-) TimerEvent: {}
+[7.184753] (-) TimerEvent: {}
+[7.285463] (-) TimerEvent: {}
+[7.386493] (-) TimerEvent: {}
+[7.487276] (-) TimerEvent: {}
+[7.588131] (-) TimerEvent: {}
+[7.689020] (-) TimerEvent: {}
+[7.789976] (-) TimerEvent: {}
+[7.895980] (-) TimerEvent: {}
+[7.934380] (motor_control_py) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/motor_control_py', 'build', '--build-base', '/root/GZ_DiNiu/build/motor_control_py/build', 'install', '--record', '/root/GZ_DiNiu/build/motor_control_py/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/root/GZ_DiNiu/src/motor_control_py', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'VSCODE_CWD': '/root', 'VSCODE_ESM_ENTRYPOINT': 'vs/workbench/api/node/extensionHostProcess', 'CODEX_CI': '1', 'LANGUAGE': 'zh_CN:zh', 'USER': 'root', 'SSH_CLIENT': '172.21.21.110 61455 22', 'CODEX_INTERNAL_ORIGINATOR_OVERRIDE': 'codex_vscode', 'VSCODE_NLS_CONFIG': '{"userLocale":"zh-cn","osLocale":"zh-cn","resolvedLanguage":"zh-cn","defaultMessagesFile":"/root/.vscode-server/cli/servers/Stable-ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/server/out/nls.messages.json","languagePack":{"translationsConfigFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/tcf.json","messagesFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/nls.messages.json","corruptMarkerFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/corrupted.info"},"locale":"zh-cn","availableLanguages":{"*":"zh-cn"},"_languagePackId":"9ab4607bfaf603948e938b1d93cb1640.zh-cn","_languagePackSupport":true,"_translationsConfigFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/tcf.json","_cacheRoot":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn","_resolvedLanguagePackCoreLocation":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb","_corruptedFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/corrupted.info"}', 'VSCODE_HANDLES_UNCAUGHT_ERRORS': 'true', 'XDG_SESSION_TYPE': 'tty', 'DEBUG': 'release', 'SHLVL': '0', 'LD_LIBRARY_PATH': '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib', 'BROWSER': '/root/.vscode-server/cli/servers/Stable-ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/server/bin/helpers/browser.sh', 'MOTD_SHOWN': 'pam', 'HOME': '/root', 'VSCODE_RECONNECTION_GRACE_TIME': '10800000', 'VSCODE_IPC_HOOK_CLI': '/run/user/0/vscode-ipc-d4e1ff73-5b1a-41ae-bbff-94f628659a15.sock', 'ROS_PYTHON_VERSION': '3', 'PAGER': 'cat', 'LC_CTYPE': 'C.UTF-8', 'NO_COLOR': '1', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/0/bus', 'COLORTERM': '', 'DEBUGINFOD_URLS': '', 'COLCON_PREFIX_PATH': '/root/GZ_DiNiu/install', 'ROS_DISTRO': 'humble', 'LOGNAME': 'root', 'VSCODE_HANDLES_SIGPIPE': 'true', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'RUST_LOG': 'warn', 'TERM': 'dumb', 'XDG_SESSION_ID': '5', 'VSCODE_CLI_REQUIRE_TOKEN': '295e7750-056c-43d4-bba5-88b1de34dfc0', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/root/.codex/tmp/arg0/codex-arg0grC3HR:/root/.vscode-server/cli/servers/Stable-ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/server/bin/remote-cli:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/root/.vscode-server/extensions/openai.chatgpt-26.304.20706-linux-arm64/bin/linux-aarch64', 'VSCODE_AGENT_FOLDER': '/root/.vscode-server', 'XDG_RUNTIME_DIR': '/run/user/0', 'LANG': 'zh_CN.UTF-8', 'GH_PAGER': 'cat', 'LS_COLORS': '', 'AMENT_PREFIX_PATH': '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/root/GZ_DiNiu/install/encoder_vel:/opt/ros/humble', 'SHELL': '/bin/bash', 'ELECTRON_RUN_AS_NODE': '1', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'CODEX_THREAD_ID': '019cdc4d-010c-7b53-874e-308da2f22551', 'GIT_PAGER': 'cat', 'PWD': '/root/GZ_DiNiu/build/motor_control_py', 'LC_ALL': 'C.UTF-8', 'SSH_CONNECTION': '172.21.21.110 61455 172.21.21.50 22', 'XDG_DATA_DIRS': '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/root/GZ_DiNiu/build/motor_control_py/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/encoder_vel'}, 'shell': False}
+[7.996163] (-) TimerEvent: {}
+[8.103972] (-) TimerEvent: {}
+[8.211969] (-) TimerEvent: {}
+[8.312458] (-) TimerEvent: {}
+[8.412929] (-) TimerEvent: {}
+[8.513937] (-) TimerEvent: {}
+[8.574264] (ackermann_odom) StdoutLine: {'line': b'-- Found rclcpp: 16.0.17 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[8.614266] (-) TimerEvent: {}
+[8.714826] (-) TimerEvent: {}
+[8.815305] (-) TimerEvent: {}
+[8.915829] (-) TimerEvent: {}
+[9.016381] (-) TimerEvent: {}
+[9.116858] (-) TimerEvent: {}
+[9.217826] (-) TimerEvent: {}
+[9.318259] (-) TimerEvent: {}
+[9.389842] (ackermann_odom) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.8 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[9.418442] (-) TimerEvent: {}
+[9.472892] (ackermann_odom) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.8 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[9.518785] (-) TimerEvent: {}
+[9.597928] (ackermann_odom) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.8 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[9.619073] (-) TimerEvent: {}
+[9.720075] (-) TimerEvent: {}
+[9.736093] (ackermann_odom) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[9.820244] (-) TimerEvent: {}
+[9.920668] (-) TimerEvent: {}
+[9.967033] (ackermann_odom) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[10.020896] (-) TimerEvent: {}
+[10.128246] (-) TimerEvent: {}
+[10.228741] (-) TimerEvent: {}
+[10.329757] (-) TimerEvent: {}
+[10.430493] (-) TimerEvent: {}
+[10.531249] (-) TimerEvent: {}
+[10.631741] (-) TimerEvent: {}
+[10.732212] (-) TimerEvent: {}
+[10.835942] (-) TimerEvent: {}
+[10.893857] (ackermann_odom) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[10.936123] (-) TimerEvent: {}
+[10.968878] (ackermann_odom) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.9 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[11.036161] (motor_control_py) StdoutLine: {'line': b'running egg_info\n'}
+[11.036957] (-) TimerEvent: {}
+[11.044379] (motor_control_py) StdoutLine: {'line': b'writing ../../build/motor_control_py/motor_control_py.egg-info/PKG-INFO\n'}
+[11.045004] (motor_control_py) StdoutLine: {'line': b'writing dependency_links to ../../build/motor_control_py/motor_control_py.egg-info/dependency_links.txt\n'}
+[11.045437] (motor_control_py) StdoutLine: {'line': b'writing entry points to ../../build/motor_control_py/motor_control_py.egg-info/entry_points.txt\n'}
+[11.048499] (motor_control_py) StdoutLine: {'line': b'writing requirements to ../../build/motor_control_py/motor_control_py.egg-info/requires.txt\n'}
+[11.050841] (motor_control_py) StdoutLine: {'line': b'writing top-level names to ../../build/motor_control_py/motor_control_py.egg-info/top_level.txt\n'}
+[11.065231] (motor_control_py) StdoutLine: {'line': b"reading manifest file '../../build/motor_control_py/motor_control_py.egg-info/SOURCES.txt'\n"}
+[11.072420] (motor_control_py) StdoutLine: {'line': b"writing manifest file '../../build/motor_control_py/motor_control_py.egg-info/SOURCES.txt'\n"}
+[11.079945] (motor_control_py) StdoutLine: {'line': b'running build\n'}
+[11.080633] (motor_control_py) StdoutLine: {'line': b'running build_py\n'}
+[11.081607] (motor_control_py) StdoutLine: {'line': b'running install\n'}
+[11.082121] (motor_control_py) StdoutLine: {'line': b'running install_lib\n'}
+[11.093517] (motor_control_py) StdoutLine: {'line': b'running install_data\n'}
+[11.097109] (motor_control_py) StdoutLine: {'line': b'copying launch/cmd_vel_full.launch.py -> /root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/launch\n'}
+[11.101622] (motor_control_py) StdoutLine: {'line': b'copying launch/bringup.launch.py -> /root/GZ_DiNiu/install/motor_control_py/share/motor_control_py/launch\n'}
+[11.103809] (motor_control_py) StdoutLine: {'line': b'running install_egg_info\n'}
+[11.117782] (motor_control_py) StdoutLine: {'line': b"removing '/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages/motor_control_py-0.0.1-py3.10.egg-info' (and everything under it)\n"}
+[11.124835] (motor_control_py) StdoutLine: {'line': b'Copying ../../build/motor_control_py/motor_control_py.egg-info to /root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages/motor_control_py-0.0.1-py3.10.egg-info\n'}
+[11.137152] (-) TimerEvent: {}
+[11.141777] (motor_control_py) StdoutLine: {'line': b'running install_scripts\n'}
+[11.237343] (-) TimerEvent: {}
+[11.316803] (motor_control_py) StdoutLine: {'line': b'Installing motor_control_node script to /root/GZ_DiNiu/install/motor_control_py/lib/motor_control_py\n'}
+[11.325528] (motor_control_py) StdoutLine: {'line': b'Installing speed_web_node script to /root/GZ_DiNiu/install/motor_control_py/lib/motor_control_py\n'}
+[11.329072] (motor_control_py) StdoutLine: {'line': b'Installing steer_control_node script to /root/GZ_DiNiu/install/motor_control_py/lib/motor_control_py\n'}
+[11.330330] (motor_control_py) StdoutLine: {'line': b"writing list of installed files to '/root/GZ_DiNiu/build/motor_control_py/install.log'\n"}
+[11.343970] (-) TimerEvent: {}
+[11.444632] (-) TimerEvent: {}
+[11.545346] (-) TimerEvent: {}
+[11.584498] (motor_control_py) CommandEnded: {'returncode': 0}
+[11.646511] (-) TimerEvent: {}
+[11.708491] (motor_control_py) JobEnded: {'identifier': 'motor_control_py', 'rc': 0}
+[11.746716] (-) TimerEvent: {}
+[11.847150] (-) TimerEvent: {}
+[11.950144] (-) TimerEvent: {}
+[12.050682] (-) TimerEvent: {}
+[12.151188] (-) TimerEvent: {}
+[12.251670] (-) TimerEvent: {}
+[12.278861] (ackermann_odom) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[12.351884] (-) TimerEvent: {}
+[12.452340] (-) TimerEvent: {}
+[12.552803] (-) TimerEvent: {}
+[12.648413] (ackermann_odom) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[12.653078] (-) TimerEvent: {}
+[12.753601] (-) TimerEvent: {}
+[12.854028] (-) TimerEvent: {}
+[12.954563] (-) TimerEvent: {}
+[13.055705] (-) TimerEvent: {}
+[13.156870] (-) TimerEvent: {}
+[13.257308] (-) TimerEvent: {}
+[13.270209] (ackermann_odom) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[13.357499] (-) TimerEvent: {}
+[13.405108] (ackermann_odom) StdoutLine: {'line': b'-- Looking for pthread.h\n'}
+[13.457676] (-) TimerEvent: {}
+[13.558103] (-) TimerEvent: {}
+[13.659931] (-) TimerEvent: {}
+[13.763964] (-) TimerEvent: {}
+[13.841094] (ackermann_odom) StdoutLine: {'line': b'-- Looking for pthread.h - found\n'}
+[13.843713] (ackermann_odom) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[13.864333] (-) TimerEvent: {}
+[13.965455] (-) TimerEvent: {}
+[14.066710] (-) TimerEvent: {}
+[14.167233] (-) TimerEvent: {}
+[14.268369] (-) TimerEvent: {}
+[14.368820] (-) TimerEvent: {}
+[14.469285] (-) TimerEvent: {}
+[14.518587] (ackermann_odom) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[14.534664] (ackermann_odom) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[14.569469] (-) TimerEvent: {}
+[14.669924] (-) TimerEvent: {}
+[14.770396] (-) TimerEvent: {}
+[14.870856] (-) TimerEvent: {}
+[14.971395] (-) TimerEvent: {}
+[15.073385] (-) TimerEvent: {}
+[15.173862] (-) TimerEvent: {}
+[15.237006] (ackermann_odom) StdoutLine: {'line': b'-- Found nav_msgs: 4.9.0 (/opt/ros/humble/share/nav_msgs/cmake)\n'}
+[15.274053] (-) TimerEvent: {}
+[15.374523] (-) TimerEvent: {}
+[15.474977] (-) TimerEvent: {}
+[15.575449] (-) TimerEvent: {}
+[15.676016] (-) TimerEvent: {}
+[15.776468] (-) TimerEvent: {}
+[15.876874] (-) TimerEvent: {}
+[15.977341] (-) TimerEvent: {}
+[16.077793] (-) TimerEvent: {}
+[16.178287] (-) TimerEvent: {}
+[16.278837] (-) TimerEvent: {}
+[16.299869] (ackermann_odom) StdoutLine: {'line': b'-- Configuring done\n'}
+[16.382820] (-) TimerEvent: {}
+[16.388022] (ackermann_odom) StdoutLine: {'line': b'-- Generating done\n'}
+[16.418136] (ackermann_odom) StdoutLine: {'line': b'-- Build files have been written to: /root/GZ_DiNiu/build/ackermann_odom\n'}
+[16.474633] (ackermann_odom) CommandEnded: {'returncode': 0}
+[16.476490] (ackermann_odom) JobProgress: {'identifier': 'ackermann_odom', 'progress': 'build'}
+[16.476659] (ackermann_odom) Command: {'cmd': ['/usr/bin/cmake', '--build', '/root/GZ_DiNiu/build/ackermann_odom', '--', '-j4', '-l4'], 'cwd': '/root/GZ_DiNiu/build/ackermann_odom', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('VSCODE_CWD', '/root'), ('VSCODE_ESM_ENTRYPOINT', 'vs/workbench/api/node/extensionHostProcess'), ('CODEX_CI', '1'), ('LANGUAGE', 'zh_CN:zh'), ('USER', 'root'), ('SSH_CLIENT', '172.21.21.110 61455 22'), ('CODEX_INTERNAL_ORIGINATOR_OVERRIDE', 'codex_vscode'), ('VSCODE_NLS_CONFIG', '{"userLocale":"zh-cn","osLocale":"zh-cn","resolvedLanguage":"zh-cn","defaultMessagesFile":"/root/.vscode-server/cli/servers/Stable-ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/server/out/nls.messages.json","languagePack":{"translationsConfigFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/tcf.json","messagesFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/nls.messages.json","corruptMarkerFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/corrupted.info"},"locale":"zh-cn","availableLanguages":{"*":"zh-cn"},"_languagePackId":"9ab4607bfaf603948e938b1d93cb1640.zh-cn","_languagePackSupport":true,"_translationsConfigFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/tcf.json","_cacheRoot":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn","_resolvedLanguagePackCoreLocation":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb","_corruptedFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/corrupted.info"}'), ('VSCODE_HANDLES_UNCAUGHT_ERRORS', 'true'), ('XDG_SESSION_TYPE', 'tty'), ('DEBUG', 'release'), ('SHLVL', '0'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('BROWSER', '/root/.vscode-server/cli/servers/Stable-ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/server/bin/helpers/browser.sh'), ('MOTD_SHOWN', 'pam'), ('HOME', '/root'), ('VSCODE_RECONNECTION_GRACE_TIME', '10800000'), ('VSCODE_IPC_HOOK_CLI', '/run/user/0/vscode-ipc-d4e1ff73-5b1a-41ae-bbff-94f628659a15.sock'), ('ROS_PYTHON_VERSION', '3'), ('PAGER', 'cat'), ('LC_CTYPE', 'C.UTF-8'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/0/bus'), ('COLORTERM', ''), ('DEBUGINFOD_URLS', ''), ('COLCON_PREFIX_PATH', '/root/GZ_DiNiu/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'root'), ('VSCODE_HANDLES_SIGPIPE', 'true'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('RUST_LOG', 'warn'), ('TERM', 'dumb'), ('XDG_SESSION_ID', '5'), ('VSCODE_CLI_REQUIRE_TOKEN', '295e7750-056c-43d4-bba5-88b1de34dfc0'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/root/.codex/tmp/arg0/codex-arg0grC3HR:/root/.vscode-server/cli/servers/Stable-ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/server/bin/remote-cli:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/root/.vscode-server/extensions/openai.chatgpt-26.304.20706-linux-arm64/bin/linux-aarch64'), ('VSCODE_AGENT_FOLDER', '/root/.vscode-server'), ('XDG_RUNTIME_DIR', '/run/user/0'), ('LANG', 'zh_CN.UTF-8'), ('GH_PAGER', 'cat'), ('LS_COLORS', ''), ('AMENT_PREFIX_PATH', '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/root/GZ_DiNiu/install/encoder_vel:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('ELECTRON_RUN_AS_NODE', '1'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019cdc4d-010c-7b53-874e-308da2f22551'), ('GIT_PAGER', 'cat'), ('PWD', '/root/GZ_DiNiu/build/ackermann_odom'), ('LC_ALL', 'C.UTF-8'), ('SSH_CONNECTION', '172.21.21.110 61455 172.21.21.50 22'), ('XDG_DATA_DIRS', '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/encoder_vel:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble')]), 'shell': False}
+[16.483022] (-) TimerEvent: {}
+[16.583812] (-) TimerEvent: {}
+[16.684291] (-) TimerEvent: {}
+[16.784774] (-) TimerEvent: {}
+[16.807563] (ackermann_odom) StdoutLine: {'line': b'[ 50%] Building CXX object CMakeFiles/ackermann_odom_node.dir/src/ackermann_odom_node.cpp.o\n'}
+[16.884966] (-) TimerEvent: {}
+[16.988031] (-) TimerEvent: {}
+[17.088451] (-) TimerEvent: {}
+[17.188884] (-) TimerEvent: {}
+[17.289366] (-) TimerEvent: {}
+[17.389817] (-) TimerEvent: {}
+[17.490901] (-) TimerEvent: {}
+[17.591338] (-) TimerEvent: {}
+[17.691975] (-) TimerEvent: {}
+[17.792469] (-) TimerEvent: {}
+[17.892930] (-) TimerEvent: {}
+[17.993366] (-) TimerEvent: {}
+[18.093802] (-) TimerEvent: {}
+[18.194243] (-) TimerEvent: {}
+[18.295172] (-) TimerEvent: {}
+[18.395666] (-) TimerEvent: {}
+[18.496125] (-) TimerEvent: {}
+[18.596577] (-) TimerEvent: {}
+[18.697075] (-) TimerEvent: {}
+[18.798207] (-) TimerEvent: {}
+[18.898670] (-) TimerEvent: {}
+[18.999125] (-) TimerEvent: {}
+[19.099623] (-) TimerEvent: {}
+[19.200120] (-) TimerEvent: {}
+[19.300598] (-) TimerEvent: {}
+[19.401227] (-) TimerEvent: {}
+[19.501688] (-) TimerEvent: {}
+[19.602182] (-) TimerEvent: {}
+[19.702706] (-) TimerEvent: {}
+[19.804113] (-) TimerEvent: {}
+[19.904799] (-) TimerEvent: {}
+[20.005300] (-) TimerEvent: {}
+[20.107413] (-) TimerEvent: {}
+[20.208099] (-) TimerEvent: {}
+[20.311652] (-) TimerEvent: {}
+[20.412614] (-) TimerEvent: {}
+[20.513078] (-) TimerEvent: {}
+[20.613544] (-) TimerEvent: {}
+[20.714065] (-) TimerEvent: {}
+[20.814638] (-) TimerEvent: {}
+[20.915382] (-) TimerEvent: {}
+[21.015908] (-) TimerEvent: {}
+[21.116412] (-) TimerEvent: {}
+[21.216919] (-) TimerEvent: {}
+[21.317347] (-) TimerEvent: {}
+[21.417871] (-) TimerEvent: {}
+[21.518362] (-) TimerEvent: {}
+[21.618840] (-) TimerEvent: {}
+[21.719380] (-) TimerEvent: {}
+[21.819992] (-) TimerEvent: {}
+[21.920590] (-) TimerEvent: {}
+[22.021193] (-) TimerEvent: {}
+[22.121697] (-) TimerEvent: {}
+[22.222201] (-) TimerEvent: {}
+[22.323143] (-) TimerEvent: {}
+[22.423907] (-) TimerEvent: {}
+[22.524745] (-) TimerEvent: {}
+[22.625514] (-) TimerEvent: {}
+[22.726225] (-) TimerEvent: {}
+[22.828087] (-) TimerEvent: {}
+[22.929730] (-) TimerEvent: {}
+[23.031558] (-) TimerEvent: {}
+[23.133119] (-) TimerEvent: {}
+[23.234325] (-) TimerEvent: {}
+[23.335166] (-) TimerEvent: {}
+[23.436213] (-) TimerEvent: {}
+[23.537519] (-) TimerEvent: {}
+[23.638748] (-) TimerEvent: {}
+[23.740495] (-) TimerEvent: {}
+[23.841128] (-) TimerEvent: {}
+[23.942049] (-) TimerEvent: {}
+[24.042738] (-) TimerEvent: {}
+[24.143321] (-) TimerEvent: {}
+[24.244270] (-) TimerEvent: {}
+[24.345281] (-) TimerEvent: {}
+[24.445836] (-) TimerEvent: {}
+[24.546643] (-) TimerEvent: {}
+[24.647488] (-) TimerEvent: {}
+[24.748277] (-) TimerEvent: {}
+[24.849725] (-) TimerEvent: {}
+[24.950885] (-) TimerEvent: {}
+[25.052193] (-) TimerEvent: {}
+[25.153415] (-) TimerEvent: {}
+[25.254795] (-) TimerEvent: {}
+[25.356943] (-) TimerEvent: {}
+[25.457500] (-) TimerEvent: {}
+[25.558238] (-) TimerEvent: {}
+[25.659671] (-) TimerEvent: {}
+[25.760492] (-) TimerEvent: {}
+[25.862174] (-) TimerEvent: {}
+[25.964248] (-) TimerEvent: {}
+[26.065327] (-) TimerEvent: {}
+[26.166470] (-) TimerEvent: {}
+[26.267583] (-) TimerEvent: {}
+[26.368618] (-) TimerEvent: {}
+[26.469519] (-) TimerEvent: {}
+[26.569981] (-) TimerEvent: {}
+[26.670438] (-) TimerEvent: {}
+[26.771217] (-) TimerEvent: {}
+[26.871999] (-) TimerEvent: {}
+[26.972466] (-) TimerEvent: {}
+[27.072939] (-) TimerEvent: {}
+[27.173590] (-) TimerEvent: {}
+[27.274158] (-) TimerEvent: {}
+[27.374622] (-) TimerEvent: {}
+[27.475373] (-) TimerEvent: {}
+[27.576793] (-) TimerEvent: {}
+[27.677794] (-) TimerEvent: {}
+[27.778520] (-) TimerEvent: {}
+[27.878996] (-) TimerEvent: {}
+[27.979480] (-) TimerEvent: {}
+[28.080658] (-) TimerEvent: {}
+[28.181474] (-) TimerEvent: {}
+[28.282300] (-) TimerEvent: {}
+[28.383148] (-) TimerEvent: {}
+[28.483987] (-) TimerEvent: {}
+[28.584516] (-) TimerEvent: {}
+[28.685006] (-) TimerEvent: {}
+[28.785451] (-) TimerEvent: {}
+[28.888224] (-) TimerEvent: {}
+[28.988720] (-) TimerEvent: {}
+[29.090735] (-) TimerEvent: {}
+[29.191236] (-) TimerEvent: {}
+[29.291726] (-) TimerEvent: {}
+[29.393324] (-) TimerEvent: {}
+[29.493861] (-) TimerEvent: {}
+[29.594617] (-) TimerEvent: {}
+[29.695356] (-) TimerEvent: {}
+[29.796010] (-) TimerEvent: {}
+[29.896715] (-) TimerEvent: {}
+[29.997409] (-) TimerEvent: {}
+[30.097967] (-) TimerEvent: {}
+[30.198565] (-) TimerEvent: {}
+[30.309732] (-) TimerEvent: {}
+[30.410892] (-) TimerEvent: {}
+[30.511737] (-) TimerEvent: {}
+[30.613878] (-) TimerEvent: {}
+[30.714775] (-) TimerEvent: {}
+[30.815334] (-) TimerEvent: {}
+[30.915984] (-) TimerEvent: {}
+[31.020230] (-) TimerEvent: {}
+[31.120701] (-) TimerEvent: {}
+[31.221618] (-) TimerEvent: {}
+[31.322136] (-) TimerEvent: {}
+[31.422818] (-) TimerEvent: {}
+[31.523625] (-) TimerEvent: {}
+[31.624204] (-) TimerEvent: {}
+[31.725058] (-) TimerEvent: {}
+[31.825718] (-) TimerEvent: {}
+[31.926500] (-) TimerEvent: {}
+[32.027051] (-) TimerEvent: {}
+[32.127570] (-) TimerEvent: {}
+[32.230195] (-) TimerEvent: {}
+[32.331221] (-) TimerEvent: {}
+[32.432118] (-) TimerEvent: {}
+[32.532647] (-) TimerEvent: {}
+[32.633231] (-) TimerEvent: {}
+[32.733946] (-) TimerEvent: {}
+[32.834600] (-) TimerEvent: {}
+[32.935218] (-) TimerEvent: {}
+[33.035913] (-) TimerEvent: {}
+[33.136635] (-) TimerEvent: {}
+[33.237395] (-) TimerEvent: {}
+[33.338071] (-) TimerEvent: {}
+[33.438666] (-) TimerEvent: {}
+[33.539308] (-) TimerEvent: {}
+[33.640066] (-) TimerEvent: {}
+[33.740799] (-) TimerEvent: {}
+[33.841469] (-) TimerEvent: {}
+[33.942118] (-) TimerEvent: {}
+[34.042758] (-) TimerEvent: {}
+[34.143310] (-) TimerEvent: {}
+[34.244355] (-) TimerEvent: {}
+[34.344853] (-) TimerEvent: {}
+[34.445360] (-) TimerEvent: {}
+[34.545994] (-) TimerEvent: {}
+[34.646738] (-) TimerEvent: {}
+[34.747257] (-) TimerEvent: {}
+[34.847902] (-) TimerEvent: {}
+[34.948413] (-) TimerEvent: {}
+[35.048893] (-) TimerEvent: {}
+[35.149393] (-) TimerEvent: {}
+[35.252064] (-) TimerEvent: {}
+[35.362570] (-) TimerEvent: {}
+[35.463942] (-) TimerEvent: {}
+[35.565408] (-) TimerEvent: {}
+[35.666538] (-) TimerEvent: {}
+[35.768066] (-) TimerEvent: {}
+[35.868993] (-) TimerEvent: {}
+[35.969932] (-) TimerEvent: {}
+[36.071127] (-) TimerEvent: {}
+[36.171715] (-) TimerEvent: {}
+[36.272411] (-) TimerEvent: {}
+[36.373108] (-) TimerEvent: {}
+[36.474266] (-) TimerEvent: {}
+[36.575377] (-) TimerEvent: {}
+[36.676031] (-) TimerEvent: {}
+[36.777027] (-) TimerEvent: {}
+[36.877769] (-) TimerEvent: {}
+[36.978537] (-) TimerEvent: {}
+[37.079129] (-) TimerEvent: {}
+[37.179894] (-) TimerEvent: {}
+[37.280501] (-) TimerEvent: {}
+[37.381359] (-) TimerEvent: {}
+[37.482059] (-) TimerEvent: {}
+[37.582643] (-) TimerEvent: {}
+[37.684079] (-) TimerEvent: {}
+[37.784740] (-) TimerEvent: {}
+[37.885338] (-) TimerEvent: {}
+[37.985906] (-) TimerEvent: {}
+[38.087095] (-) TimerEvent: {}
+[38.188544] (-) TimerEvent: {}
+[38.289898] (-) TimerEvent: {}
+[38.390870] (-) TimerEvent: {}
+[38.492893] (-) TimerEvent: {}
+[38.594982] (-) TimerEvent: {}
+[38.696710] (-) TimerEvent: {}
+[38.797831] (-) TimerEvent: {}
+[38.899546] (-) TimerEvent: {}
+[39.000819] (-) TimerEvent: {}
+[39.102074] (-) TimerEvent: {}
+[39.203276] (-) TimerEvent: {}
+[39.304538] (-) TimerEvent: {}
+[39.405943] (-) TimerEvent: {}
+[39.507294] (-) TimerEvent: {}
+[39.608545] (-) TimerEvent: {}
+[39.709300] (-) TimerEvent: {}
+[39.810715] (-) TimerEvent: {}
+[39.911621] (-) TimerEvent: {}
+[40.012474] (-) TimerEvent: {}
+[40.113394] (-) TimerEvent: {}
+[40.214202] (-) TimerEvent: {}
+[40.315584] (-) TimerEvent: {}
+[40.417831] (-) TimerEvent: {}
+[40.520105] (-) TimerEvent: {}
+[40.621580] (-) TimerEvent: {}
+[40.723149] (-) TimerEvent: {}
+[40.824098] (-) TimerEvent: {}
+[40.924767] (-) TimerEvent: {}
+[41.025848] (-) TimerEvent: {}
+[41.127235] (-) TimerEvent: {}
+[41.227986] (-) TimerEvent: {}
+[41.329579] (-) TimerEvent: {}
+[41.430509] (-) TimerEvent: {}
+[41.531876] (-) TimerEvent: {}
+[41.632775] (-) TimerEvent: {}
+[41.733762] (-) TimerEvent: {}
+[41.834552] (-) TimerEvent: {}
+[41.935950] (-) TimerEvent: {}
+[42.036835] (-) TimerEvent: {}
+[42.138821] (-) TimerEvent: {}
+[42.239619] (-) TimerEvent: {}
+[42.340961] (-) TimerEvent: {}
+[42.441703] (-) TimerEvent: {}
+[42.542366] (-) TimerEvent: {}
+[42.643526] (-) TimerEvent: {}
+[42.744681] (-) TimerEvent: {}
+[42.845899] (-) TimerEvent: {}
+[42.946960] (-) TimerEvent: {}
+[43.047829] (-) TimerEvent: {}
+[43.148502] (-) TimerEvent: {}
+[43.249220] (-) TimerEvent: {}
+[43.350004] (-) TimerEvent: {}
+[43.450798] (-) TimerEvent: {}
+[43.551634] (-) TimerEvent: {}
+[43.652694] (-) TimerEvent: {}
+[43.753458] (-) TimerEvent: {}
+[43.854620] (-) TimerEvent: {}
+[43.956101] (-) TimerEvent: {}
+[44.057124] (-) TimerEvent: {}
+[44.158639] (-) TimerEvent: {}
+[44.260284] (-) TimerEvent: {}
+[44.361894] (-) TimerEvent: {}
+[44.463623] (-) TimerEvent: {}
+[44.565183] (-) TimerEvent: {}
+[44.666121] (-) TimerEvent: {}
+[44.766867] (-) TimerEvent: {}
+[44.867828] (-) TimerEvent: {}
+[44.968640] (-) TimerEvent: {}
+[45.069385] (-) TimerEvent: {}
+[45.170347] (-) TimerEvent: {}
+[45.271174] (-) TimerEvent: {}
+[45.372253] (-) TimerEvent: {}
+[45.476240] (-) TimerEvent: {}
+[45.577999] (-) TimerEvent: {}
+[45.679653] (-) TimerEvent: {}
+[45.780717] (-) TimerEvent: {}
+[45.882145] (-) TimerEvent: {}
+[45.983054] (-) TimerEvent: {}
+[46.084733] (-) TimerEvent: {}
+[46.186670] (-) TimerEvent: {}
+[46.288157] (-) TimerEvent: {}
+[46.389326] (-) TimerEvent: {}
+[46.489999] (-) TimerEvent: {}
+[46.591230] (-) TimerEvent: {}
+[46.692624] (-) TimerEvent: {}
+[46.793237] (-) TimerEvent: {}
+[46.893897] (-) TimerEvent: {}
+[46.995173] (-) TimerEvent: {}
+[47.096089] (-) TimerEvent: {}
+[47.197928] (-) TimerEvent: {}
+[47.298748] (-) TimerEvent: {}
+[47.400037] (-) TimerEvent: {}
+[47.501123] (-) TimerEvent: {}
+[47.601914] (-) TimerEvent: {}
+[47.703652] (-) TimerEvent: {}
+[47.804636] (-) TimerEvent: {}
+[47.906109] (-) TimerEvent: {}
+[48.007076] (-) TimerEvent: {}
+[48.107940] (-) TimerEvent: {}
+[48.208772] (-) TimerEvent: {}
+[48.310152] (-) TimerEvent: {}
+[48.411033] (-) TimerEvent: {}
+[48.512347] (-) TimerEvent: {}
+[48.613631] (-) TimerEvent: {}
+[48.714730] (-) TimerEvent: {}
+[48.816736] (-) TimerEvent: {}
+[48.918049] (-) TimerEvent: {}
+[49.019528] (-) TimerEvent: {}
+[49.120800] (-) TimerEvent: {}
+[49.221567] (-) TimerEvent: {}
+[49.322568] (-) TimerEvent: {}
+[49.423446] (-) TimerEvent: {}
+[49.524543] (-) TimerEvent: {}
+[49.625778] (-) TimerEvent: {}
+[49.726721] (-) TimerEvent: {}
+[49.828090] (-) TimerEvent: {}
+[49.928793] (-) TimerEvent: {}
+[50.029309] (-) TimerEvent: {}
+[50.130573] (-) TimerEvent: {}
+[50.231598] (-) TimerEvent: {}
+[50.333420] (-) TimerEvent: {}
+[50.434962] (-) TimerEvent: {}
+[50.535680] (-) TimerEvent: {}
+[50.637864] (-) TimerEvent: {}
+[50.738466] (-) TimerEvent: {}
+[50.839889] (-) TimerEvent: {}
+[50.941057] (-) TimerEvent: {}
+[51.042191] (-) TimerEvent: {}
+[51.142924] (-) TimerEvent: {}
+[51.243669] (-) TimerEvent: {}
+[51.344448] (-) TimerEvent: {}
+[51.446545] (-) TimerEvent: {}
+[51.548001] (-) TimerEvent: {}
+[51.649247] (-) TimerEvent: {}
+[51.749990] (-) TimerEvent: {}
+[51.851480] (-) TimerEvent: {}
+[51.952658] (-) TimerEvent: {}
+[52.053855] (-) TimerEvent: {}
+[52.155061] (-) TimerEvent: {}
+[52.256366] (-) TimerEvent: {}
+[52.357607] (-) TimerEvent: {}
+[52.458543] (-) TimerEvent: {}
+[52.559598] (-) TimerEvent: {}
+[52.660223] (-) TimerEvent: {}
+[52.761715] (-) TimerEvent: {}
+[52.863085] (-) TimerEvent: {}
+[52.963688] (-) TimerEvent: {}
+[53.065234] (-) TimerEvent: {}
+[53.167250] (-) TimerEvent: {}
+[53.268610] (-) TimerEvent: {}
+[53.370677] (-) TimerEvent: {}
+[53.471398] (-) TimerEvent: {}
+[53.572526] (-) TimerEvent: {}
+[53.673216] (-) TimerEvent: {}
+[53.774840] (-) TimerEvent: {}
+[53.876562] (-) TimerEvent: {}
+[53.977990] (-) TimerEvent: {}
+[54.079572] (-) TimerEvent: {}
+[54.180367] (-) TimerEvent: {}
+[54.281057] (-) TimerEvent: {}
+[54.382010] (-) TimerEvent: {}
+[54.482825] (-) TimerEvent: {}
+[54.584010] (-) TimerEvent: {}
+[54.685029] (-) TimerEvent: {}
+[54.786326] (-) TimerEvent: {}
+[54.887040] (-) TimerEvent: {}
+[54.988652] (-) TimerEvent: {}
+[55.089778] (-) TimerEvent: {}
+[55.190818] (-) TimerEvent: {}
+[55.292216] (-) TimerEvent: {}
+[55.394775] (-) TimerEvent: {}
+[55.508732] (-) TimerEvent: {}
+[55.609595] (-) TimerEvent: {}
+[55.710210] (-) TimerEvent: {}
+[55.810855] (-) TimerEvent: {}
+[55.913418] (-) TimerEvent: {}
+[56.014441] (-) TimerEvent: {}
+[56.115260] (-) TimerEvent: {}
+[56.215976] (-) TimerEvent: {}
+[56.316624] (-) TimerEvent: {}
+[56.417253] (-) TimerEvent: {}
+[56.518030] (-) TimerEvent: {}
+[56.619282] (-) TimerEvent: {}
+[56.721419] (-) TimerEvent: {}
+[56.823118] (-) TimerEvent: {}
+[56.924515] (-) TimerEvent: {}
+[57.026428] (-) TimerEvent: {}
+[57.127813] (-) TimerEvent: {}
+[57.228589] (-) TimerEvent: {}
+[57.329284] (-) TimerEvent: {}
+[57.429878] (-) TimerEvent: {}
+[57.530596] (-) TimerEvent: {}
+[57.631258] (-) TimerEvent: {}
+[57.732033] (-) TimerEvent: {}
+[57.832625] (-) TimerEvent: {}
+[57.933744] (-) TimerEvent: {}
+[58.034535] (-) TimerEvent: {}
+[58.135171] (-) TimerEvent: {}
+[58.236132] (-) TimerEvent: {}
+[58.338438] (-) TimerEvent: {}
+[58.440864] (-) TimerEvent: {}
+[58.543004] (-) TimerEvent: {}
+[58.644906] (-) TimerEvent: {}
+[58.746516] (-) TimerEvent: {}
+[58.847602] (-) TimerEvent: {}
+[58.948862] (-) TimerEvent: {}
+[59.050261] (-) TimerEvent: {}
+[59.151673] (-) TimerEvent: {}
+[59.253451] (-) TimerEvent: {}
+[59.354260] (-) TimerEvent: {}
+[59.455887] (-) TimerEvent: {}
+[59.556928] (-) TimerEvent: {}
+[59.658124] (-) TimerEvent: {}
+[59.758830] (-) TimerEvent: {}
+[59.859581] (-) TimerEvent: {}
+[59.960305] (-) TimerEvent: {}
+[60.060961] (-) TimerEvent: {}
+[60.162027] (-) TimerEvent: {}
+[60.263129] (-) TimerEvent: {}
+[60.363726] (-) TimerEvent: {}
+[60.464327] (-) TimerEvent: {}
+[60.565426] (-) TimerEvent: {}
+[60.666656] (-) TimerEvent: {}
+[60.767173] (-) TimerEvent: {}
+[60.868576] (-) TimerEvent: {}
+[60.969283] (-) TimerEvent: {}
+[61.069899] (-) TimerEvent: {}
+[61.171026] (-) TimerEvent: {}
+[61.272078] (-) TimerEvent: {}
+[61.373334] (-) TimerEvent: {}
+[61.474740] (-) TimerEvent: {}
+[61.576265] (-) TimerEvent: {}
+[61.677166] (-) TimerEvent: {}
+[61.778560] (-) TimerEvent: {}
+[61.879944] (-) TimerEvent: {}
+[61.981805] (-) TimerEvent: {}
+[62.083590] (-) TimerEvent: {}
+[62.185306] (-) TimerEvent: {}
+[62.286968] (-) TimerEvent: {}
+[62.387450] (-) TimerEvent: {}
+[62.488509] (-) TimerEvent: {}
+[62.589588] (-) TimerEvent: {}
+[62.690528] (-) TimerEvent: {}
+[62.791428] (-) TimerEvent: {}
+[62.892422] (-) TimerEvent: {}
+[62.993192] (-) TimerEvent: {}
+[63.093784] (-) TimerEvent: {}
+[63.194307] (-) TimerEvent: {}
+[63.294925] (-) TimerEvent: {}
+[63.395568] (-) TimerEvent: {}
+[63.496123] (-) TimerEvent: {}
+[63.597119] (-) TimerEvent: {}
+[63.697743] (-) TimerEvent: {}
+[63.798513] (-) TimerEvent: {}
+[63.899218] (-) TimerEvent: {}
+[63.999819] (-) TimerEvent: {}
+[64.100372] (-) TimerEvent: {}
+[64.201468] (-) TimerEvent: {}
+[64.302117] (-) TimerEvent: {}
+[64.402845] (-) TimerEvent: {}
+[64.503537] (-) TimerEvent: {}
+[64.604409] (-) TimerEvent: {}
+[64.705042] (-) TimerEvent: {}
+[64.805729] (-) TimerEvent: {}
+[64.906381] (-) TimerEvent: {}
+[65.007023] (-) TimerEvent: {}
+[65.107651] (-) TimerEvent: {}
+[65.208302] (-) TimerEvent: {}
+[65.308767] (-) TimerEvent: {}
+[65.409247] (-) TimerEvent: {}
+[65.509748] (-) TimerEvent: {}
+[65.610302] (-) TimerEvent: {}
+[65.710921] (-) TimerEvent: {}
+[65.811588] (-) TimerEvent: {}
+[65.915710] (-) TimerEvent: {}
+[66.021116] (-) TimerEvent: {}
+[66.121732] (-) TimerEvent: {}
+[66.222306] (-) TimerEvent: {}
+[66.323301] (-) TimerEvent: {}
+[66.423901] (-) TimerEvent: {}
+[66.524480] (-) TimerEvent: {}
+[66.625066] (-) TimerEvent: {}
+[66.725712] (-) TimerEvent: {}
+[66.826223] (-) TimerEvent: {}
+[66.926753] (-) TimerEvent: {}
+[67.027382] (-) TimerEvent: {}
+[67.128024] (-) TimerEvent: {}
+[67.228726] (-) TimerEvent: {}
+[67.329598] (-) TimerEvent: {}
+[67.430131] (-) TimerEvent: {}
+[67.530644] (-) TimerEvent: {}
+[67.632298] (-) TimerEvent: {}
+[67.733071] (-) TimerEvent: {}
+[67.833657] (-) TimerEvent: {}
+[67.934274] (-) TimerEvent: {}
+[68.034795] (-) TimerEvent: {}
+[68.135376] (-) TimerEvent: {}
+[68.236014] (-) TimerEvent: {}
+[68.336651] (-) TimerEvent: {}
+[68.437732] (-) TimerEvent: {}
+[68.538430] (-) TimerEvent: {}
+[68.639092] (-) TimerEvent: {}
+[68.739702] (-) TimerEvent: {}
+[68.840283] (-) TimerEvent: {}
+[68.941206] (-) TimerEvent: {}
+[69.042259] (-) TimerEvent: {}
+[69.143438] (-) TimerEvent: {}
+[69.244406] (-) TimerEvent: {}
+[69.345258] (-) TimerEvent: {}
+[69.447000] (-) TimerEvent: {}
+[69.547582] (-) TimerEvent: {}
+[69.648168] (-) TimerEvent: {}
+[69.749504] (-) TimerEvent: {}
+[69.850325] (-) TimerEvent: {}
+[69.950906] (-) TimerEvent: {}
+[70.051660] (-) TimerEvent: {}
+[70.152454] (-) TimerEvent: {}
+[70.252927] (-) TimerEvent: {}
+[70.353525] (-) TimerEvent: {}
+[70.453986] (-) TimerEvent: {}
+[70.554579] (-) TimerEvent: {}
+[70.655123] (-) TimerEvent: {}
+[70.755566] (-) TimerEvent: {}
+[70.857663] (-) TimerEvent: {}
+[70.958145] (-) TimerEvent: {}
+[71.058671] (-) TimerEvent: {}
+[71.159242] (-) TimerEvent: {}
+[71.259999] (-) TimerEvent: {}
+[71.360548] (-) TimerEvent: {}
+[71.461067] (-) TimerEvent: {}
+[71.561572] (-) TimerEvent: {}
+[71.662059] (-) TimerEvent: {}
+[71.762585] (-) TimerEvent: {}
+[71.863176] (-) TimerEvent: {}
+[71.963745] (-) TimerEvent: {}
+[72.064321] (-) TimerEvent: {}
+[72.164893] (-) TimerEvent: {}
+[72.265444] (-) TimerEvent: {}
+[72.365976] (-) TimerEvent: {}
+[72.466506] (-) TimerEvent: {}
+[72.567013] (-) TimerEvent: {}
+[72.667502] (-) TimerEvent: {}
+[72.768000] (-) TimerEvent: {}
+[72.868513] (-) TimerEvent: {}
+[72.969040] (-) TimerEvent: {}
+[73.069543] (-) TimerEvent: {}
+[73.170062] (-) TimerEvent: {}
+[73.270533] (-) TimerEvent: {}
+[73.371045] (-) TimerEvent: {}
+[73.471514] (-) TimerEvent: {}
+[73.571984] (-) TimerEvent: {}
+[73.675493] (-) TimerEvent: {}
+[73.775953] (-) TimerEvent: {}
+[73.876461] (-) TimerEvent: {}
+[73.976951] (-) TimerEvent: {}
+[74.077506] (-) TimerEvent: {}
+[74.178065] (-) TimerEvent: {}
+[74.278556] (-) TimerEvent: {}
+[74.379128] (-) TimerEvent: {}
+[74.480037] (-) TimerEvent: {}
+[74.581097] (-) TimerEvent: {}
+[74.681642] (-) TimerEvent: {}
+[74.782151] (-) TimerEvent: {}
+[74.882611] (-) TimerEvent: {}
+[74.983091] (-) TimerEvent: {}
+[75.083569] (-) TimerEvent: {}
+[75.184029] (-) TimerEvent: {}
+[75.284501] (-) TimerEvent: {}
+[75.384999] (-) TimerEvent: {}
+[75.485938] (-) TimerEvent: {}
+[75.586499] (-) TimerEvent: {}
+[75.686964] (-) TimerEvent: {}
+[75.787456] (-) TimerEvent: {}
+[75.887957] (-) TimerEvent: {}
+[75.988396] (-) TimerEvent: {}
+[76.088849] (-) TimerEvent: {}
+[76.189297] (-) TimerEvent: {}
+[76.289745] (-) TimerEvent: {}
+[76.390320] (-) TimerEvent: {}
+[76.490824] (-) TimerEvent: {}
+[76.591332] (-) TimerEvent: {}
+[76.691843] (-) TimerEvent: {}
+[76.792395] (-) TimerEvent: {}
+[76.893805] (-) TimerEvent: {}
+[76.994940] (-) TimerEvent: {}
+[77.095487] (-) TimerEvent: {}
+[77.195947] (-) TimerEvent: {}
+[77.296406] (-) TimerEvent: {}
+[77.396852] (-) TimerEvent: {}
+[77.497313] (-) TimerEvent: {}
+[77.597760] (-) TimerEvent: {}
+[77.698274] (-) TimerEvent: {}
+[77.798920] (-) TimerEvent: {}
+[77.899513] (-) TimerEvent: {}
+[78.000434] (-) TimerEvent: {}
+[78.100984] (-) TimerEvent: {}
+[78.201491] (-) TimerEvent: {}
+[78.302051] (-) TimerEvent: {}
+[78.402540] (-) TimerEvent: {}
+[78.503237] (-) TimerEvent: {}
+[78.603827] (-) TimerEvent: {}
+[78.704468] (-) TimerEvent: {}
+[78.806895] (-) TimerEvent: {}
+[78.907450] (-) TimerEvent: {}
+[79.007976] (-) TimerEvent: {}
+[79.108950] (-) TimerEvent: {}
+[79.209461] (-) TimerEvent: {}
+[79.310189] (-) TimerEvent: {}
+[79.411219] (-) TimerEvent: {}
+[79.511703] (-) TimerEvent: {}
+[79.612209] (-) TimerEvent: {}
+[79.712701] (-) TimerEvent: {}
+[79.813664] (-) TimerEvent: {}
+[79.915923] (-) TimerEvent: {}
+[80.016404] (-) TimerEvent: {}
+[80.116846] (-) TimerEvent: {}
+[80.217298] (-) TimerEvent: {}
+[80.317947] (-) TimerEvent: {}
+[80.418344] (-) TimerEvent: {}
+[80.527094] (-) TimerEvent: {}
+[80.627566] (-) TimerEvent: {}
+[80.729660] (-) TimerEvent: {}
+[80.830097] (-) TimerEvent: {}
+[80.930821] (-) TimerEvent: {}
+[81.031286] (-) TimerEvent: {}
+[81.131733] (-) TimerEvent: {}
+[81.232199] (-) TimerEvent: {}
+[81.332804] (-) TimerEvent: {}
+[81.433628] (-) TimerEvent: {}
+[81.534282] (-) TimerEvent: {}
+[81.634743] (-) TimerEvent: {}
+[81.735293] (-) TimerEvent: {}
+[81.835876] (-) TimerEvent: {}
+[81.936349] (-) TimerEvent: {}
+[82.036807] (-) TimerEvent: {}
+[82.137288] (-) TimerEvent: {}
+[82.230209] (ackermann_odom) StdoutLine: {'line': b'[100%] Linking CXX executable ackermann_odom_node\n'}
+[82.237450] (-) TimerEvent: {}
+[82.337901] (-) TimerEvent: {}
+[82.438371] (-) TimerEvent: {}
+[82.538825] (-) TimerEvent: {}
+[82.639348] (-) TimerEvent: {}
+[82.739883] (-) TimerEvent: {}
+[82.840379] (-) TimerEvent: {}
+[82.941039] (-) TimerEvent: {}
+[83.041816] (-) TimerEvent: {}
+[83.142557] (-) TimerEvent: {}
+[83.243130] (-) TimerEvent: {}
+[83.344786] (-) TimerEvent: {}
+[83.445458] (-) TimerEvent: {}
+[83.546898] (-) TimerEvent: {}
+[83.647586] (-) TimerEvent: {}
+[83.748060] (-) TimerEvent: {}
+[83.848508] (-) TimerEvent: {}
+[83.949198] (-) TimerEvent: {}
+[84.049658] (-) TimerEvent: {}
+[84.150078] (-) TimerEvent: {}
+[84.250494] (-) TimerEvent: {}
+[84.351082] (-) TimerEvent: {}
+[84.451926] (-) TimerEvent: {}
+[84.552670] (-) TimerEvent: {}
+[84.653452] (-) TimerEvent: {}
+[84.754283] (-) TimerEvent: {}
+[84.855347] (-) TimerEvent: {}
+[84.956126] (-) TimerEvent: {}
+[85.056614] (-) TimerEvent: {}
+[85.065808] (ackermann_odom) StdoutLine: {'line': b'[100%] Built target ackermann_odom_node\n'}
+[85.137648] (ackermann_odom) CommandEnded: {'returncode': 0}
+[85.143144] (ackermann_odom) JobProgress: {'identifier': 'ackermann_odom', 'progress': 'install'}
+[85.157120] (-) TimerEvent: {}
+[85.215168] (ackermann_odom) Command: {'cmd': ['/usr/bin/cmake', '--install', '/root/GZ_DiNiu/build/ackermann_odom'], 'cwd': '/root/GZ_DiNiu/build/ackermann_odom', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('VSCODE_CWD', '/root'), ('VSCODE_ESM_ENTRYPOINT', 'vs/workbench/api/node/extensionHostProcess'), ('CODEX_CI', '1'), ('LANGUAGE', 'zh_CN:zh'), ('USER', 'root'), ('SSH_CLIENT', '172.21.21.110 61455 22'), ('CODEX_INTERNAL_ORIGINATOR_OVERRIDE', 'codex_vscode'), ('VSCODE_NLS_CONFIG', '{"userLocale":"zh-cn","osLocale":"zh-cn","resolvedLanguage":"zh-cn","defaultMessagesFile":"/root/.vscode-server/cli/servers/Stable-ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/server/out/nls.messages.json","languagePack":{"translationsConfigFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/tcf.json","messagesFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/nls.messages.json","corruptMarkerFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/corrupted.info"},"locale":"zh-cn","availableLanguages":{"*":"zh-cn"},"_languagePackId":"9ab4607bfaf603948e938b1d93cb1640.zh-cn","_languagePackSupport":true,"_translationsConfigFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/tcf.json","_cacheRoot":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn","_resolvedLanguagePackCoreLocation":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb","_corruptedFile":"/root/.vscode-server/data/clp/9ab4607bfaf603948e938b1d93cb1640.zh-cn/corrupted.info"}'), ('VSCODE_HANDLES_UNCAUGHT_ERRORS', 'true'), ('XDG_SESSION_TYPE', 'tty'), ('DEBUG', 'release'), ('SHLVL', '0'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/aarch64-linux-gnu:/opt/ros/humble/lib'), ('BROWSER', '/root/.vscode-server/cli/servers/Stable-ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/server/bin/helpers/browser.sh'), ('MOTD_SHOWN', 'pam'), ('HOME', '/root'), ('VSCODE_RECONNECTION_GRACE_TIME', '10800000'), ('VSCODE_IPC_HOOK_CLI', '/run/user/0/vscode-ipc-d4e1ff73-5b1a-41ae-bbff-94f628659a15.sock'), ('ROS_PYTHON_VERSION', '3'), ('PAGER', 'cat'), ('LC_CTYPE', 'C.UTF-8'), ('NO_COLOR', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/0/bus'), ('COLORTERM', ''), ('DEBUGINFOD_URLS', ''), ('COLCON_PREFIX_PATH', '/root/GZ_DiNiu/install'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'root'), ('VSCODE_HANDLES_SIGPIPE', 'true'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('RUST_LOG', 'warn'), ('TERM', 'dumb'), ('XDG_SESSION_ID', '5'), ('VSCODE_CLI_REQUIRE_TOKEN', '295e7750-056c-43d4-bba5-88b1de34dfc0'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/root/.codex/tmp/arg0/codex-arg0grC3HR:/root/.vscode-server/cli/servers/Stable-ce099c1ed25d9eb3076c11e4a280f3eb52b4fbeb/server/bin/remote-cli:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/root/.vscode-server/extensions/openai.chatgpt-26.304.20706-linux-arm64/bin/linux-aarch64'), ('VSCODE_AGENT_FOLDER', '/root/.vscode-server'), ('XDG_RUNTIME_DIR', '/run/user/0'), ('LANG', 'zh_CN.UTF-8'), ('GH_PAGER', 'cat'), ('LS_COLORS', ''), ('AMENT_PREFIX_PATH', '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/root/GZ_DiNiu/install/encoder_vel:/opt/ros/humble'), ('SHELL', '/bin/bash'), ('ELECTRON_RUN_AS_NODE', '1'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('CODEX_THREAD_ID', '019cdc4d-010c-7b53-874e-308da2f22551'), ('GIT_PAGER', 'cat'), ('PWD', '/root/GZ_DiNiu/build/ackermann_odom'), ('LC_ALL', 'C.UTF-8'), ('SSH_CONNECTION', '172.21.21.110 61455 172.21.21.50 22'), ('XDG_DATA_DIRS', '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/root/GZ_DiNiu/install/motor_control_py/lib/python3.10/site-packages:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/root/GZ_DiNiu/install/steer_closed_loop:/root/GZ_DiNiu/install/encoder_vel:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble')]), 'shell': False}
+[85.257604] (-) TimerEvent: {}
+[85.286441] (ackermann_odom) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[85.294503] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/lib/ackermann_odom/ackermann_odom_node\n'}
+[85.347325] (ackermann_odom) StdoutLine: {'line': b'-- Set runtime path of "/root/GZ_DiNiu/install/ackermann_odom/lib/ackermann_odom/ackermann_odom_node" to ""\n'}
+[85.351725] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ament_index/resource_index/package_run_dependencies/ackermann_odom\n'}
+[85.357724] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ament_index/resource_index/parent_prefix_path/ackermann_odom\n'}
+[85.358806] (-) TimerEvent: {}
+[85.363578] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/environment/ament_prefix_path.sh\n'}
+[85.368714] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/environment/ament_prefix_path.dsv\n'}
+[85.374250] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/environment/path.sh\n'}
+[85.378990] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/environment/path.dsv\n'}
+[85.383738] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/local_setup.bash\n'}
+[85.388863] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/local_setup.sh\n'}
+[85.394148] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/local_setup.zsh\n'}
+[85.399164] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/local_setup.dsv\n'}
+[85.413125] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/package.dsv\n'}
+[85.429756] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ament_index/resource_index/packages/ackermann_odom\n'}
+[85.441997] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/cmake/ackermann_odomConfig.cmake\n'}
+[85.449389] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/cmake/ackermann_odomConfig-version.cmake\n'}
+[85.456501] (ackermann_odom) StdoutLine: {'line': b'-- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/package.xml\n'}
+[85.464129] (-) TimerEvent: {}
+[85.464275] (ackermann_odom) CommandEnded: {'returncode': 0}
+[85.566243] (-) TimerEvent: {}
+[85.596743] (ackermann_odom) JobEnded: {'identifier': 'ackermann_odom', 'rc': 0}
+[85.601260] (-) EventReactorShutdown: {}

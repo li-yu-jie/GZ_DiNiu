@@ -1,0 +1,10 @@
+/root/GZ_DiNiu/build/ackermann_odom/CMakeFiles/uninstall.dir
+/root/GZ_DiNiu/build/ackermann_odom/CMakeFiles/ackermann_odom_uninstall.dir
+/root/GZ_DiNiu/build/ackermann_odom/CMakeFiles/ackermann_odom_node.dir
+/root/GZ_DiNiu/build/ackermann_odom/CMakeFiles/test.dir
+/root/GZ_DiNiu/build/ackermann_odom/CMakeFiles/edit_cache.dir
+/root/GZ_DiNiu/build/ackermann_odom/CMakeFiles/rebuild_cache.dir
+/root/GZ_DiNiu/build/ackermann_odom/CMakeFiles/list_install_components.dir
+/root/GZ_DiNiu/build/ackermann_odom/CMakeFiles/install.dir
+/root/GZ_DiNiu/build/ackermann_odom/CMakeFiles/install/local.dir
+/root/GZ_DiNiu/build/ackermann_odom/CMakeFiles/install/strip.dir

@@ -15,6 +15,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/float64.hpp"
+#include "std_msgs/msg/int64.hpp"
 
 namespace {
 // 霍尔三相有效码表（六步换相序列）。
@@ -63,9 +64,13 @@ public:
 
     // ---------------- ROS 话题 ----------------
     // cmd_topic: 目标转向角（rad）
-    // feedback_topic: 实际转向角（rad）
+    // feedback_topic: 兼容旧接口的实际转向角（rad）
+    // steer_angle_topic: 显式输出的实际转向角（rad）
+    // encoder_count_topic: 编码器有符号计数值（count）
     cmd_topic_ = declare_parameter<std::string>("cmd_topic", "target_steer");
     feedback_topic_ = declare_parameter<std::string>("feedback_topic", "steer_position");
+    steer_angle_topic_ = declare_parameter<std::string>("steer_angle_topic", "steer_angle");
+    encoder_count_topic_ = declare_parameter<std::string>("encoder_count_topic", "steer_encoder_count");
 
     // ---------------- 编码器换算参数 ----------------
     // 标定关系：-45°..+45° 约等于 2300 counts => 一圈约 9200 counts。
@@ -83,7 +88,6 @@ public:
     max_pwm_percent_ = declare_parameter<double>("max_pwm_percent", 90.0);
     max_pwm_step_ = declare_parameter<double>("max_pwm_step", 12.0);
     min_effective_pwm_percent_ = declare_parameter<double>("min_effective_pwm_percent", 18.0);
-    cmd_timeout_s_ = declare_parameter<double>("cmd_timeout_s", 0.0);
     debug_hz_ = declare_parameter<double>("debug_hz", 2.0);
 
     // ---------------- 启动自标定参数 ----------------
@@ -104,10 +108,12 @@ public:
     open_pwm();
     open_gpio();
 
-    // 订阅目标角、发布反馈角。
+    // 订阅目标角、发布反馈角/编码器计数。
     cmd_sub_ = create_subscription<std_msgs::msg::Float64>(
       cmd_topic_, 10, std::bind(&SteerPositionClosedLoopNode::on_cmd, this, std::placeholders::_1));
     feedback_pub_ = create_publisher<std_msgs::msg::Float64>(feedback_topic_, 10);
+    steer_angle_pub_ = create_publisher<std_msgs::msg::Float64>(steer_angle_topic_, 10);
+    encoder_count_pub_ = create_publisher<std_msgs::msg::Int64>(encoder_count_topic_, 10);
 
     // 编码器事件线程：独立于控制线程，避免阻塞控制周期。
     encoder_thread_ = std::thread([this]() { this->encoder_loop(); });
@@ -119,15 +125,15 @@ public:
       std::bind(&SteerPositionClosedLoopNode::control_step, this));
 
     last_control_time_ = now();
-    last_cmd_time_ = std::chrono::steady_clock::now();
     startup_time_ = std::chrono::steady_clock::now();
     next_debug_time_ = std::chrono::steady_clock::now();
     startup_state_ = startup_auto_home_ ? StartupState::kSeekingLeftLimit : StartupState::kDone;
 
     RCLCPP_INFO(
       get_logger(),
-      "steer_closed_loop(position) started. cmd_topic=%s feedback_topic=%s invert_dir=%d",
-      cmd_topic_.c_str(), feedback_topic_.c_str(), static_cast<int>(invert_dir_));
+      "steer_closed_loop(position) started. cmd_topic=%s feedback_topic=%s steer_angle_topic=%s encoder_count_topic=%s invert_dir=%d",
+      cmd_topic_.c_str(), feedback_topic_.c_str(), steer_angle_topic_.c_str(),
+      encoder_count_topic_.c_str(), static_cast<int>(invert_dir_));
   }
 
   ~SteerPositionClosedLoopNode() override {
@@ -164,9 +170,6 @@ private:
     }
     if (position_deadband_deg_ < 0.0) {
       throw std::runtime_error("position_deadband_deg must be >= 0");
-    }
-    if (cmd_timeout_s_ < 0.0) {
-      throw std::runtime_error("cmd_timeout_s must be >= 0");
     }
     if (pwm_period_ns_ <= 0) {
       throw std::runtime_error("pwm_period_ns must be > 0");
@@ -211,7 +214,6 @@ private:
     target_position_deg_.store(
       clamp(target_position_deg, right_limit_deg_, left_limit_deg_),
       std::memory_order_relaxed);
-    last_cmd_time_ = std::chrono::steady_clock::now();
   }
 
   void control_step() {
@@ -226,15 +228,16 @@ private:
     }
     last_control_time_ = tnow;
 
-    const double measured_position = compute_position_deg();
-    publish_position(measured_position);
+    const long encoder_count = read_signed_steps();
+    const double measured_position = compute_position_deg(encoder_count);
+    publish_feedbacks(encoder_count, measured_position);
 
     if (startup_state_ == StartupState::kSeekingLeftLimit) {
       // 阶段A：寻找左限位
       if (limit_left_active()) {
         // 触发左限位后，建立“编码器原始角 -> 物理角度”映射：
         // 使当前 raw_position 对应 left_limit_deg（默认 +45°）
-        const double raw_position = compute_raw_position_deg();
+        const double raw_position = compute_raw_position_deg(encoder_count);
         zero_offset_deg_ = left_limit_deg_ - raw_position;
         integral_ = 0.0;
         prev_error_ = 0.0;
@@ -242,7 +245,6 @@ private:
         stop_motor();
         target_position_deg_.store(0.0, std::memory_order_relaxed);
         startup_state_ = StartupState::kReturningToZero;
-        last_cmd_time_ = std::chrono::steady_clock::now();
         RCLCPP_INFO(
           get_logger(),
           "left limit latched, calibrated: left=%.2f deg zero_offset=%.3f, returning to 0 deg",
@@ -269,14 +271,6 @@ private:
       target_position = 0.0;
     } else {
       target_position = target_position_deg_.load(std::memory_order_relaxed);
-      // 可选超时回中：当外部命令停止太久，目标回 0°。
-      if (cmd_timeout_s_ > 0.0) {
-        const auto age =
-          std::chrono::duration<double>(std::chrono::steady_clock::now() - last_cmd_time_).count();
-        if (age > cmd_timeout_s_) {
-          target_position = 0.0;
-        }
-      }
     }
     target_position = clamp(target_position, right_limit_deg_, left_limit_deg_);
     run_position_pid(target_position, measured_position, dt);
@@ -296,19 +290,31 @@ private:
   }
 
   double compute_position_deg() const {
+    return compute_position_deg(read_signed_steps());
+  }
+
+  double compute_position_deg(long encoder_count) const {
     // 实际反馈角 = 编码器原始角 + 零点偏置
-    return compute_raw_position_deg() + zero_offset_deg_;
+    return compute_raw_position_deg(encoder_count) + zero_offset_deg_;
   }
 
   double compute_raw_position_deg() const {
-    const long step = read_signed_steps();
-    return static_cast<double>(step) * deg_per_step_;
+    return compute_raw_position_deg(read_signed_steps());
   }
 
-  void publish_position(double position_deg) {
-    std_msgs::msg::Float64 msg;
-    msg.data = position_deg * M_PI / 180.0;
-    feedback_pub_->publish(msg);
+  double compute_raw_position_deg(long encoder_count) const {
+    return static_cast<double>(encoder_count) * deg_per_step_;
+  }
+
+  void publish_feedbacks(long encoder_count, double position_deg) {
+    std_msgs::msg::Float64 angle_msg;
+    angle_msg.data = position_deg * M_PI / 180.0;
+    feedback_pub_->publish(angle_msg);
+    steer_angle_pub_->publish(angle_msg);
+
+    std_msgs::msg::Int64 encoder_msg;
+    encoder_msg.data = encoder_count;
+    encoder_count_pub_->publish(encoder_msg);
   }
 
   double run_position_pid(double target_position, double measured_position, double dt) {
@@ -715,6 +721,8 @@ private:
   std::string pwm_chip_path_;
   std::string cmd_topic_;
   std::string feedback_topic_;
+  std::string steer_angle_topic_;
+  std::string encoder_count_topic_;
 
   int hu_offset_{};
   int hv_offset_{};
@@ -747,7 +755,6 @@ private:
   double max_pwm_percent_{};
   double max_pwm_step_{};
   double min_effective_pwm_percent_{};
-  double cmd_timeout_s_{};
   double debug_hz_{};
   bool startup_auto_home_{true};
   double left_limit_deg_{45.0};
@@ -762,7 +769,6 @@ private:
   double prev_output_{0.0};
 
   rclcpp::Time last_control_time_;
-  std::chrono::steady_clock::time_point last_cmd_time_;
   std::chrono::steady_clock::time_point startup_time_;
   std::chrono::steady_clock::time_point next_debug_time_;
   StartupState startup_state_{StartupState::kDone};
@@ -793,6 +799,8 @@ private:
 
   rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr cmd_sub_;
   rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr feedback_pub_;
+  rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr steer_angle_pub_;
+  rclcpp::Publisher<std_msgs::msg::Int64>::SharedPtr encoder_count_pub_;
   rclcpp::TimerBase::SharedPtr timer_;
 };
 
