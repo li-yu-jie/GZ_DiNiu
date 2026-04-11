@@ -273,6 +273,35 @@ private:
       target_position = target_position_deg_.load(std::memory_order_relaxed);
     }
     target_position = clamp(target_position, right_limit_deg_, left_limit_deg_);
+
+    // 正常运行时，若触碰限位开关，利用限位已知物理角度重新标定零点偏置。
+    // 这是解决霍尔编码器累积丢步/漂移的核心机制：每次碰限位都能自动纠偏。
+    if (startup_state_ == StartupState::kDone) {
+      if (limit_left_active()) {
+        const double raw_position = compute_raw_position_deg(encoder_count);
+        const double new_offset = left_limit_deg_ - raw_position;
+        if (std::abs(new_offset - zero_offset_deg_) > 0.1) {
+          RCLCPP_WARN(
+            get_logger(),
+            "left limit recalibration: zero_offset %.3f -> %.3f deg (drift=%.3f)",
+            zero_offset_deg_, new_offset, new_offset - zero_offset_deg_);
+        }
+        zero_offset_deg_ = new_offset;
+        integral_ = 0.0;
+      } else if (limit_right_active()) {
+        const double raw_position = compute_raw_position_deg(encoder_count);
+        const double new_offset = right_limit_deg_ - raw_position;
+        if (std::abs(new_offset - zero_offset_deg_) > 0.1) {
+          RCLCPP_WARN(
+            get_logger(),
+            "right limit recalibration: zero_offset %.3f -> %.3f deg (drift=%.3f)",
+            zero_offset_deg_, new_offset, new_offset - zero_offset_deg_);
+        }
+        zero_offset_deg_ = new_offset;
+        integral_ = 0.0;
+      }
+    }
+
     run_position_pid(target_position, measured_position, dt);
 
     if (startup_state_ == StartupState::kReturningToZero) {
@@ -383,12 +412,17 @@ private:
 
   void log_debug(double measured_position, double target_position, double error, double out) {
     if (std::chrono::steady_clock::now() >= next_debug_time_) {
+      const long debounce_drop = diag_debounce_drop_.load(std::memory_order_relaxed);
+      const long invalid_code  = diag_invalid_code_.load(std::memory_order_relaxed);
+      const long skip_code     = diag_skip_code_.load(std::memory_order_relaxed);
       RCLCPP_INFO(
         get_logger(),
-        "state=%s pos=%.2f target=%.2f err=%.2f out%%=%.2f L=%d R=%d B=%d",
+        "state=%s pos=%.2f target=%.2f err=%.2f out%%=%.2f L=%d R=%d B=%d "
+        "| enc_diag debounce_drop=%ld invalid_code=%ld skip_code=%ld",
         startup_state_name(), measured_position, target_position, error, out,
         static_cast<int>(limit_left_active()), static_cast<int>(limit_right_active()),
-        static_cast<int>(brake_engaged_));
+        static_cast<int>(brake_engaged_),
+        debounce_drop, invalid_code, skip_code);
       const auto period = std::chrono::duration<double>(1.0 / debug_hz_);
       next_debug_time_ += std::chrono::duration_cast<std::chrono::steady_clock::duration>(period);
     }
@@ -785,6 +819,14 @@ private:
   std::atomic<bool> running_;
   std::atomic<double> target_position_deg_{0.0};
   std::atomic<long> total_step_{0};
+
+  // 编码器丢步诊断计数器（只增不减，累计值，重启清零）：
+  // diag_debounce_drop_：去抖过滤掉的事件数（debounce_us 太大时偏高）
+  // diag_invalid_code_：无效三相霍尔码数（接线/干扰问题时偏高）
+  // diag_skip_code_：跳码数（电机过速或 poll 漏读时偏高）
+  std::atomic<long> diag_debounce_drop_{0};
+  std::atomic<long> diag_invalid_code_{0};
+  std::atomic<long> diag_skip_code_{0};
 
   int hu_level_{0};
   int hv_level_{0};

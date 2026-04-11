@@ -1,3 +1,19 @@
 {
-    "cmake.ignoreCMakeListsMissing": true
+    "cmake.ignoreCMakeListsMissing": true,
+    /* 核心修复：即使在远程机器上，也显式声明这些插件必须在 UI 端运行 */
+    "remote.extensionKind": {
+        "antigravity.antigravity-vscode": [
+            "ui"
+        ],
+        "henrikdev.antigravity-quota": [
+            "ui"
+        ],
+        "google.gemini": [
+            "ui"
+        ]
+    },
+    /* 彻底关闭树莓派端的扫描任务 */
+    "antigravity.indexing.enabled": false,
+    "antigravity.enableSemanticSearch": false,
+    "antigravity.server.remoteMode": "disabled"
 }

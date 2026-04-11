@@ -184,3 +184,14 @@ ros2 run motor_control_py speed_web_node
 
 
 
+# 1. 安装 Samba
+sudo apt update && sudo apt install samba -y
+
+# 2. 修改配置 (在末尾添加)
+echo -e "[pi4]\n   path = /root\n   browseable = yes\n   read only = no\n   guest ok = no\n   create mask = 0777\n   directory mask = 0777" >> /etc/samba/smb.conf
+
+# 3. 设置访问密码 (输入两次)
+sudo smbpasswd -a root
+
+# 4. 重启服务
+sudo systemctl restart smbd
