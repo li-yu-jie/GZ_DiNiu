@@ -1,0 +1,21 @@
+[5.837s] Invoking command in '/root/GZ_DiNiu/src/imu_bno08x': PYTHONPATH=/root/GZ_DiNiu/build/imu_bno08x/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/imu_bno08x build --build-base /root/GZ_DiNiu/build/imu_bno08x/build install --record /root/GZ_DiNiu/build/imu_bno08x/install.log --single-version-externally-managed install_data
+[8.097s] running egg_info
+[8.110s] writing ../../build/imu_bno08x/imu_bno08x.egg-info/PKG-INFO
+[8.113s] writing dependency_links to ../../build/imu_bno08x/imu_bno08x.egg-info/dependency_links.txt
+[8.116s] writing entry points to ../../build/imu_bno08x/imu_bno08x.egg-info/entry_points.txt
+[8.120s] writing requirements to ../../build/imu_bno08x/imu_bno08x.egg-info/requires.txt
+[8.123s] writing top-level names to ../../build/imu_bno08x/imu_bno08x.egg-info/top_level.txt
+[8.126s] reading manifest file '../../build/imu_bno08x/imu_bno08x.egg-info/SOURCES.txt'
+[8.132s] writing manifest file '../../build/imu_bno08x/imu_bno08x.egg-info/SOURCES.txt'
+[8.137s] running build
+[8.141s] running build_py
+[8.148s] running install
+[8.170s] running install_lib
+[8.186s] running install_data
+[8.193s] running install_egg_info
+[8.209s] removing '/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x-0.0.1-py3.10.egg-info' (and everything under it)
+[8.214s] Copying ../../build/imu_bno08x/imu_bno08x.egg-info to /root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages/imu_bno08x-0.0.1-py3.10.egg-info
+[8.228s] running install_scripts
+[8.513s] Installing imu_bno08x_node script to /root/GZ_DiNiu/install/imu_bno08x/lib/imu_bno08x
+[8.516s] writing list of installed files to '/root/GZ_DiNiu/build/imu_bno08x/install.log'
+[8.675s] Invoked command in '/root/GZ_DiNiu/src/imu_bno08x' returned '0': PYTHONPATH=/root/GZ_DiNiu/build/imu_bno08x/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/GZ_DiNiu/install/imu_bno08x/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/imu_bno08x build --build-base /root/GZ_DiNiu/build/imu_bno08x/build install --record /root/GZ_DiNiu/build/imu_bno08x/install.log --single-version-externally-managed install_data

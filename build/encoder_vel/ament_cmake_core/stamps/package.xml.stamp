@@ -1,17 +1,24 @@
 <?xml version="1.0"?>
 <package format="3">
+  <!-- 功能包名称：驱动轮编码器测速节点 -->
   <name>encoder_vel</name>
   <version>0.0.1</version>
+  <!-- 包描述：基于编码器脉冲计算线速度 -->
   <description>Encoder-based linear velocity publisher using libgpiod.</description>
   <maintainer email="user@example.com">user</maintainer>
   <license>Apache-2.0</license>
 
+  <!-- 使用 ament_cmake 构建 C++ 节点 -->
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <!-- 运行依赖：
+       rclcpp：ROS2 C++ 节点基础
+       std_msgs：发布 Float64/Int64 速度与计数 -->
   <depend>rclcpp</depend>
   <depend>std_msgs</depend>
 
   <export>
+    <!-- 标记构建系统类型 -->
     <build_type>ament_cmake</build_type>
   </export>
 </package>

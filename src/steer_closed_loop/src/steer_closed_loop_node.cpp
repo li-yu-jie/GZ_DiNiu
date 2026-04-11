@@ -307,11 +307,13 @@ private:
   }
 
   void publish_feedbacks(long encoder_count, double position_deg) {
+    // 同时保留历史接口与更明确的新接口，避免老节点升级时断联。
     std_msgs::msg::Float64 angle_msg;
     angle_msg.data = position_deg * M_PI / 180.0;
     feedback_pub_->publish(angle_msg);
     steer_angle_pub_->publish(angle_msg);
 
+    // 发布原始编码器计数，便于标定和故障排查。
     std_msgs::msg::Int64 encoder_msg;
     encoder_msg.data = encoder_count;
     encoder_count_pub_->publish(encoder_msg);
@@ -406,11 +408,13 @@ private:
   }
 
   long read_signed_steps() const {
+    // 根据机械安装方向，决定是否对编码器累计步数取反。
     const long steps = total_step_.load(std::memory_order_relaxed);
     return invert_encoder_ ? -steps : steps;
   }
 
   bool limit_left_active() const {
+    // 带启动屏蔽的左限位读取。
     if (in_limit_startup_grace()) {
       return false;
     }
@@ -422,6 +426,7 @@ private:
   }
 
   bool limit_right_active() const {
+    // 带启动屏蔽的右限位读取。
     if (in_limit_startup_grace()) {
       return false;
     }
@@ -433,6 +438,7 @@ private:
   }
 
   bool positive_limit_active() const {
+    // “正方向输出”撞到左限位还是右限位，取决于现场接线/机构定义。
     return positive_dir_hits_left_limit_ ? limit_left_active() : limit_right_active();
   }
 
@@ -495,6 +501,7 @@ private:
   }
 
   void process_event(gpiod_line *line, unsigned long long &last_evt_us, int &level) {
+    // 读取一条霍尔事件，并维护该通道的当前电平状态。
     gpiod_line_event ev{};
     if (gpiod_line_event_read(line, &ev) < 0) {
       return;
@@ -517,6 +524,8 @@ private:
 
     char code[4];
     std::snprintf(code, sizeof(code), "%d%d%d", hu_level_, hv_level_, hw_level_);
+    // 根据当前三相霍尔电平组合得到状态码，
+    // 再与上一个状态比较，判断是前进一步还是后退一步。
     const int curr = code_index(code);
     if (curr < 0) {
       return;

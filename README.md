@@ -183,11 +183,4 @@ pkill -f speed_web_node || true
 ros2 run motor_control_py speed_web_node
 
 
-# 单次发 20°
-ros2 topic pub -1 /target_steer std_msgs/msg/Float64 "{data: 20.0}"
 
-# 单次发 -30°
-ros2 topic pub -1 /target_steer std_msgs/msg/Float64 "{data: -30.0}"
-
-# 回中 0°
-ros2 topic pub -1 /target_steer std_msgs/msg/Float64 "{data: 0.0}"

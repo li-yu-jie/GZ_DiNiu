@@ -1,18 +1,29 @@
 <?xml version="1.0"?>
 <package format="3">
+  <!-- 功能包名称：底盘驱动与转向控制 -->
   <name>motor_control_py</name>
   <version>0.0.1</version>
+  <!-- 包描述：接收 /cmd_vel，输出驱动 PWM 和转向目标 -->
   <description>Python motor control node publishing hardware PWM via pigpio.</description>
   <maintainer email="user@example.com">user</maintainer>
   <license>Apache-2.0</license>
 
+  <!-- Python 构建方式 -->
   <buildtool_depend>ament_python</buildtool_depend>
 
+  <!-- 运行依赖：
+       rclpy：Python ROS2 节点框架
+       std_msgs：Float64 目标与反馈消息
+       geometry_msgs：Twist /cmd_vel 消息 -->
   <exec_depend>rclpy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>ament_index_python</exec_depend>
 
   <export>
+    <!-- 指定构建类型 -->
     <build_type>ament_python</build_type>
   </export>
 </package>

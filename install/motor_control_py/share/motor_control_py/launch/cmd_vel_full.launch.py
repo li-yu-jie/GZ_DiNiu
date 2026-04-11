@@ -1,6 +1,9 @@
 """
 /cmd_vel 驱动完整链路：编码器、驱动控制、转向闭环、IMU。
 """
+import os
+
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, ExecuteProcess, GroupAction
 from launch.conditions import IfCondition, UnlessCondition
@@ -9,45 +12,63 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description() -> LaunchDescription:
+    # 默认参数文件路径：
+    # 按当前工程要求，集中放在 ackermann_odom 包的 config 目录中。
+    default_motor_control_params = os.path.join(
+        get_package_share_directory("ackermann_odom"),
+        "config",
+        "motor_control_defaults.yaml",
+    )
+
+    # 这些启动参数都支持在命令行覆盖。
+    # 例如：
+    # ros2 launch motor_control_py cmd_vel_full.launch.py enable_imu:=true
     start_pigpiod = LaunchConfiguration("start_pigpiod")
     pigpiod_use_sudo = LaunchConfiguration("pigpiod_use_sudo")
     enable_steer = LaunchConfiguration("enable_steer")
     enable_imu = LaunchConfiguration("enable_imu")
     enable_odom = LaunchConfiguration("enable_odom")
     enable_io_control = LaunchConfiguration("enable_io_control")
+    motor_control_params = LaunchConfiguration("motor_control_params")
 
     return LaunchDescription(
         [
             DeclareLaunchArgument(
                 "start_pigpiod",
                 default_value="true",
-                description="Start pigpiod daemon.",
+                description="是否在启动时自动拉起 pigpiod 守护进程。",
             ),
             DeclareLaunchArgument(
                 "pigpiod_use_sudo",
                 default_value="false",
-                description="Use sudo -n when starting pigpiod.",
+                description="启动 pigpiod 时是否使用 sudo -n。",
             ),
             DeclareLaunchArgument(
                 "enable_steer",
                 default_value="true",
-                description="Launch steering closed-loop node.",
+                description="是否启动转向闭环节点。",
             ),
             DeclareLaunchArgument(
                 "enable_imu",
                 default_value="false",
-                description="Launch IMU node.",
+                description="是否启动 IMU 节点。",
             ),
             DeclareLaunchArgument(
                 "enable_odom",
                 default_value="true",
-                description="Launch the Ackermann odometry node.",
+                description="是否启动阿克曼里程计节点。",
             ),
             DeclareLaunchArgument(
                 "enable_io_control",
                 default_value="true",
-                description="Launch the GPIO IO control node.",
+                description="是否启动 GPIO IO 控制节点。",
             ),
+            DeclareLaunchArgument(
+                "motor_control_params",
+                default_value=default_motor_control_params,
+                description="motor_control_node 默认参数 YAML 文件路径。",
+            ),
+            # 根据参数决定是否启动 pigpiod。
             GroupAction(
                 actions=[
                     ExecuteProcess(
@@ -63,12 +84,14 @@ def generate_launch_description() -> LaunchDescription:
                 ],
                 condition=IfCondition(start_pigpiod),
             ),
+            # 速度反馈链路入口：编码器测速。
             Node(
                 package="encoder_vel",
                 executable="encoder_vel_node",
                 name="encoder_vel_node",
                 output="screen",
             ),
+            # 里程计解算。
             Node(
                 package="ackermann_odom",
                 executable="ackermann_odom_node",
@@ -76,21 +99,16 @@ def generate_launch_description() -> LaunchDescription:
                 output="screen",
                 condition=IfCondition(enable_odom),
             ),
+            # 主控制节点：订阅 /cmd_vel，输出驱动 PWM 与转向目标。
             Node(
                 package="motor_control_py",
                 executable="motor_control_node",
                 name="motor_control_node",
                 output="screen",
-                parameters=[
-                    {
-                        "steer_mode": "direct",
-                        "cmd_vel_axis": "x",
-                        "ackermann_wheelbase_m": 1.38,
-                        "ackermann_min_speed_m_s": 0.12,
-                        "ackermann_max_steer_angle_rad": 0.7853981633974483,
-                    }
-                ],
+                # 默认参数由 YAML 文件统一提供，更适合工程化维护。
+                parameters=[motor_control_params],
             ),
+            # 转向执行闭环。
             Node(
                 package="steer_closed_loop",
                 executable="steer_closed_loop_node",
@@ -98,6 +116,7 @@ def generate_launch_description() -> LaunchDescription:
                 output="screen",
                 condition=IfCondition(enable_steer),
             ),
+            # IMU 可选启动。
             Node(
                 package="imu_bno08x",
                 executable="imu_bno08x_node",
@@ -105,6 +124,7 @@ def generate_launch_description() -> LaunchDescription:
                 output="screen",
                 condition=IfCondition(enable_imu),
             ),
+            # GPIO 辅助控制。
             Node(
                 package="io_control_py",
                 executable="io_control_node",

@@ -89,6 +89,11 @@ private:
     // yaw_rate = v * tan(delta) / L
     // x_dot = v * cos(yaw)
     // y_dot = v * sin(yaw)
+    //
+    // 这里采用单轨/自行车模型近似车辆运动学：
+    // - v 为车体前向速度
+    // - delta 为前轮等效转角
+    // - L 为轴距
     const auto current_time = now();
     const double dt = (current_time - last_time_).seconds();
     if (dt <= 0.0) {
@@ -128,25 +133,31 @@ private:
     odom_pub_->publish(odom_msg);
   }
 
+  // 话题与坐标系配置
   std::string speed_topic_;
   std::string steer_topic_;
   std::string odom_topic_;
   std::string odom_frame_id_;
   std::string base_frame_id_;
 
+  // 模型与发布参数
   double wheelbase_m_{};
   double publish_hz_{};
   double min_speed_for_yaw_m_s_{};
 
+  // 最近一次输入
   double linear_velocity_m_s_{0.0};
   double steer_angle_rad_{0.0};
 
+  // 累积积分得到的位姿状态
   double x_{0.0};
   double y_{0.0};
   double yaw_{0.0};
 
+  // 上一轮积分时间
   rclcpp::Time last_time_;
 
+  // ROS 通信对象
   rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr speed_sub_;
   rclcpp::Subscription<std_msgs::msg::Float64>::SharedPtr steer_sub_;
   rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_pub_;

@@ -40,6 +40,7 @@ class PidController:
         self.last_time = None
 
     def update_target(self, value: float):
+        # 更新目标转角，单位通常为 rad。
         self.target = value
 
     def update_feedback(self, value: float):
@@ -106,11 +107,18 @@ class SteerControlNode(Node):
     def __init__(self):
         super().__init__('steer_control_node')
 
+        # ---------------- 关键参数说明 ----------------
+        # pwm_gpio: 方向电机 PWM 输出引脚（BCM 编号）
         self.pwm_gpio = self.declare_parameter('pwm_gpio', 19).value
+        # dir_gpio: 方向引脚，用于控制电机正反转
         self.dir_gpio = self.declare_parameter('dir_gpio', 13).value
+        # pwm_freq_hz: 硬件 PWM 频率，单位 Hz
         self.pwm_freq = self.declare_parameter('pwm_freq_hz', 100000).value
+        # invert_dir: 当电机接线方向相反时，可通过该参数统一翻转方向逻辑
         self.invert_dir = self.declare_parameter('invert_dir', True).value
+        # cmd_topic: 目标转向角话题
         self.cmd_topic = self.declare_parameter('cmd_topic', 'target_steer').value
+        # feedback_topic: 实际转向角反馈话题
         self.feedback_topic = self.declare_parameter('feedback_topic', 'steer_position').value
         # 方向电机 PID 参数
         self.kp = self.declare_parameter('kp',18000.0).value
@@ -123,6 +131,7 @@ class SteerControlNode(Node):
         self.deadband = self.declare_parameter('deadband', 0.01).value
         self.max_pwm_step = self.declare_parameter('max_pwm_step', 2.0).value
 
+        # 参数合法性检查，避免错误配置带来危险输出。
         if self.control_hz <= 0.0:
             raise RuntimeError('control_hz must be > 0')
         if self.max_pwm_percent <= 0.0:
@@ -134,13 +143,16 @@ class SteerControlNode(Node):
         if self.max_pwm_step <= 0.0:
             raise RuntimeError('max_pwm_step must be > 0')
 
+        # 建立 pigpio 连接，负责硬件 PWM 与方向引脚输出。
         self.pi = pigpio.pi()
         if not self.pi.connected:
             raise RuntimeError('pigpio daemon not running. Run: sudo pigpiod')
 
+        # 初始化方向输出默认电平。
         self.pi.set_mode(self.dir_gpio, pigpio.OUTPUT)
         self.pi.write(self.dir_gpio, 0)
 
+        # 创建转向 PID 控制器。
         self.pid = PidController(
             name='steer',
             kp=self.kp,
@@ -157,11 +169,13 @@ class SteerControlNode(Node):
         self.sub_cmd = self.create_subscription(Float64, self.cmd_topic, self.on_cmd, 10)
         self.sub_fb = self.create_subscription(Float64, self.feedback_topic, self.on_feedback, 10)
 
+        # 控制定时器频率决定 PID 更新周期。
         period = 1.0 / self.control_hz
         self.timer = self.create_timer(period, self.control_step)
 
     @staticmethod
     def percent_to_duty(percent: int) -> int:
+        # pigpio 硬件 PWM 占空比采用 0~1,000,000 标度。
         percent = max(0, min(100, percent))
         return int(percent * 10000)
 
@@ -180,11 +194,13 @@ class SteerControlNode(Node):
             return
 
         output, error, filtered = result
+        # 输出符号决定方向，绝对值决定 PWM 强度。
         dir_level = 0 if output >= 0.0 else 1
         if self.invert_dir:
             dir_level = 1 - dir_level
         self.pi.write(self.dir_gpio, dir_level)
 
+        # 先换算为百分比，再转换成 pigpio 所需的 duty。
         percent = int(round(abs(output)))
         duty = self.percent_to_duty(percent)
         self.pi.hardware_PWM(self.pwm_gpio, int(self.pwm_freq), duty)
@@ -201,6 +217,7 @@ def main():
         rclpy.spin(node)
     except KeyboardInterrupt:
         pass
+    # 退出前关闭 PWM 和方向输出，避免电机残留驱动。
     node.pi.hardware_PWM(node.pwm_gpio, 0, 0)
     node.pi.write(node.dir_gpio, 0)
     node.pi.stop()

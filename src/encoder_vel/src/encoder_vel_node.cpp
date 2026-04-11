@@ -148,6 +148,8 @@ private:
     long long current_count = count_.load();
     long long delta = current_count - last_count_;
 
+    // 速度换算链路：
+    // 脉冲增量 -> 圈数 -> 轮周位移 -> 线速度
     double revs = static_cast<double>(delta) / static_cast<double>(counts_per_rev_);
     double distance = revs * (2.0 * M_PI * wheel_radius_m_);
     double velocity = distance / dt;
@@ -164,6 +166,7 @@ private:
     last_count_ = current_count;
   }
 
+  // 参数缓存
   std::string chip_name_;
   int gpio_a_{};
   int gpio_b_{};
@@ -173,18 +176,22 @@ private:
   std::string topic_;
   std::string count_topic_;
 
+  // gpiod 资源句柄
   gpiod_chip* chip_ = nullptr;
   gpiod_line* line_a_ = nullptr;
   gpiod_line* line_b_ = nullptr;
 
+  // 后台事件线程与共享计数
   std::atomic<bool> running_;
   std::atomic<long long> count_;
   std::thread event_thread_;
 
+  // ROS 通信对象
   rclcpp::Publisher<std_msgs::msg::Float64>::SharedPtr publisher_;
   rclcpp::Publisher<std_msgs::msg::Int64>::SharedPtr count_publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
 
+  // 上一发布周期的时间与计数快照
   rclcpp::Time last_time_;
   long long last_count_{};
 };

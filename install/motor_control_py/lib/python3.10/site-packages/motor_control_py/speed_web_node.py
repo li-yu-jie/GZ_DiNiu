@@ -243,12 +243,19 @@ class SpeedWebNode(Node):
         super().__init__('speed_web_node')
         self.state = state
 
+        # ---------------- 关键参数说明 ----------------
+        # cmd_topic: 目标速度来源话题，默认 /cmd_vel
         self.cmd_topic = self.declare_parameter('cmd_topic', '/cmd_vel').value
+        # feedback_topic: 速度反馈话题，默认 linear_velocity
         self.feedback_topic = self.declare_parameter('feedback_topic', 'linear_velocity').value
+        # cmd_vel_axis: 从 Twist.linear 的哪个轴提取目标速度，可选 x/y/z
         self.cmd_vel_axis = str(self.declare_parameter('cmd_vel_axis', 'x').value).lower()
+        # cmd_vel_scale: 对目标速度做统一缩放，便于标定显示
         self.cmd_vel_scale = float(self.declare_parameter('cmd_vel_scale', 1.0).value)
+        # web_host / web_port: 网页服务监听地址与端口
         self.web_host = str(self.declare_parameter('web_host', '0.0.0.0').value)
         self.web_port = int(self.declare_parameter('web_port', 8080).value)
+        # sample_hz: 采样频率，决定网页曲线刷新颗粒度
         self.sample_hz = float(self.declare_parameter('sample_hz', 20.0).value)
 
         if self.cmd_vel_axis not in ('x', 'y', 'z'):
@@ -256,10 +263,13 @@ class SpeedWebNode(Node):
         if self.sample_hz <= 0.0:
             raise RuntimeError('sample_hz must be > 0')
 
+        # 保存当前目标速度与反馈速度。
         self.current_target = 0.0
         self.current_feedback = 0.0
+        # 订阅目标和反馈。
         self.create_subscription(Twist, self.cmd_topic, self.on_cmd, 10)
         self.create_subscription(Float64, self.feedback_topic, self.on_feedback, 10)
+        # 定时将最新数据快照同步到 HTTP 线程共享状态。
         self.create_timer(1.0 / self.sample_hz, self.on_sample_timer)
 
     def on_cmd(self, msg: Twist):
@@ -284,6 +294,7 @@ def make_handler(state: SpeedState):
     # 生成 HTTP 处理器：首页 + SSE 数据流
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):
+            # 根路径返回前端 HTML 页面。
             if self.path == '/':
                 body = INDEX_HTML.encode('utf-8')
                 self.send_response(HTTPStatus.OK)
@@ -305,6 +316,7 @@ def make_handler(state: SpeedState):
                     while True:
                         payload, version = state.snapshot()
                         if version != last_version:
+                            # ensure_ascii=False 可以保证中文在 JSON 中不被转义。
                             message = f"data: {json.dumps(payload, ensure_ascii=False)}\n\n"
                             self.wfile.write(message.encode('utf-8'))
                             self.wfile.flush()
@@ -327,6 +339,7 @@ def main():
     node = SpeedWebNode(state)
 
     handler_cls = make_handler(state)
+    # 启动一个轻量 HTTP 服务，用于展示实时速度曲线。
     server = ThreadingHTTPServer((node.web_host, node.web_port), handler_cls)
     server.daemon_threads = True
     server_thread = threading.Thread(target=server.serve_forever, daemon=True)

@@ -177,6 +177,10 @@ ros2 launch motor_control_py cmd_vel_full.launch.py start_pigpiod:=false
 
 说明：`start_pigpiod:=false` 用于避免 launch 文件重复拉起 `pigpiod`。
 
+# 编译
+colcon build
+sudo systemctl restart ros2-motor-control.service
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
 启用与启动：
 ```bash
 sudo systemctl daemon-reload

@@ -1,17 +1,24 @@
 <?xml version="1.0"?>
 <package format="3">
+  <!-- 功能包名称：BNO08x IMU 采集节点 -->
   <name>imu_bno08x</name>
   <version>0.0.1</version>
+  <!-- 包描述：通过 I2C 读取 IMU 数据并发布标准 ROS2 消息 -->
   <description>BNO08x IMU publisher over I2C.</description>
   <maintainer email="user@example.com">user</maintainer>
   <license>Apache-2.0</license>
 
+  <!-- Python 构建方式 -->
   <buildtool_depend>ament_python</buildtool_depend>
 
+  <!-- 运行依赖：
+       rclpy：ROS2 Python 节点基础
+       sensor_msgs：Imu 和 MagneticField 消息定义 -->
   <exec_depend>rclpy</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
 
   <export>
+    <!-- 声明本包采用 ament_python 构建 -->
     <build_type>ament_python</build_type>
   </export>
 </package>

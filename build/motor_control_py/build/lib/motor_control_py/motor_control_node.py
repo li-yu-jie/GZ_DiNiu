@@ -48,13 +48,17 @@ class PidController:
         self.last_time = None
 
     def update_target(self, value: float):
+        # 仅更新目标值，真正的 PID 运算在 step() 中按固定周期执行。
         self.target = value
 
     @staticmethod
     def _clamp(value: float, limit: float) -> float:
+        # 对称限幅到 [-limit, +limit]。
         return max(-limit, min(limit, value))
 
     def reset(self, *, clear_integral: bool = True, clear_output: bool = False):
+        # 重置 PID 内部状态。
+        # 常用于停车、换向、目标大幅变化等场景，减少残余积分带来的顿挫。
         if clear_integral:
             self.integral = 0.0
         if clear_output:
@@ -136,6 +140,7 @@ class MotorControlNode(Node):
 
     def __init__(self):
         super().__init__('motor_control_node')
+        # ---------------- 驱动硬件参数 ----------------
         # 驱动电机 PWM 引脚（BCM 编号）
         self.pwm_gpio = self.declare_parameter('pwm_gpio', 18).value
         # 驱动电机方向控制引脚（BCM 编号）
@@ -143,7 +148,7 @@ class MotorControlNode(Node):
         # PWM 频率（Hz）
         self.pwm_freq = self.declare_parameter('pwm_freq_hz', 100000).value
         # 是否反转方向引脚逻辑
-        self.invert_dir = self.declare_parameter('invert_dir', True).value
+        self.invert_dir = self.declare_parameter('invert_dir', False).value
         # 速度指令订阅话题（Twist，Nav2 默认输出 /cmd_vel）
         self.cmd_topic = self.declare_parameter('cmd_topic', '/cmd_vel').value
         # Ackermann 固定使用 linear.x 作为前进速度 vx。
@@ -185,11 +190,11 @@ class MotorControlNode(Node):
             self.declare_parameter('ackermann_max_steer_angle_rad', math.pi / 4.0).value
         )
         # PID 比例系数
-        self.kp = self.declare_parameter('kp', 150).value
+        self.kp = self.declare_parameter('kp', 90).value
         # PID 积分系数
-        self.ki = self.declare_parameter('ki', 100).value
+        self.ki = self.declare_parameter('ki', 15).value
         # PID 微分系数
-        self.kd = self.declare_parameter('kd', 100).value
+        self.kd = self.declare_parameter('kd', 0).value
         # 积分项绝对值上限（防积分饱和）
         self.i_max = self.declare_parameter('i_max',500.0).value
         # 控制循环频率（Hz）
@@ -217,6 +222,7 @@ class MotorControlNode(Node):
         # 单步反馈变化限幅（m/s），用于抑制偶发尖峰
         self.feedback_jump_limit = float(self.declare_parameter('feedback_jump_limit', 0.20).value)
 
+        # ---------------- 参数合法性检查 ----------------
         if self.control_hz <= 0.0:
             raise RuntimeError('control_hz must be > 0')
         if self.max_pwm_percent <= 0.0:
@@ -254,13 +260,16 @@ class MotorControlNode(Node):
         if self.feedback_jump_limit < 0.0:
             raise RuntimeError('feedback_jump_limit must be >= 0')
 
+        # 建立 pigpio 连接，用于控制方向引脚和硬件 PWM。
         self.pi = pigpio.pi()
         if not self.pi.connected:
             raise RuntimeError('pigpio daemon not running. Run: sudo pigpiod')
 
+        # 初始化方向引脚，PWM 在真正输出前由 hardware_PWM 动态设置。
         self.pi.set_mode(self.dir_gpio, pigpio.OUTPUT)
         self.pi.write(self.dir_gpio, 0)
 
+        # 创建驱动轮闭环控制器。
         self.drive_pid = PidController(
             name='drive',
             kp=self.kp,
@@ -278,10 +287,14 @@ class MotorControlNode(Node):
         self.sub_fb = self.create_subscription(Float64, self.feedback_topic, self.on_feedback, 10)
         self.steer_pub = self.create_publisher(Float64, self.steer_topic, 10)
         self.control_tick = 0
+        # 反向切换时，新的目标速度会先暂存在这里，待车速接近 0 再生效。
         self.pending_target_speed = None
+        # 用滑动窗口做中值滤波，抑制单点脉冲噪声。
         self.feedback_samples = deque(maxlen=self.feedback_median_window)
         self.last_feedback_filtered = None
+        # 记录上一次目标速度，用于判断是否发生“大目标阶跃”。
         self.last_target_for_reset = 0.0
+        # 缓存最近一次目标转角，仅作状态保存/调试用途。
         self.steer_target_rad = 0.0
 
         period = 1.0 / self.control_hz
@@ -289,6 +302,8 @@ class MotorControlNode(Node):
 
     @staticmethod
     def percent_to_duty(percent: float) -> int:
+        # pigpio.hardware_PWM 的占空比范围是 0~1,000,000，
+        # 因此百分比需要转换成百万分比。
         percent = max(0.0, min(100.0, float(percent)))
         return int(round(percent * 10000))
 
@@ -320,6 +335,7 @@ class MotorControlNode(Node):
         # 本项目默认使用 linear.x 作为 vx，angular.z 作为 ω
         # Ackermann 固定取 linear.x 作为线速度目标（m/s）
         target_speed = float(msg.linear.x) * self.cmd_vel_scale
+        # 获取当前目标与当前反馈，用于判断是否需要“先停稳再换向”。
         current_target = self.drive_pid.target
         current_sign = self._sign(current_target)
         target_sign = self._sign(target_speed)
@@ -339,13 +355,15 @@ class MotorControlNode(Node):
         )
 
         if reverse_requested and moving:
+            # 当前仍在运动且请求反向时，不直接硬切目标。
+            # 先命令减速到 0，等接近静止后再切换成新的反向目标。
             self.pending_target_speed = target_speed
             self.drive_pid.update_target(0.0)
         else:
             self.pending_target_speed = None
             self.drive_pid.update_target(target_speed)
 
-        # Large target step: clear integral memory to reduce speed-switch stutter.
+        # 目标速度大幅变化时清积分，能减少速度切换时的历史残留影响。
         if abs(target_speed - self.last_target_for_reset) > 0.12:
             self.drive_pid.reset(clear_integral=True, clear_output=False)
         self.last_target_for_reset = target_speed
@@ -372,6 +390,10 @@ class MotorControlNode(Node):
         )
 
     def on_feedback(self, msg: Float64):
+        # 反馈过滤链路：
+        # 1) 中值滤波，抑制偶发尖峰；
+        # 2) 跳变限幅，抑制相邻周期不合理突变；
+        # 3) 结果再送入 PID 内部一阶低通滤波。
         raw = float(msg.data)
         self.feedback_samples.append(raw)
 
@@ -387,6 +409,10 @@ class MotorControlNode(Node):
         self.drive_pid.update_feedback(median)
 
     def control_step(self):
+        # 控制定时主循环：
+        # 1) 若存在待切换的反向目标，先检查车是否停稳；
+        # 2) 执行 PID；
+        # 3) 执行停车锁定、最小有效 PWM、方向输出和硬件 PWM 输出。
         self.control_tick += 1
         if self.pending_target_speed is not None:
             feedback_speed = self.drive_pid.filtered
@@ -405,23 +431,28 @@ class MotorControlNode(Node):
             output, error, filtered = drive_result
             target = self.drive_pid.target
 
-            # Zero-speed lock: avoid dithering around stop due to residual integral/noise.
+            # 零速锁定：
+            # 目标和反馈都接近 0 时，强制输出 0 并清理 PID 状态，
+            # 避免因为残余积分或测量噪声导致电机在停车点附近抖动。
             if abs(target) <= self.deadband and abs(filtered) <= self.switch_dir_stop_speed_threshold:
                 output = 0.0
                 self.drive_pid.reset(clear_integral=True, clear_output=True)
 
-            # Keep low-speed command above static-friction threshold when non-zero.
+            # 非零输出过小时，电机可能克服不了静摩擦而不转。
+            # 因此把它提升到最小有效 PWM。
             if (
                 0.0 < abs(output) < self.min_effective_pwm_percent and
                 abs(target) > self.deadband
             ):
                 output = self.min_effective_pwm_percent if target > 0.0 else -self.min_effective_pwm_percent
 
+            # 输出符号决定方向引脚，invert_dir 用于适配接线极性。
             dir_level = 0 if output >= 0.0 else 1
             if self.invert_dir:
                 dir_level = 1 - dir_level
             self.pi.write(self.dir_gpio, dir_level)
 
+            # 输出绝对值换算成硬件 PWM 占空比。
             percent = abs(output)
             duty = self.percent_to_duty(percent)
             self.pi.hardware_PWM(self.pwm_gpio, int(self.pwm_freq), duty)
@@ -440,6 +471,7 @@ def main():
         rclpy.spin(node)
     except KeyboardInterrupt:
         pass
+    # 退出前显式关闭 PWM 和方向输出，避免进程结束后电机残留驱动。
     node.pi.hardware_PWM(node.pwm_gpio, 0, 0)
     node.pi.write(node.dir_gpio, 0)
     node.pi.stop()

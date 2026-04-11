@@ -1,4 +1,5 @@
 /root/GZ_DiNiu/install/ackermann_odom/lib/ackermann_odom/ackermann_odom_node
+/root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/config/motor_control_defaults.yaml
 /root/GZ_DiNiu/install/ackermann_odom/share/ament_index/resource_index/package_run_dependencies/ackermann_odom
 /root/GZ_DiNiu/install/ackermann_odom/share/ament_index/resource_index/parent_prefix_path/ackermann_odom
 /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/environment/ament_prefix_path.sh

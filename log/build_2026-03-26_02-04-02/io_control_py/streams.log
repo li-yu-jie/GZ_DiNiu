@@ -1,0 +1,21 @@
+[7.570s] Invoking command in '/root/GZ_DiNiu/src/io_control_py': PYTHONPATH=/root/GZ_DiNiu/build/io_control_py/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/GZ_DiNiu/install/io_control_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/io_control_py build --build-base /root/GZ_DiNiu/build/io_control_py/build install --record /root/GZ_DiNiu/build/io_control_py/install.log --single-version-externally-managed install_data
+[10.126s] running egg_info
+[10.141s] writing ../../build/io_control_py/io_control_py.egg-info/PKG-INFO
+[10.148s] writing dependency_links to ../../build/io_control_py/io_control_py.egg-info/dependency_links.txt
+[10.154s] writing entry points to ../../build/io_control_py/io_control_py.egg-info/entry_points.txt
+[10.162s] writing requirements to ../../build/io_control_py/io_control_py.egg-info/requires.txt
+[10.166s] writing top-level names to ../../build/io_control_py/io_control_py.egg-info/top_level.txt
+[10.178s] reading manifest file '../../build/io_control_py/io_control_py.egg-info/SOURCES.txt'
+[10.182s] writing manifest file '../../build/io_control_py/io_control_py.egg-info/SOURCES.txt'
+[10.185s] running build
+[10.188s] running build_py
+[10.191s] running install
+[10.199s] running install_lib
+[10.207s] running install_data
+[10.221s] running install_egg_info
+[10.274s] removing '/root/GZ_DiNiu/install/io_control_py/lib/python3.10/site-packages/io_control_py-0.0.1-py3.10.egg-info' (and everything under it)
+[10.281s] Copying ../../build/io_control_py/io_control_py.egg-info to /root/GZ_DiNiu/install/io_control_py/lib/python3.10/site-packages/io_control_py-0.0.1-py3.10.egg-info
+[10.310s] running install_scripts
+[10.421s] Installing io_control_node script to /root/GZ_DiNiu/install/io_control_py/lib/io_control_py
+[10.426s] writing list of installed files to '/root/GZ_DiNiu/build/io_control_py/install.log'
+[10.850s] Invoked command in '/root/GZ_DiNiu/src/io_control_py' returned '0': PYTHONPATH=/root/GZ_DiNiu/build/io_control_py/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/root/GZ_DiNiu/install/io_control_py/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/io_control_py build --build-base /root/GZ_DiNiu/build/io_control_py/build install --record /root/GZ_DiNiu/build/io_control_py/install.log --single-version-externally-managed install_data

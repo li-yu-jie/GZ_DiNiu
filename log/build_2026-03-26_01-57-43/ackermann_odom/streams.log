@@ -1,0 +1,24 @@
+[0.251s] Invoking command in '/root/GZ_DiNiu/build/ackermann_odom': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/io_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --build /root/GZ_DiNiu/build/ackermann_odom -- -j4 -l4
+[3.016s] [100%] Built target ackermann_odom_node
+[3.156s] Invoked command in '/root/GZ_DiNiu/build/ackermann_odom' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/io_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --build /root/GZ_DiNiu/build/ackermann_odom -- -j4 -l4
+[3.162s] Invoking command in '/root/GZ_DiNiu/build/ackermann_odom': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/io_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --install /root/GZ_DiNiu/build/ackermann_odom
+[5.612s] -- Install configuration: ""
+[5.613s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/lib/ackermann_odom/ackermann_odom_node
+[5.614s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/config
+[5.616s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/config/motor_control_defaults.yaml
+[5.616s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ament_index/resource_index/package_run_dependencies/ackermann_odom
+[5.617s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ament_index/resource_index/parent_prefix_path/ackermann_odom
+[5.618s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/environment/ament_prefix_path.sh
+[5.618s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/environment/ament_prefix_path.dsv
+[5.619s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/environment/path.sh
+[5.619s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/environment/path.dsv
+[5.620s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/local_setup.bash
+[5.620s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/local_setup.sh
+[5.621s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/local_setup.zsh
+[5.622s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/local_setup.dsv
+[5.622s] -- Installing: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/package.dsv
+[5.623s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ament_index/resource_index/packages/ackermann_odom
+[5.623s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/cmake/ackermann_odomConfig.cmake
+[5.624s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/cmake/ackermann_odomConfig-version.cmake
+[5.624s] -- Up-to-date: /root/GZ_DiNiu/install/ackermann_odom/share/ackermann_odom/package.xml
+[5.663s] Invoked command in '/root/GZ_DiNiu/build/ackermann_odom' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/root/GZ_DiNiu/install/motor_control_py:/root/GZ_DiNiu/install/io_control_py:/root/GZ_DiNiu/install/imu_bno08x:/opt/ros/humble /usr/bin/cmake --install /root/GZ_DiNiu/build/ackermann_odom
