@@ -76,7 +76,7 @@ public:
     // 标定关系：-45°..+45° 约等于 2300 counts => 一圈约 9200 counts。
     encoder_counts_per_rev_ = declare_parameter<int>("encoder_counts_per_rev", 9200);
     invert_encoder_ = declare_parameter<bool>("invert_encoder", true);
-    event_debounce_us_ = declare_parameter<int>("event_debounce_us", 100);
+    event_debounce_us_ = declare_parameter<int>("event_debounce_us", 50);
 
     // ---------------- 位置环 PID 与运动约束 ----------------
     control_hz_ = declare_parameter<double>("control_hz", 50.0);
