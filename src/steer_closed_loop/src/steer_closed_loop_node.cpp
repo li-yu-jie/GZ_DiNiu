@@ -33,6 +33,7 @@ class SteerPositionClosedLoopNode : public rclcpp::Node {
     kSeekingLeftLimit,
     kReturningToZero,
     kDone,
+    kFailed,
   };
 
 public:
@@ -97,6 +98,8 @@ public:
     right_limit_deg_ = declare_parameter<double>("right_limit_deg", -50.0);
     home_seek_pwm_percent_ = declare_parameter<double>("home_seek_pwm_percent", 65.0);
     home_zero_tolerance_deg_ = declare_parameter<double>("home_zero_tolerance_deg", 1.0);
+    home_timeout_s_ = declare_parameter<double>("home_timeout_s", 15.0);
+    home_max_travel_deg_ = declare_parameter<double>("home_max_travel_deg", 120.0);
     // 额外零点修正（度），用于机械装配误差补偿。
     zero_offset_deg_ = declare_parameter<double>("zero_offset_deg", 0.0);
     home_zero_correction_deg_ = declare_parameter<double>("home_zero_correction_deg", 0.0);
@@ -135,6 +138,7 @@ public:
 
     last_control_time_ = now();
     startup_time_ = std::chrono::steady_clock::now();
+    home_start_time_ = startup_time_;
     next_debug_time_ = std::chrono::steady_clock::now();
     startup_state_ = startup_auto_home_ ? StartupState::kSeekingLeftLimit : StartupState::kDone;
 
@@ -192,6 +196,12 @@ private:
     if (home_zero_tolerance_deg_ < 0.0) {
       throw std::runtime_error("home_zero_tolerance_deg must be >= 0");
     }
+    if (home_timeout_s_ <= 0.0) {
+      throw std::runtime_error("home_timeout_s must be > 0");
+    }
+    if (home_max_travel_deg_ <= 0.0) {
+      throw std::runtime_error("home_max_travel_deg must be > 0");
+    }
   }
 
   static double clamp(double v, double lo, double hi) {
@@ -241,8 +251,18 @@ private:
     const double measured_position = compute_position_deg(encoder_count);
     publish_feedbacks(encoder_count, measured_position);
 
+    if (startup_state_ == StartupState::kFailed) {
+      stop_motor();
+      log_debug(measured_position, target_position_deg_.load(std::memory_order_relaxed), 0.0, 0.0);
+      return;
+    }
+
     if (startup_state_ == StartupState::kSeekingLeftLimit) {
       // 阶段A：寻找左限位
+      if (home_safety_exceeded(encoder_count)) {
+        fail_homing("seeking left limit exceeded safety limits", encoder_count, measured_position);
+        return;
+      }
       if (limit_left_active()) {
         // 触发左限位后，建立“编码器原始角 -> 物理角度”映射：
         // 使当前 raw_position 对应 left_limit_deg（默认 +46°）
@@ -278,6 +298,10 @@ private:
     double target_position = 0.0;
     if (startup_state_ == StartupState::kReturningToZero) {
       // 阶段B：从左限位回到 0°
+      if (home_safety_exceeded(encoder_count)) {
+        fail_homing("returning to zero exceeded safety limits", encoder_count, measured_position);
+        return;
+      }
       target_position = 0.0;
     } else {
       target_position = target_position_deg_.load(std::memory_order_relaxed);
@@ -447,9 +471,35 @@ private:
         return "returning_zero";
       case StartupState::kDone:
         return "ready";
+      case StartupState::kFailed:
+        return "failed";
       default:
         return "unknown";
     }
+  }
+
+  bool home_safety_exceeded(long encoder_count) const {
+    const auto elapsed =
+      std::chrono::duration<double>(std::chrono::steady_clock::now() - home_start_time_).count();
+    if (elapsed > home_timeout_s_) {
+      return true;
+    }
+
+    const double travel_deg = std::abs(compute_raw_position_deg(encoder_count) - home_start_raw_deg_);
+    return travel_deg > home_max_travel_deg_;
+  }
+
+  void fail_homing(const char *reason, long encoder_count, double measured_position) {
+    stop_motor();
+    integral_ = 0.0;
+    prev_error_ = 0.0;
+    prev_output_ = 0.0;
+    startup_state_ = StartupState::kFailed;
+    RCLCPP_ERROR(
+      get_logger(),
+      "startup homing failed: %s count=%ld pos=%.2f raw=%.2f timeout=%.1fs max_travel=%.1fdeg",
+      reason, encoder_count, measured_position, compute_raw_position_deg(encoder_count),
+      home_timeout_s_, home_max_travel_deg_);
   }
 
   long read_signed_steps() const {
@@ -617,17 +667,25 @@ private:
   void open_pwm() {
     // sysfs PWM 初始化：export -> period -> duty=0 -> enable
     (void)write_file(pwm_chip_path_ + "export", std::to_string(pwm_channel_));
+    const std::string pwm_path = pwm_chip_path_ + "pwm" + std::to_string(pwm_channel_) + "/";
+    for (int i = 0; i < 20; ++i) {
+      std::ifstream f(pwm_path + "period");
+      if (f.is_open()) {
+        break;
+      }
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
     if (!write_file(
-        pwm_chip_path_ + "pwm" + std::to_string(pwm_channel_) + "/period",
+        pwm_path + "period",
         std::to_string(pwm_period_ns_))) {
       throw std::runtime_error("set pwm period failed");
     }
     if (!write_file(
-        pwm_chip_path_ + "pwm" + std::to_string(pwm_channel_) + "/duty_cycle", "0")) {
+        pwm_path + "duty_cycle", "0")) {
       throw std::runtime_error("set pwm duty failed");
     }
     if (!write_file(
-        pwm_chip_path_ + "pwm" + std::to_string(pwm_channel_) + "/enable", "1")) {
+        pwm_path + "enable", "1")) {
       throw std::runtime_error("enable pwm failed");
     }
   }
@@ -827,6 +885,8 @@ private:
   double right_limit_deg_{-46.0};
   double home_seek_pwm_percent_{35.0};
   double home_zero_tolerance_deg_{1.0};
+  double home_timeout_s_{15.0};
+  double home_max_travel_deg_{120.0};
   double zero_offset_deg_{};
   double home_zero_correction_deg_{0.0};
 
@@ -837,8 +897,10 @@ private:
 
   rclcpp::Time last_control_time_;
   std::chrono::steady_clock::time_point startup_time_;
+  std::chrono::steady_clock::time_point home_start_time_;
   std::chrono::steady_clock::time_point next_debug_time_;
   StartupState startup_state_{StartupState::kDone};
+  double home_start_raw_deg_{0.0};
 
   std::atomic<bool> running_;
   std::atomic<double> target_position_deg_{0.0};

@@ -5,18 +5,25 @@
 # 1. 主驱动与转向逻辑转发节点 (Python)
 motor_control_node:
   ros__parameters:
-    steer_mode: direct
+    steer_mode: ackermann
     cmd_vel_axis: x
     ackermann_wheelbase_m: 1.38
     ackermann_min_speed_m_s: 0.12
-    ackermann_max_steer_angle_rad: 0.837758
-    
+    ackermann_max_steer_angle_rad: 0.7853981634
+    ackermann_low_speed_policy: presteer
+
     # 驱动电机的 PID (保持默认整数类型)
     kp: 90
     ki: 15
     kd: 0
     max_pwm_percent: 100.0
     min_effective_pwm_percent: 6.0
+    zero_target_active_brake: false
+    drive_log_period_s: 1.0
+    drive_log_delta_threshold: 0.03
+    cmd_log_period_s: 1.0
+    cmd_log_delta_threshold: 0.02
+    feedback_timeout_s: 0.5
 
 # 2. 转向执行闭环控制节点 (C++)
 steer_closed_loop_node:
@@ -32,3 +39,17 @@ steer_closed_loop_node:
     min_effective_pwm_percent: 18.0
     event_debounce_us: 5
     position_deadband_deg: 0.5
+    home_timeout_s: 15.0
+    home_max_travel_deg: 120.0
+
+# 3. 阿克曼里程计节点 (C++)
+ackermann_odom_node:
+  ros__parameters:
+    speed_topic: linear_velocity
+    steer_topic: steer_angle
+    odom_topic: /wheel_odom
+    odom_frame_id: odom
+    base_frame_id: base_link
+    wheelbase_m: 1.38
+    publish_hz: 50.0
+    min_speed_for_yaw_m_s: 0.0001

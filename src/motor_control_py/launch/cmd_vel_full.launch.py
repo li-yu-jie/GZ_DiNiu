@@ -5,7 +5,7 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, GroupAction
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, GroupAction, TimerAction
 from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
@@ -30,6 +30,7 @@ def generate_launch_description() -> LaunchDescription:
     enable_odom = LaunchConfiguration("enable_odom")
     enable_io_control = LaunchConfiguration("enable_io_control")
     motor_control_params = LaunchConfiguration("motor_control_params")
+    pigpiod_ready_delay = LaunchConfiguration("pigpiod_ready_delay")
 
     return LaunchDescription(
         [
@@ -68,6 +69,11 @@ def generate_launch_description() -> LaunchDescription:
                 default_value=default_motor_control_params,
                 description="motor_control_node 默认参数 YAML 文件路径。",
             ),
+            DeclareLaunchArgument(
+                "pigpiod_ready_delay",
+                default_value="1.0",
+                description="给 pigpiod 预留的启动时间，避免依赖 pigpio 的节点抢跑。",
+            ),
             # 根据参数决定是否启动 pigpiod。
             GroupAction(
                 actions=[
@@ -97,16 +103,30 @@ def generate_launch_description() -> LaunchDescription:
                 executable="ackermann_odom_node",
                 name="ackermann_odom_node",
                 output="screen",
+                parameters=[motor_control_params],
                 condition=IfCondition(enable_odom),
             ),
-            # 主控制节点：订阅 /cmd_vel，输出驱动 PWM 与转向目标。
-            Node(
-                package="motor_control_py",
-                executable="motor_control_node",
-                name="motor_control_node",
-                output="screen",
-                # 默认参数由 YAML 文件统一提供，更适合工程化维护。
-                parameters=[motor_control_params],
+            # 依赖 pigpio 的节点延迟启动，降低 pigpiod 尚未 ready 时的启动失败概率。
+            TimerAction(
+                period=pigpiod_ready_delay,
+                actions=[
+                    # 主控制节点：订阅 /cmd_vel，输出驱动 PWM 与转向目标。
+                    Node(
+                        package="motor_control_py",
+                        executable="motor_control_node",
+                        name="motor_control_node",
+                        output="screen",
+                        parameters=[motor_control_params],
+                    ),
+                    # GPIO 辅助控制。
+                    Node(
+                        package="io_control_py",
+                        executable="io_control_node",
+                        name="io_control_node",
+                        output="screen",
+                        condition=IfCondition(enable_io_control),
+                    ),
+                ],
             ),
             # 转向执行闭环。
             Node(
@@ -124,14 +144,6 @@ def generate_launch_description() -> LaunchDescription:
                 name="imu_bno08x_node",
                 output="screen",
                 condition=IfCondition(enable_imu),
-            ),
-            # GPIO 辅助控制。
-            Node(
-                package="io_control_py",
-                executable="io_control_node",
-                name="io_control_node",
-                output="screen",
-                condition=IfCondition(enable_io_control),
             ),
         ]
     )

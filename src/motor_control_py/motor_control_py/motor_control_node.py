@@ -169,12 +169,12 @@ class MotorControlNode(Node):
         # 转向模式：
         # - ackermann: angular.z 作为车体角速度（rad/s），换算前轮转角
         # - direct: angular.z 直接作为前轮目标转角（rad）
-        requested_mode = str(self.declare_parameter('steer_mode', 'direct').value).lower()
+        requested_mode = str(self.declare_parameter('steer_mode', 'ackermann').value).lower()
         if requested_mode not in ('ackermann', 'direct'):
             self.get_logger().warn(
-                f"steer_mode={requested_mode} is not supported, forcing to 'direct'"
+                f"steer_mode={requested_mode} is not supported, forcing to 'ackermann'"
             )
-            requested_mode = 'direct'
+            requested_mode = 'ackermann'
         self.steer_mode = requested_mode
         # Ackermann: 轴距（m），L = 前后轴距离
         self.ackermann_wheelbase_m = float(
@@ -189,6 +189,12 @@ class MotorControlNode(Node):
         self.ackermann_max_steer_angle_rad = float(
             self.declare_parameter('ackermann_max_steer_angle_rad', math.pi / 4.0).value
         )
+        # Ackermann 低速/静止时 angular.z 的处理策略：
+        # - presteer: 使用最小等效速度预摆方向
+        # - ignore: 速度接近 0 时忽略 angular.z，目标转角回 0
+        self.ackermann_low_speed_policy = str(
+            self.declare_parameter('ackermann_low_speed_policy', 'presteer').value
+        ).lower()
         # PID 比例系数
         self.kp = self.declare_parameter('kp', 90).value
         # PID 积分系数
@@ -211,16 +217,32 @@ class MotorControlNode(Node):
         self.min_effective_pwm_percent = float(
             self.declare_parameter('min_effective_pwm_percent', 6.0).value
         )
+        # 零速目标是否允许 PID 输出反向 PWM 主动刹车。
+        # false 更稳：停车命令直接 PWM=0，避免速度过零后向后窜。
+        self.zero_target_active_brake = bool(
+            self.declare_parameter('zero_target_active_brake', False).value
+        )
         # 换向前判定“接近静止”的速度阈值（m/s）
         self.switch_dir_stop_speed_threshold = float(
             self.declare_parameter('switch_dir_stop_speed_threshold', 0.05).value
         )
         # 驱动状态日志输出频率（每 N 次控制周期打印一次）
         self.drive_log_every_n = int(self.declare_parameter('drive_log_every_n', 10).value)
+        self.drive_log_period_s = float(self.declare_parameter('drive_log_period_s', 1.0).value)
+        self.drive_log_delta_threshold = float(
+            self.declare_parameter('drive_log_delta_threshold', 0.03).value
+        )
+        # /cmd_vel 日志最小间隔，避免高频命令刷屏。
+        self.cmd_log_period_s = float(self.declare_parameter('cmd_log_period_s', 1.0).value)
+        # 目标速度/角速度/转角变化超过该阈值时立即打印一次。
+        self.cmd_log_delta_threshold = float(
+            self.declare_parameter('cmd_log_delta_threshold', 0.02).value
+        )
         # 反馈中值滤波窗口长度（奇数，>=1）
         self.feedback_median_window = int(self.declare_parameter('feedback_median_window', 5).value)
         # 单步反馈变化限幅（m/s），用于抑制偶发尖峰
         self.feedback_jump_limit = float(self.declare_parameter('feedback_jump_limit', 0.20).value)
+        self.feedback_timeout_s = float(self.declare_parameter('feedback_timeout_s', 0.5).value)
 
         # ---------------- 参数合法性检查 ----------------
         if self.control_hz <= 0.0:
@@ -243,6 +265,8 @@ class MotorControlNode(Node):
             raise RuntimeError("cmd_vel_axis must be 'x'")
         if self.steer_mode not in ('ackermann', 'direct'):
             raise RuntimeError("steer_mode must be 'ackermann' or 'direct'")
+        if self.ackermann_low_speed_policy not in ('presteer', 'ignore'):
+            raise RuntimeError("ackermann_low_speed_policy must be 'presteer' or 'ignore'")
         if self.ackermann_wheelbase_m <= 0.0:
             raise RuntimeError('ackermann_wheelbase_m must be > 0')
         if self.ackermann_min_speed_m_s < 0.0:
@@ -253,12 +277,22 @@ class MotorControlNode(Node):
             raise RuntimeError('pwm_freq_hz must be > 0')
         if self.drive_log_every_n <= 0:
             raise RuntimeError('drive_log_every_n must be > 0')
+        if self.drive_log_period_s < 0.0:
+            raise RuntimeError('drive_log_period_s must be >= 0')
+        if self.drive_log_delta_threshold < 0.0:
+            raise RuntimeError('drive_log_delta_threshold must be >= 0')
+        if self.cmd_log_period_s < 0.0:
+            raise RuntimeError('cmd_log_period_s must be >= 0')
+        if self.cmd_log_delta_threshold < 0.0:
+            raise RuntimeError('cmd_log_delta_threshold must be >= 0')
         if self.feedback_median_window <= 0:
             raise RuntimeError('feedback_median_window must be > 0')
         if self.feedback_median_window % 2 == 0:
             raise RuntimeError('feedback_median_window must be odd')
         if self.feedback_jump_limit < 0.0:
             raise RuntimeError('feedback_jump_limit must be >= 0')
+        if self.feedback_timeout_s < 0.0:
+            raise RuntimeError('feedback_timeout_s must be >= 0')
 
         # 建立 pigpio 连接，用于控制方向引脚和硬件 PWM。
         self.pi = pigpio.pi()
@@ -296,6 +330,12 @@ class MotorControlNode(Node):
         self.last_target_for_reset = 0.0
         # 缓存最近一次目标转角，仅作状态保存/调试用途。
         self.steer_target_rad = 0.0
+        self.last_cmd_log_time = None
+        self.last_cmd_log_values = None
+        self.last_drive_log_time = None
+        self.last_drive_log_values = None
+        self.last_feedback_time = None
+        self.feedback_timeout_active = False
 
         period = 1.0 / self.control_hz
         self.timer = self.create_timer(period, self.control_step)
@@ -318,8 +358,12 @@ class MotorControlNode(Node):
         # 其中 L 为轴距，v_eff 为低速保护后的等效速度
         effective_speed = target_speed
         if abs(effective_speed) < self.ackermann_min_speed_m_s:
-            # 低速保护：避免除零和过大转角，同时保持转向方向由 angular.z 决定
-            effective_speed = self.ackermann_min_speed_m_s
+            if self.ackermann_low_speed_policy == 'ignore':
+                self.steer_target_rad = 0.0
+                return 0.0
+            # 低速保护：避免除零和过大转角；倒车低速时仍保留速度方向。
+            speed_sign = -1.0 if target_speed < 0.0 else 1.0
+            effective_speed = speed_sign * self.ackermann_min_speed_m_s
         target_steer_rad = math.atan(
             (self.ackermann_wheelbase_m * yaw_rate_rad_s) / effective_speed
         )
@@ -382,12 +426,33 @@ class MotorControlNode(Node):
             steer_msg.data = target_steer_rad
             self.steer_pub.publish(steer_msg)
 
-        self.get_logger().info(
-            f'cmd_vel linear=({msg.linear.x:.3f},{msg.linear.y:.3f},{msg.linear.z:.3f}) '
-            f'axis={self.cmd_vel_axis} target_speed={target_speed:.3f} m/s '
-            f'angular.z={msg.angular.z:.3f} mode={self.steer_mode} '
-            f'steer_target_rad={target_steer_rad:.3f}'
-        )
+        self.log_cmd_vel(msg, target_speed, target_steer_rad)
+
+    def log_cmd_vel(self, msg: Twist, target_speed: float, target_steer_rad: float):
+        now = self.get_clock().now()
+        values = (target_speed, float(msg.angular.z), target_steer_rad)
+
+        should_log = self.last_cmd_log_values is None
+        if not should_log and self.cmd_log_delta_threshold > 0.0:
+            should_log = any(
+                abs(current - previous) >= self.cmd_log_delta_threshold
+                for current, previous in zip(values, self.last_cmd_log_values)
+            )
+        if not should_log and self.cmd_log_period_s > 0.0 and self.last_cmd_log_time is not None:
+            elapsed = (now - self.last_cmd_log_time).nanoseconds / 1e9
+            should_log = elapsed >= self.cmd_log_period_s
+        if not should_log and self.cmd_log_period_s == 0.0:
+            should_log = True
+
+        if should_log:
+            self.get_logger().info(
+                f'cmd_vel linear=({msg.linear.x:.3f},{msg.linear.y:.3f},{msg.linear.z:.3f}) '
+                f'axis={self.cmd_vel_axis} target_speed={target_speed:.3f} m/s '
+                f'angular.z={msg.angular.z:.3f} mode={self.steer_mode} '
+                f'steer_target_rad={target_steer_rad:.3f}'
+            )
+            self.last_cmd_log_time = now
+            self.last_cmd_log_values = values
 
     def on_feedback(self, msg: Float64):
         # 反馈过滤链路：
@@ -407,6 +472,10 @@ class MotorControlNode(Node):
 
         self.last_feedback_filtered = median
         self.drive_pid.update_feedback(median)
+        self.last_feedback_time = self.get_clock().now()
+        if self.feedback_timeout_active:
+            self.get_logger().info('linear velocity feedback restored')
+            self.feedback_timeout_active = False
 
     def control_step(self):
         # 控制定时主循环：
@@ -426,15 +495,25 @@ class MotorControlNode(Node):
                 self.pending_target_speed = None
 
         now = self.get_clock().now()
+        if self.feedback_is_stale(now):
+            self.stop_drive_for_feedback_timeout()
+            return
+
         drive_result = self.drive_pid.step(now)
         if drive_result is not None:
             output, error, filtered = drive_result
             target = self.drive_pid.target
 
             # 零速锁定：
-            # 目标和反馈都接近 0 时，强制输出 0 并清理 PID 状态，
-            # 避免因为残余积分或测量噪声导致电机在停车点附近抖动。
-            if abs(target) <= self.deadband and abs(filtered) <= self.switch_dir_stop_speed_threshold:
+            # 默认零速目标直接 PWM=0，不用反向 PWM 主动刹车，避免停车时速度过零后后退。
+            # 若 zero_target_active_brake=true，则保留旧逻辑：接近静止后再锁 0。
+            if (
+                abs(target) <= self.deadband and
+                (
+                    not self.zero_target_active_brake or
+                    abs(filtered) <= self.switch_dir_stop_speed_threshold
+                )
+            ):
                 output = 0.0
                 self.drive_pid.reset(clear_integral=True, clear_output=True)
 
@@ -457,11 +536,51 @@ class MotorControlNode(Node):
             duty = self.percent_to_duty(percent)
             self.pi.hardware_PWM(self.pwm_gpio, int(self.pwm_freq), duty)
 
-            if (self.control_tick % self.drive_log_every_n) == 0:
-                self.get_logger().info(
-                    f'drive fb={filtered:.3f} err={error:.3f} out%={output:.2f} duty={duty} '
-                    f'f={int(self.pwm_freq)}Hz'
-                )
+            self.log_drive_state(filtered, error, output, duty)
+
+    def feedback_is_stale(self, now) -> bool:
+        if self.feedback_timeout_s == 0.0:
+            return False
+        if self.last_feedback_time is None:
+            return False
+        elapsed = (now - self.last_feedback_time).nanoseconds / 1e9
+        return elapsed > self.feedback_timeout_s
+
+    def stop_drive_for_feedback_timeout(self):
+        self.drive_pid.update_target(0.0)
+        self.pending_target_speed = None
+        self.drive_pid.reset(clear_integral=True, clear_output=True)
+        self.pi.hardware_PWM(self.pwm_gpio, int(self.pwm_freq), 0)
+        self.pi.write(self.dir_gpio, 0)
+        if not self.feedback_timeout_active:
+            self.get_logger().warn(
+                f'linear velocity feedback timeout > {self.feedback_timeout_s:.2f}s, drive PWM forced to 0'
+            )
+            self.feedback_timeout_active = True
+
+    def log_drive_state(self, filtered: float, error: float, output: float, duty: int):
+        now = self.get_clock().now()
+        values = (filtered, error, output)
+
+        should_log = self.last_drive_log_values is None
+        if not should_log and self.drive_log_delta_threshold > 0.0:
+            should_log = any(
+                abs(current - previous) >= self.drive_log_delta_threshold
+                for current, previous in zip(values, self.last_drive_log_values)
+            )
+        if not should_log and self.drive_log_period_s > 0.0 and self.last_drive_log_time is not None:
+            elapsed = (now - self.last_drive_log_time).nanoseconds / 1e9
+            should_log = elapsed >= self.drive_log_period_s
+        if not should_log and self.drive_log_period_s == 0.0:
+            should_log = (self.control_tick % self.drive_log_every_n) == 0
+
+        if should_log:
+            self.get_logger().info(
+                f'drive fb={filtered:.3f} err={error:.3f} out%={output:.2f} duty={duty} '
+                f'f={int(self.pwm_freq)}Hz'
+            )
+            self.last_drive_log_time = now
+            self.last_drive_log_values = values
 
 
 def main():
