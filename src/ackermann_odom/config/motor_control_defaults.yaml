@@ -1,44 +1,34 @@
-# motor_control_node 默认参数配置文件
+# motor_control_defaults.yaml
 #
-# 说明：
-# - 虽然参数作用于 motor_control_node，但这里按当前项目要求，
-#   统一放在 ackermann_odom 包的 config 目录下集中管理。
-# - launch 文件会默认加载本文件作为 motor_control_node 的默认参数来源。
-#
-# 使用方式：
-# ros2 launch motor_control_py cmd_vel_full.launch.py
-#
-# 如果需要临时换成其他参数文件，可追加：
-# ros2 launch motor_control_py cmd_vel_full.launch.py \
-#   motor_control_params:=/你的路径/motor_control_defaults.yaml
-#
-# 参数组织格式：
-# - `/**` 表示参数可以匹配到目标节点。
-# - `ros__parameters` 下为节点启动时注入的默认参数。
-/**:
+# 区分不同节点的参数，避免同名参数（如 kp, ki）产生的类型冲突。
+
+# 1. 主驱动与转向逻辑转发节点 (Python)
+motor_control_node:
   ros__parameters:
-    # steer_mode:
-    # - direct: 将 angular.z 直接当作目标前轮转角，单位 rad
-    # - ackermann: 将 angular.z 当作车体角速度，程序再结合轴距换算前轮转角
     steer_mode: direct
-
-    # cmd_vel_axis:
-    # 指定从 Twist.linear 的哪个分量提取驱动速度目标。
-    # 当前底盘默认使用 linear.x。
     cmd_vel_axis: x
-
-    # ackermann_wheelbase_m:
-    # 车辆轴距，单位 m。
-    # 仅在 Ackermann 模式下参与角速度到转角的换算。
     ackermann_wheelbase_m: 1.38
-
-    # ackermann_min_speed_m_s:
-    # 最小等效速度阈值，单位 m/s。
-    # 低速时用该阈值代替过小的速度参与换算，
-    # 避免 omega / v 出现数值发散。
     ackermann_min_speed_m_s: 0.12
+    ackermann_max_steer_angle_rad: 0.837758
+    
+    # 驱动电机的 PID (保持默认整数类型)
+    kp: 90
+    ki: 15
+    kd: 0
+    max_pwm_percent: 100.0
+    min_effective_pwm_percent: 6.0
 
-    # ackermann_max_steer_angle_rad:
-    # 前轮目标转角上限，单位 rad。
-    # 0.7853981633974483 rad 约等于 45°，用于保护机械极限。
-    ackermann_max_steer_angle_rad: 0.7853981633974483
+# 2. 转向执行闭环控制节点 (C++)
+steer_closed_loop_node:
+  ros__parameters:
+    left_limit_deg: 46.0
+    right_limit_deg: -46.0
+    home_zero_correction_deg: 0.0
+    # 转向舵机的 PID (C++ 支持浮点)
+    kp: 5.5
+    ki: 0.0
+    kd: 0.0
+    encoder_counts_per_rev: 9200
+    min_effective_pwm_percent: 18.0
+    event_debounce_us: 5
+    position_deadband_deg: 0.5

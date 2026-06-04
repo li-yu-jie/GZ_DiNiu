@@ -114,6 +114,7 @@ def generate_launch_description() -> LaunchDescription:
                 executable="steer_closed_loop_node",
                 name="steer_closed_loop_node",
                 output="screen",
+                parameters=[motor_control_params],
                 condition=IfCondition(enable_steer),
             ),
             # IMU 可选启动。

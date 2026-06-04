@@ -1,3 +1,0 @@
-[console_scripts]
-imu_bno08x_node = imu_bno08x.imu_bno08x_node:main
-

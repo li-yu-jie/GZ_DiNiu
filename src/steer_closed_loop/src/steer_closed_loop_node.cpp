@@ -73,14 +73,14 @@ public:
     encoder_count_topic_ = declare_parameter<std::string>("encoder_count_topic", "steer_encoder_count");
 
     // ---------------- 编码器换算参数 ----------------
-    // 标定关系：-45°..+45° 约等于 2300 counts => 一圈约 9200 counts。
+    // 标定关系：-46°..+46° 约等于 2300 counts => 一圈约 9200 counts。
     encoder_counts_per_rev_ = declare_parameter<int>("encoder_counts_per_rev", 9200);
     invert_encoder_ = declare_parameter<bool>("invert_encoder", true);
-    event_debounce_us_ = declare_parameter<int>("event_debounce_us", 50);
+    event_debounce_us_ = declare_parameter<int>("event_debounce_us", 5);
 
     // ---------------- 位置环 PID 与运动约束 ----------------
     control_hz_ = declare_parameter<double>("control_hz", 50.0);
-    kp_ = declare_parameter<double>("kp", 9.5);
+    kp_ = declare_parameter<double>("kp", 5.5);
     ki_ = declare_parameter<double>("ki", 0.0);
     kd_ = declare_parameter<double>("kd", 0.0);
     i_max_ = declare_parameter<double>("i_max", 50.0);
@@ -93,12 +93,13 @@ public:
     // ---------------- 启动自标定参数 ----------------
     // 节点启动后默认先找左限位，将左限位定义为 left_limit_deg，再回到 0°。
     startup_auto_home_ = declare_parameter<bool>("startup_auto_home", true);
-    left_limit_deg_ = declare_parameter<double>("left_limit_deg", 45.0);
-    right_limit_deg_ = declare_parameter<double>("right_limit_deg", -45.0);
+    left_limit_deg_ = declare_parameter<double>("left_limit_deg", 50.0);
+    right_limit_deg_ = declare_parameter<double>("right_limit_deg", -50.0);
     home_seek_pwm_percent_ = declare_parameter<double>("home_seek_pwm_percent", 65.0);
     home_zero_tolerance_deg_ = declare_parameter<double>("home_zero_tolerance_deg", 1.0);
     // 额外零点修正（度），用于机械装配误差补偿。
     zero_offset_deg_ = declare_parameter<double>("zero_offset_deg", 0.0);
+    home_zero_correction_deg_ = declare_parameter<double>("home_zero_correction_deg", 0.0);
 
     validate_parameters();
     // 编码器步数 -> 角度系数（度/步）。
@@ -116,7 +117,15 @@ public:
     encoder_count_pub_ = create_publisher<std_msgs::msg::Int64>(encoder_count_topic_, 10);
 
     // 编码器事件线程：独立于控制线程，避免阻塞控制周期。
-    encoder_thread_ = std::thread([this]() { this->encoder_loop(); });
+    encoder_thread_ = std::thread([this]() {
+      // 尝试提升线程优先级为实时优先级 (SCHED_FIFO)，确保 GPIO 事件响应及时。
+      struct sched_param param;
+      param.sched_priority = 80;
+      if (pthread_setschedparam(pthread_self(), SCHED_FIFO, &param) != 0) {
+        RCLCPP_WARN(get_logger(), "failed to set SCHED_FIFO for encoder thread (maybe need sudo/permissions)");
+      }
+      this->encoder_loop();
+    });
 
     // 固定周期位置环控制。
     const auto period = std::chrono::duration<double>(1.0 / control_hz_);
@@ -236,9 +245,10 @@ private:
       // 阶段A：寻找左限位
       if (limit_left_active()) {
         // 触发左限位后，建立“编码器原始角 -> 物理角度”映射：
-        // 使当前 raw_position 对应 left_limit_deg（默认 +45°）
+        // 使当前 raw_position 对应 left_limit_deg（默认 +46°）
         const double raw_position = compute_raw_position_deg(encoder_count);
-        zero_offset_deg_ = left_limit_deg_ - raw_position;
+        // 计算零点偏置时加入机械补偿量
+        zero_offset_deg_ = (left_limit_deg_ + home_zero_correction_deg_) - raw_position;
         integral_ = 0.0;
         prev_error_ = 0.0;
         prev_output_ = 0.0;
@@ -279,7 +289,8 @@ private:
     if (startup_state_ == StartupState::kDone) {
       if (limit_left_active()) {
         const double raw_position = compute_raw_position_deg(encoder_count);
-        const double new_offset = left_limit_deg_ - raw_position;
+        // 运行时纠偏也同样加入补偿量
+        const double new_offset = (left_limit_deg_ + home_zero_correction_deg_) - raw_position;
         if (std::abs(new_offset - zero_offset_deg_) > 0.1) {
           RCLCPP_WARN(
             get_logger(),
@@ -546,6 +557,7 @@ private:
         std::chrono::steady_clock::now().time_since_epoch()).count());
     // 每通道软件去抖。
     if (last_evt_us != 0 && now_us - last_evt_us < static_cast<unsigned long long>(event_debounce_us_)) {
+      diag_debounce_drop_.fetch_add(1, std::memory_order_relaxed);
       return;
     }
     last_evt_us = now_us;
@@ -562,6 +574,7 @@ private:
     // 再与上一个状态比较，判断是前进一步还是后退一步。
     const int curr = code_index(code);
     if (curr < 0) {
+      diag_invalid_code_.fetch_add(1, std::memory_order_relaxed);
       return;
     }
     if (last_code_idx_ < 0) {
@@ -572,11 +585,21 @@ private:
       return;
     }
 
-    // 只接受“相邻一步”的合法序列，跳码直接忽略（抗干扰）。
-    if ((last_code_idx_ + 1) % kCodeCount == curr) {
+    // 接受相邻一步(正常转)或两步(过快跳码漏读)，更新计数值并记录诊断信息。
+    const int diff = (curr - last_code_idx_ + kCodeCount) % kCodeCount;
+    if (diff == 1) {
       total_step_.fetch_add(1, std::memory_order_relaxed);
-    } else if ((last_code_idx_ - 1 + kCodeCount) % kCodeCount == curr) {
+    } else if (diff == 5) {
       total_step_.fetch_sub(1, std::memory_order_relaxed);
+    } else if (diff == 2) {
+      total_step_.fetch_add(2, std::memory_order_relaxed);
+      diag_skip_code_.fetch_add(1, std::memory_order_relaxed);
+    } else if (diff == 4) {
+      total_step_.fetch_sub(2, std::memory_order_relaxed);
+      diag_skip_code_.fetch_add(1, std::memory_order_relaxed);
+    } else {
+      // 一下子跳变3个状态 (diff == 3)，无法判断正反方向，记作无效。
+      diag_invalid_code_.fetch_add(1, std::memory_order_relaxed);
     }
     last_code_idx_ = curr;
   }
@@ -800,11 +823,12 @@ private:
   double min_effective_pwm_percent_{};
   double debug_hz_{};
   bool startup_auto_home_{true};
-  double left_limit_deg_{45.0};
-  double right_limit_deg_{-45.0};
+  double left_limit_deg_{46.0};
+  double right_limit_deg_{-46.0};
   double home_seek_pwm_percent_{35.0};
   double home_zero_tolerance_deg_{1.0};
   double zero_offset_deg_{};
+  double home_zero_correction_deg_{0.0};
 
   double deg_per_step_{};
   double integral_{0.0};
